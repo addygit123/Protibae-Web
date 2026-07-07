@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Trash2 } from 'lucide-react';
 import { useCartStore, getPackPrice } from '@/lib/store/cart';
 import type { CartItem as CartItemType } from '@/lib/store/cart';
+import { cn } from '@/lib/utils';
 
 interface CartItemProps {
   item: CartItemType;
@@ -68,11 +69,22 @@ export function CartItem({ item }: CartItemProps) {
           >-</button>
           <span className="px-3 py-1 font-bold text-[#e3e2e7]">{item.quantity}</span>
           <button 
-            className="px-3 py-1 hover:text-[#ffb1c1] transition-colors text-[#e3e2e7]"
-            onClick={() => updateQuantity(item.id, Math.min(10, item.quantity + 1))}
+            className={cn(
+              "px-3 py-1 transition-colors",
+              item.quantity >= Math.floor(product.inventory / Number(item.packSize))
+                ? "text-[#594045] cursor-not-allowed"
+                : "text-[#e3e2e7] hover:text-[#ffb1c1]"
+            )}
+            onClick={() => updateQuantity(item.id, Math.min(Math.floor(product.inventory / Number(item.packSize)), item.quantity + 1))}
+            disabled={item.quantity >= Math.floor(product.inventory / Number(item.packSize))}
             aria-label="Increase quantity"
           >+</button>
         </div>
+        {item.quantity > Math.floor(product.inventory / Number(item.packSize)) && (
+           <span className="text-[10px] text-orange-400 font-bold uppercase block mt-1">
+             Only {product.inventory} bars left
+           </span>
+        )}
         <button 
           className="flex items-center text-[10px] text-[#e1bec3] hover:text-[#ffb4ab] transition-colors"
           onClick={() => removeItem(item.id)}

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Orders Management | PRO-FUEL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Hanken+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#ffb1c1",
+                    "surface-container": "#1e1f23",
+                    "primary": "#ffb1c1",
+                    "secondary-fixed": "#e2e2e2",
+                    "tertiary-container": "#676666",
+                    "surface-dim": "#121317",
+                    "on-error": "#690005",
+                    "primary-fixed": "#ffd9df",
+                    "on-secondary-container": "#b4b5b5",
+                    "inverse-surface": "#e3e2e7",
+                    "surface": "#121317",
+                    "on-tertiary": "#313030",
+                    "surface-tint": "#ffb1c1",
+                    "on-primary-fixed-variant": "#90003e",
+                    "inverse-on-surface": "#2f3034",
+                    "surface-container-highest": "#343539",
+                    "on-background": "#e3e2e7",
+                    "surface-variant": "#343539",
+                    "error": "#ffb4ab",
+                    "inverse-primary": "#b81154",
+                    "outline": "#a8898e",
+                    "on-secondary": "#2f3131",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "surface-container-high": "#292a2e",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "surface-bright": "#38393d",
+                    "on-error-container": "#ffdad6",
+                    "on-surface-variant": "#e1bec3",
+                    "error-container": "#93000a",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "on-primary-container": "#ffdee3",
+                    "on-secondary-fixed-variant": "#454747",
+                    "on-primary": "#66002a",
+                    "tertiary": "#c8c6c5",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "secondary": "#c6c6c7",
+                    "on-surface": "#e3e2e7",
+                    "surface-container-low": "#1a1b1f",
+                    "secondary-container": "#454747",
+                    "primary-container": "#c41e5c",
+                    "outline-variant": "#594045",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "background": "#121317",
+                    "on-primary-fixed": "#3f0017"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "section-desktop": "120px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "section-mobile": "64px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Bebas Neue"],
+                    "headline-lg": ["Bebas Neue"],
+                    "display-hero": ["Bebas Neue"],
+                    "headline-lg-mobile": ["Bebas Neue"],
+                    "label-bold": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "label-sm": ["Hanken Grotesk"],
+                    "body-lg": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-md": ["32px", {"lineHeight": "36px", "fontWeight": "400"}],
+                    "headline-lg": ["64px", {"lineHeight": "64px", "letterSpacing": "0.02em", "fontWeight": "400"}],
+                    "display-hero": ["96px", {"lineHeight": "90px", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["48px", {"lineHeight": "48px", "fontWeight": "400"}],
+                    "label-bold": ["14px", {"lineHeight": "16px", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0d0e12;
+            color: #e3e2e7;
+            font-family: 'Hanken Grotesk', sans-serif;
+            overflow-x: hidden;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #1a1b1f; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #343539; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #c41e5c; }
+        .glow-pink { filter: drop-shadow(0 0 8px rgba(196, 30, 92, 0.4)); }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface">
+<!-- Side Navigation Shell -->
+<aside class="fixed left-0 top-0 h-full flex flex-col h-screen w-64 border-r border-surface-container-highest bg-surface-container-lowest dark:bg-surface-container-lowest z-50">
+<div class="p-6 flex flex-col gap-1">
+<h1 class="font-headline-md text-headline-md text-primary tracking-wider uppercase">PRO-FUEL</h1>
+<p class="font-label-bold text-label-sm text-on-surface-variant opacity-60">Admin Dashboard</p>
+</div>
+<nav class="mt-4 flex-1">
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-bold text-label-bold">Dashboard</span>
+</a>
+<!-- Active State: Orders -->
+<a class="flex items-center gap-3 px-6 py-3 text-primary bg-primary-container/10 border-r-2 border-primary transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shopping_cart</span>
+<span class="font-label-bold text-label-bold">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-bold text-label-bold">Products</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-bold text-label-bold">Customers</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-bold text-label-bold">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-bold text-label-bold">Settings</span>
+</a>
+</nav>
+<div class="p-6">
+<button class="w-full py-3 bg-surface-container-highest rounded text-on-surface font-label-bold hover:bg-primary-container hover:text-white transition-all">
+                Support
+            </button>
+</div>
+</aside>
+<!-- Top AppBar Shell -->
+<header class="sticky top-0 z-40 flex justify-between items-center px-gutter py-4 ml-64 w-[calc(100%-16rem)] bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-surface-container-highest shadow-sm">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-10 pr-4 py-2 text-body-md focus:ring-1 focus:ring-primary text-on-surface placeholder:text-on-surface-variant/50" placeholder="Search orders..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-primary rounded-full"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a high-end fitness brand administrator, featuring clean lighting and a minimalist dark studio background. The subject is wearing modern athletic apparel, conveying authority and focus. The overall aesthetic is polished, sharp, and aligned with a premium sports nutrition brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1fi12YLnZkiEHkWenE16XVE31fypS0VYKbt9YTcWXwVHo91LzQV5A6hiL2SUimVD4d1Jsblz12LLIZX_Ddw8nubVa1yf6bk1jIdN0y7e4g-j4_p-TvDpttSJTp7P2fOgpy3Y-N70d0Zut-ahlri1rC3A1CeY1_vIc_hhnrgKsz1wfNUlpEVgOCK8PEcuAix7lRNfLci-ktieDm1X3sLrh4KY7ZPqGAF3lhhv7uR4tlrbtsv8rXdNoyuSde58fOunRKExqcnKBdZI"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-64 p-8 min-h-screen">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface leading-none mb-2">ORDERS</h2>
+<p class="font-body-md text-on-surface-variant opacity-80">Track and manage your customer fulfillment pipeline.</p>
+</div>
+<button class="px-8 py-3 bg-primary-container text-white font-label-bold rounded shadow-lg glow-pink flex items-center gap-2 hover:scale-[1.02] transition-transform uppercase tracking-widest">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                Export
+            </button>
+</div>
+<!-- Filters Bento-ish Bar -->
+<div class="bg-surface-container-low p-6 rounded-xl border border-surface-container-highest mb-8 grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-sm text-on-surface-variant uppercase tracking-wider">Status</label>
+<select class="bg-surface-container-high border-none rounded text-body-md text-on-surface focus:ring-1 focus:ring-primary h-12">
+<option>All Statuses</option>
+<option>Paid</option>
+<option>Shipped</option>
+<option>Delivered</option>
+<option>Cancelled</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-sm text-on-surface-variant uppercase tracking-wider">Payment</label>
+<select class="bg-surface-container-high border-none rounded text-body-md text-on-surface focus:ring-1 focus:ring-primary h-12">
+<option>Any Payment</option>
+<option>Paid</option>
+<option>Unpaid</option>
+<option>Refunded</option>
+</select>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-sm text-on-surface-variant uppercase tracking-wider">Date Range</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">calendar_today</span>
+<input class="w-full bg-surface-container-high border-none rounded pl-10 pr-4 h-12 text-body-md text-on-surface focus:ring-1 focus:ring-primary" type="text" value="Oct 01 - Oct 31, 2023"/>
+</div>
+</div>
+<div class="flex items-center justify-end">
+<button class="h-12 px-6 border-2 border-primary-container text-primary-fixed-dim font-label-bold rounded hover:bg-primary-container/10 transition-colors uppercase">
+                    Clear Filters
+                </button>
+</div>
+</div>
+<!-- Data Table Surface -->
+<div class="bg-surface-container-low rounded-xl border border-surface-container-highest overflow-hidden">
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high/50 border-b border-surface-container-highest">
+<th class="px-6 py-4 font-label-bold text-label-sm text-on-surface-variant uppercase tracking-widest">Order #</th>
+<th class="px-6 py-4 font-label-bold text-label-sm text-on-surface-variant uppercase tracking-widest">Customer</th>
+<th class="px-6 py-4 font-label-bold text-label-sm text-on-surface-variant uppercase tracking-widest">Items</th>
+<th class="px-6 py-4 font-label-bold text-label-sm text-on-surface-variant uppercase tracking-widest">Total</th>
+<th class="px-6 py-4 font-label-bold text-label-sm text-on-surface-variant uppercase tracking-widest">Payment</th>
+<th class="px-6 py-4 font-label-bold text-label-sm text-on-surface-variant uppercase tracking-widest">Status</th>
+<th class="px-6 py-4 font-label-bold text-label-sm text-on-surface-variant uppercase tracking-widest">Created</th>
+<th class="px-6 py-4 font-label-bold text-label-sm text-on-surface-variant uppercase tracking-widest text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-highest">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-highest/20 transition-colors group">
+<td class="px-6 py-5 font-label-bold text-primary">#PF-88210</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<img class="h-8 w-8 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="A close-up high-detail portrait of a young male athlete with a focused expression, set against a dark architectural background with subtle pink neon accents. The lighting is cinematic, highlighting muscle definition and skin texture. The image represents a high-value customer for a premium sports nutrition brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoI9FABJla3OmNQMEEVkhPVfW2uZYFvQrEwpUuRVte0OGtDCgExzBG9tRbiI2lpmGasARwKcDxxyOTSnt-OlN7P66vzdnA_NE9DzscDXTJ-i9KznVaDVjwXOifcMyom-F5qa0iB5mGIsQB8OgIkwJBGaDr8btUqRqfoQINEkLx568oj_tXeqX0f987XDtZ3BKN_nLh9gxpqYSKaGtcXn_yRzLEmECFk9dXrHWAdt4qJ9wVVKWg4hsIRnczC4bTfYvVXm95538Gibo"/>
+<span class="font-body-md font-bold">Marcus Thorne</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface-variant text-body-md">Pack of 12 (Variety)</td>
+<td class="px-6 py-5 font-label-bold text-on-surface">$48.00</td>
+<td class="px-6 py-5">
+<span class="px-2 py-1 rounded bg-green-500/10 text-green-400 text-label-sm font-bold border border-green-500/20 uppercase tracking-tighter">Paid</span>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full bg-blue-500 text-white text-label-sm font-bold uppercase tracking-widest flex items-center w-fit gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[14px]">local_shipping</span>
+                                    Shipped
+                                </span>
+</td>
+<td class="px-6 py-5 text-on-surface-variant text-label-sm">Oct 24, 2023</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded transition-all">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-highest/20 transition-colors group">
+<td class="px-6 py-5 font-label-bold text-primary">#PF-88209</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<img class="h-8 w-8 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="A cinematic portrait of a professional female powerlifter during training, captured in a dark, gritty industrial gym setting. Intense lighting creates deep shadows and highlights the dedication in her eyes. The color palette is dominated by deep blacks and cool tones, fitting the aggressive aesthetic of a performance nutrition brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQa7xFO_gFHS-EhQm4YjzfhWml9SotJcX2BHAd88Hxs2gFhMuDBurk45SEbuehYV9SWvwQ0RaPJABDktbKxi4MglaD7OdGsOIdxDl1cpyV85ofvo2xc_yNlW5qbIjXqxBbWB6mY3EOOUbzVpI0Mm_izUGe0KhMn-MvkVakGJy7wz2lEiyFKMHoix4Laju9qjm4A5oAWC7_tNAkhtudj5rHlsIpEUf7M6lfa2WCSqH5RAL0dptkTO66CqmvGdHNgyMcAGS3TFAmJYE"/>
+<span class="font-body-md font-bold">Elena Rodriguez</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface-variant text-body-md">Fuel Box (36 bars)</td>
+<td class="px-6 py-5 font-label-bold text-on-surface">$124.50</td>
+<td class="px-6 py-5">
+<span class="px-2 py-1 rounded bg-green-500/10 text-green-400 text-label-sm font-bold border border-green-500/20 uppercase tracking-tighter">Paid</span>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full bg-primary-container text-white text-label-sm font-bold uppercase tracking-widest flex items-center w-fit gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                                    Delivered
+                                </span>
+</td>
+<td class="px-6 py-5 text-on-surface-variant text-label-sm">Oct 23, 2023</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded transition-all">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-highest/20 transition-colors group">
+<td class="px-6 py-5 font-label-bold text-primary">#PF-88208</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<img class="h-8 w-8 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="A portrait of a male triathlete on a racing bike, captured with motion blur in the background to suggest extreme speed and performance. The athlete is wearing high-end carbon fiber gear. The lighting is sharp and high-contrast, emphasizing the 'premium power' identity of the PRO-FUEL brand with dark charcoal tones and subtle highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWViWBdUsSng8hweQw4SSRMlGUsDM42hYIGmzbnKS-9jOWczIgivbzmCbSY_-ZXyrutEcLCOV5qbu9bjJBKZf3nM0mxBrfvC1eP64EbjUXRXcONEfxe4iw7956FwE6qpKAAOdfTAeC0njopx2mqiwVvg-FqCIh69i4DlW1Bjxw6roLQemCyhg0NJzIB4BQMmh8DkKd3beu_cyh-ar31r3oLGaLkGw6mMfjq6otxmAnKR1TqAV364pqnKL5N_o_mk-x9Ji62JPyht4"/>
+<span class="font-body-md font-bold">Jameson Wu</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface-variant text-body-md">Whey Isolate (2kg)</td>
+<td class="px-6 py-5 font-label-bold text-on-surface">$65.00</td>
+<td class="px-6 py-5">
+<span class="px-2 py-1 rounded bg-red-500/10 text-red-400 text-label-sm font-bold border border-red-500/20 uppercase tracking-tighter">Unpaid</span>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full bg-surface-container-highest text-on-surface-variant text-label-sm font-bold uppercase tracking-widest flex items-center w-fit gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[14px]">pending</span>
+                                    Pending
+                                </span>
+</td>
+<td class="px-6 py-5 text-on-surface-variant text-label-sm">Oct 23, 2023</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded transition-all">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-highest/20 transition-colors group">
+<td class="px-6 py-5 font-label-bold text-primary">#PF-88207</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<img class="h-8 w-8 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="A close-up shot of a fitness model's hands holding a high-protein snack bar, set against a dark, textured gym floor background. The lighting is dramatic and moody, with a slight warm glow on the product. The scene is minimalist yet powerful, focusing on the quality and authority of the brand's nutrition products." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYF1m8VAD4vyAKL2i7ZQbvw4WkjXDvD4CCAi03IK-9Na5Np-HeFzIjLIqexjqRp5MfKzQ9WEXzA_mctn81to9DF3otF9AGi0qhxjnJOKVoHEJnCkGAtRjjMZYcHrhmpQXyFBjosRigNho1KPySUY7SHufBzRmmmOMeZRkAFsRHdYMGlYq5esAizAJkbOAm-8fGJhk5eCz3fcaL-EvtdOLwxPGS80CQJclJWUQ8IESKUG7nS-NQmea-hQfLObx6KfS0KUoPkzKDA6I"/>
+<span class="font-body-md font-bold">Sarah Jenkins</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface-variant text-body-md">Pack of 12 (Choco)</td>
+<td class="px-6 py-5 font-label-bold text-on-surface">$48.00</td>
+<td class="px-6 py-5">
+<span class="px-2 py-1 rounded bg-green-500/10 text-green-400 text-label-sm font-bold border border-green-500/20 uppercase tracking-tighter">Paid</span>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full bg-primary-container text-white text-label-sm font-bold uppercase tracking-widest flex items-center w-fit gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                                    Delivered
+                                </span>
+</td>
+<td class="px-6 py-5 text-on-surface-variant text-label-sm">Oct 22, 2023</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded transition-all">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface-container-highest/20 transition-colors group">
+<td class="px-6 py-5 font-label-bold text-primary">#PF-88206</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<img class="h-8 w-8 rounded-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="A portrait of a male marathon runner finishing a race at night, with bokeh city lights in the background. He is sweating and determined, illuminated by a sharp spotlight. The image is high-contrast, focusing on performance and recovery, with a dark, premium aesthetic that aligns with a high-end sport nutrition brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcBOlkVSvYecdG2Cr-jIxNhyFLOvhuNf8JqPuRHmTffnUpMRtbFHImZOMUsJnagNrPCoryeOsc8NKWR4aHVBoz9kpZJkfqaZ9pFtkDBvC625Y1W6W5Mn7sxOEXU6WclKTiTua6sI47oqTU4buMRB6bE0v-wRhddNoAy2lYo9Jq1PUNiLQnqnt509p3ZGYRSdwAtZrSIjJWw9UNdFinr5-Hd4Nirsf14ESy85wVeqDqwKVtlAn-icPEZaFjmxNsdDZ2Yx6tqHkFH-k"/>
+<span class="font-body-md font-bold">David Chen</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface-variant text-body-md">Sample Pack (3 bars)</td>
+<td class="px-6 py-5 font-label-bold text-on-surface">$12.00</td>
+<td class="px-6 py-5">
+<span class="px-2 py-1 rounded bg-green-500/10 text-green-400 text-label-sm font-bold border border-green-500/20 uppercase tracking-tighter">Paid</span>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full bg-orange-500 text-white text-label-sm font-bold uppercase tracking-widest flex items-center w-fit gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[14px]">error</span>
+                                    On Hold
+                                </span>
+</td>
+<td class="px-6 py-5 text-on-surface-variant text-label-sm">Oct 22, 2023</td>
+<td class="px-6 py-5 text-right">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded transition-all">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="px-6 py-4 border-t border-surface-container-highest flex items-center justify-between bg-surface-container-low">
+<span class="font-body-md text-on-surface-variant opacity-70">Showing 1 to 5 of 1,240 orders</span>
+<div class="flex items-center gap-2">
+<button class="p-2 border border-surface-container-highest rounded text-on-surface-variant hover:text-primary hover:border-primary transition-all disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<div class="flex gap-1">
+<button class="w-8 h-8 rounded bg-primary-container text-white font-label-bold">1</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container-highest text-on-surface transition-colors font-label-bold">2</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container-highest text-on-surface transition-colors font-label-bold">3</button>
+<span class="px-2 text-on-surface-variant">...</span>
+<button class="w-8 h-8 rounded hover:bg-surface-container-highest text-on-surface transition-colors font-label-bold">248</button>
+</div>
+<button class="p-2 border border-surface-container-highest rounded text-on-surface-variant hover:text-primary hover:border-primary transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Dynamic Insights Section -->
+<div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-surface-container-low p-6 rounded-xl border border-surface-container-highest relative overflow-hidden group">
+<div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-[120px]">trending_up</span>
+</div>
+<h4 class="font-label-bold text-label-sm text-on-surface-variant uppercase tracking-widest mb-4">Daily Velocity</h4>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-on-surface">184</span>
+<span class="font-label-bold text-label-sm text-green-400 flex items-center">+12%</span>
+</div>
+<p class="font-body-md text-on-surface-variant opacity-60 mt-2">Orders processed in last 24h</p>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl border border-surface-container-highest relative overflow-hidden group">
+<div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-[120px]">payments</span>
+</div>
+<h4 class="font-label-bold text-label-sm text-on-surface-variant uppercase tracking-widest mb-4">Avg. Order Value</h4>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-on-surface">$54.20</span>
+<span class="font-label-bold text-label-sm text-primary-fixed-dim flex items-center">-2%</span>
+</div>
+<p class="font-body-md text-on-surface-variant opacity-60 mt-2">Down from $55.40 last week</p>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl border border-surface-container-highest relative overflow-hidden group">
+<div class="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-[120px]">timer</span>
+</div>
+<h4 class="font-label-bold text-label-sm text-on-surface-variant uppercase tracking-widest mb-4">Fulfillment Time</h4>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-on-surface">1.4 Days</span>
+<span class="font-label-bold text-label-sm text-green-400 flex items-center">+0.2d</span>
+</div>
+<p class="font-body-md text-on-surface-variant opacity-60 mt-2">Avg. time to ship orders</p>
+</div>
+</div>
+</main>
+<!-- Micro-interaction JS for hover effects and active states -->
+<script>
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('click', (e) => {
+                if (!e.target.closest('button')) {
+                    // Logic to open order details drawer
+                    console.log('Opening order details...');
+                }
+            });
+        });
+    </script>
+</body></html>

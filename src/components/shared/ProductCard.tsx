@@ -55,6 +55,15 @@ export function ProductCard({ product, className }: ProductCardProps) {
               {badge.label}
             </span>
           ))}
+          {product.inventory === 0 ? (
+            <span className="text-[10px] font-bold tracking-tight px-3 py-1 uppercase rounded-full bg-red-500 text-white shadow-sm border border-red-400">
+              Out of Stock
+            </span>
+          ) : product.inventory <= 10 ? (
+            <span className="text-[10px] font-bold tracking-tight px-3 py-1 uppercase rounded-full bg-orange-500 text-white shadow-sm border border-orange-400">
+              Only {product.inventory} left
+            </span>
+          ) : null}
         </div>
 
         {/* Product Image */}
@@ -68,14 +77,18 @@ export function ProductCard({ product, className }: ProductCardProps) {
 
         {/* Quick Add to Cart — appears on hover */}
         <button
+          disabled={product.inventory === 0}
           aria-label={`Quick add ${product.name} to cart`}
           className={cn(
             'absolute bottom-4 right-4 z-10',
-            'bg-white text-black w-12 h-12 rounded-full',
+            'w-12 h-12 rounded-full',
             'flex items-center justify-center',
             'opacity-0 translate-y-4',
             'group-hover:opacity-100 group-hover:translate-y-0',
-            'transition-all duration-300 active:scale-90',
+            'transition-all duration-300',
+            product.inventory === 0 
+              ? 'bg-[#343539] text-[#594045] cursor-not-allowed'
+              : 'bg-white text-black active:scale-90'
           )}
         >
           <ShoppingCart size={18} strokeWidth={2} />

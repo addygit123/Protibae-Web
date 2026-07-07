@@ -16,8 +16,15 @@ export function ProductInfo({ product }: ProductInfoProps) {
   const [selectedPack, setSelectedPack] = useState<'6' | '12' | '24'>('12');
   const addItem = useCartStore((state) => state.addItem);
 
+  const barsPerPack = Number(selectedPack);
+  const maxQuantity = Math.floor(product.inventory / barsPerPack);
+  const outOfStock = maxQuantity <= 0;
+
   const handleDecrease = () => setQuantity((q) => Math.max(1, q - 1));
-  const handleIncrease = () => setQuantity((q) => Math.min(10, q + 1));
+
+  const handleIncrease = () => {
+    setQuantity((q) => Math.min(maxQuantity || 1, q + 1));
+  };
 
   return (
     <div className="space-y-10">
@@ -61,9 +68,20 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
       {/* Pack Selection */}
       <div>
-        <label className="block font-body text-label-bold uppercase tracking-wider text-sm mb-4 text-[#e3e2e7]">
-          Choose Your Pack
-        </label>
+        <div className="flex items-center justify-between mb-4">
+          <label className="block font-body text-label-bold uppercase tracking-wider text-sm text-[#e3e2e7]">
+            Choose Your Pack
+          </label>
+          {outOfStock ? (
+            <span className="text-[10px] font-bold px-2 py-1 bg-red-500/10 text-red-400 border border-red-500/20 rounded uppercase tracking-widest">
+              Out of Stock
+            </span>
+          ) : product.inventory <= 10 ? (
+            <span className="text-[10px] font-bold px-2 py-1 bg-orange-500/10 text-orange-400 border border-orange-500/20 rounded uppercase tracking-widest">
+              Only {product.inventory} bars left
+            </span>
+          ) : null}
+        </div>
         <div className="grid grid-cols-3 gap-3">
           {(['6', '12', '24'] as const).map((pack) => {
             const isSelected = selectedPack === pack;
@@ -73,31 +91,47 @@ export function ProductInfo({ product }: ProductInfoProps) {
             if (pack === '12') discount = 'SAVE 22%';
             if (pack === '24') discount = 'SAVE 28%';
 
+            const maxForPack = Math.floor(product.inventory / Number(pack));
+            const isPackOutOfStock = maxForPack <= 0;
+
             return (
               <button
                 key={pack}
-                onClick={() => setSelectedPack(pack)}
+                disabled={isPackOutOfStock}
+                onClick={() => {
+                  setSelectedPack(pack);
+
+                  if (quantity > maxForPack && maxForPack > 0) {
+                    setQuantity(maxForPack);
+                  }
+                }}
                 className={cn(
-                  'flex flex-col items-center justify-center p-4 rounded-lg group transition-all border',
+                  'flex flex-col items-center justify-center p-4 rounded-lg group transition-all border relative overflow-hidden',
                   isSelected
                     ? 'border-[#c41e5c] bg-[#c41e5c]/5'
-                    : 'border-[#594045] hover:border-[#ffb1c1]'
+                    : 'border-[#594045] hover:border-[#ffb1c1]',
+                  isPackOutOfStock && 'opacity-50 cursor-not-allowed border-[#343539] hover:border-[#343539]'
                 )}
               >
                 <span className={cn(
                   'text-[10px] font-bold uppercase',
-                  isSelected ? 'text-[#ffb1c1]' : 'text-[#e1bec3] group-hover:text-[#ffb1c1]'
+                  isSelected ? 'text-[#ffb1c1]' : 'text-[#e1bec3] group-hover:text-[#ffb1c1]',
+                  isPackOutOfStock && 'text-[#594045] group-hover:text-[#594045]'
                 )}>
                   PACK OF {pack}
                 </span>
-                <span className="text-lg font-bold text-[#e3e2e7] mt-1">₹{price}</span>
+                <span className={cn(
+                  "text-lg font-bold mt-1",
+                  isPackOutOfStock ? "text-[#594045]" : "text-[#e3e2e7]"
+                )}>₹{price}</span>
                 <span className={cn(
                   'text-[10px] px-2 py-0.5 rounded-full mt-2 font-bold transition-colors',
                   isSelected
                     ? 'bg-[#c41e5c]/20 text-[#ffb1c1]'
-                    : 'bg-[#c41e5c]/10 text-[#c41e5c] group-hover:bg-[#c41e5c]/20'
+                    : 'bg-[#c41e5c]/10 text-[#c41e5c] group-hover:bg-[#c41e5c]/20',
+                  isPackOutOfStock && 'bg-[#343539] text-[#594045] group-hover:bg-[#343539]'
                 )}>
-                  {discount}
+                  {isPackOutOfStock ? 'UNAVAILABLE' : discount}
                 </span>
               </button>
             );
@@ -111,7 +145,8 @@ export function ProductInfo({ product }: ProductInfoProps) {
           <div className="flex items-center border border-[#594045] rounded-lg px-4 h-14 bg-[#1a1b1f]">
             <button
               onClick={handleDecrease}
-              className="text-[#e1bec3] hover:text-[#ffb1c1] transition-colors"
+              disabled={outOfStock}
+              className={cn("transition-colors", outOfStock ? "text-[#594045] cursor-not-allowed" : "text-[#e1bec3] hover:text-[#ffb1c1]")}
               aria-label="Decrease quantity"
             >
               <Minus size={18} />
@@ -120,23 +155,27 @@ export function ProductInfo({ product }: ProductInfoProps) {
               className="w-12 bg-transparent border-none text-center text-[#e3e2e7] focus:ring-0 font-bold"
               readOnly
               type="text"
-              value={quantity}
+              value={outOfStock ? 0 : quantity}
               aria-label="Quantity"
             />
             <button
               onClick={handleIncrease}
-              className="text-[#e1bec3] hover:text-[#ffb1c1] transition-colors"
+              disabled={outOfStock || quantity >= maxQuantity}
+              className={cn("transition-colors", (outOfStock || quantity >= maxQuantity) ? "text-[#594045] cursor-not-allowed" : "text-[#e1bec3] hover:text-[#ffb1c1]")}
               aria-label="Increase quantity"
             >
               <Plus size={18} />
             </button>
           </div>
           <button
+            disabled={outOfStock}
             className={cn(
-              'flex-1 bg-[#c41e5c] text-white',
+              'flex-1 text-white',
               'font-display-hero text-headline-md uppercase',
-              'hover:shadow-[0_0_20px_rgba(196,30,92,0.5)] transition-all active:scale-[0.98]',
-              'flex items-center justify-center gap-3 rounded-lg h-14'
+              'flex items-center justify-center gap-3 rounded-lg h-14 transition-all',
+              outOfStock 
+                ? 'bg-[#343539] text-[#594045] cursor-not-allowed' 
+                : 'bg-[#c41e5c] hover:shadow-[0_0_20px_rgba(196,30,92,0.5)] active:scale-[0.98]'
             )}
             onClick={() => {
               addItem(product.id, selectedPack, quantity, {
@@ -144,11 +183,12 @@ export function ProductInfo({ product }: ProductInfoProps) {
                 price: product.price,
                 image: product.image,
                 imageAlt: product.imageAlt,
-                badges: product.badges
+                badges: product.badges,
+                inventory: product.inventory
               });
             }}
           >
-            Add To Cart <ShoppingBag size={24} />
+            {outOfStock ? 'Out of Stock' : 'Add To Cart'} <ShoppingBag size={24} />
           </button>
         </div>
 

@@ -7,6 +7,7 @@ export interface CartItemProduct {
   image: string;
   imageAlt: string;
   badges: { label: string; variant: 'primary' | 'secondary' | 'accent' | 'inverse' }[];
+  inventory: number;
 }
 
 export interface CartItem {

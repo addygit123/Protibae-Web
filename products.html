@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Edit Product | PRO-FUEL Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Hanken+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Shared Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#ffb1c1",
+                    "surface-container": "#1e1f23",
+                    "primary": "#ffb1c1",
+                    "secondary-fixed": "#e2e2e2",
+                    "tertiary-container": "#676666",
+                    "surface-dim": "#121317",
+                    "on-error": "#690005",
+                    "primary-fixed": "#ffd9df",
+                    "on-secondary-container": "#b4b5b5",
+                    "inverse-surface": "#e3e2e7",
+                    "surface": "#121317",
+                    "on-tertiary": "#313030",
+                    "surface-tint": "#ffb1c1",
+                    "on-primary-fixed-variant": "#90003e",
+                    "inverse-on-surface": "#2f3034",
+                    "surface-container-highest": "#343539",
+                    "on-tertiary-container": "#e7e5e4",
+                    "surface-container-lowest": "#0d0e12",
+                    "on-background": "#e3e2e7",
+                    "surface-variant": "#343539",
+                    "error": "#ffb4ab",
+                    "inverse-primary": "#b81154",
+                    "outline": "#a8898e",
+                    "on-secondary": "#2f3131",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "surface-container-high": "#292a2e",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "surface-bright": "#38393d",
+                    "on-error-container": "#ffdad6",
+                    "on-surface-variant": "#e1bec3",
+                    "error-container": "#93000a",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "on-primary-container": "#ffdee3",
+                    "on-secondary-fixed-variant": "#454747",
+                    "on-primary": "#66002a",
+                    "tertiary": "#c8c6c5",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "secondary": "#c6c6c7",
+                    "on-surface": "#e3e2e7",
+                    "surface-container-low": "#1a1b1f",
+                    "secondary-container": "#454747",
+                    "primary-container": "#c41e5c",
+                    "outline-variant": "#594045",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "background": "#121317",
+                    "on-primary-fixed": "#3f0017"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "section-desktop": "120px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "section-mobile": "64px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Bebas Neue"],
+                    "headline-lg": ["Bebas Neue"],
+                    "display-hero": ["Bebas Neue"],
+                    "headline-lg-mobile": ["Bebas Neue"],
+                    "label-bold": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "label-sm": ["Hanken Grotesk"],
+                    "body-lg": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-md": ["32px", {"lineHeight": "36px", "fontWeight": "400"}],
+                    "headline-lg": ["64px", {"lineHeight": "64px", "letterSpacing": "0.02em", "fontWeight": "400"}],
+                    "display-hero": ["96px", {"lineHeight": "90px", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["48px", {"lineHeight": "48px", "fontWeight": "400"}],
+                    "label-bold": ["14px", {"lineHeight": "16px", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-glow {
+            filter: drop-shadow(0 0 10px rgba(196, 30, 92, 0.4));
+        }
+        .product-card-gradient {
+            background: linear-gradient(135deg, #292a2e 0%, #121317 100%);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0d0e12; }
+        ::-webkit-scrollbar-thumb { background: #343539; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #c41e5c; }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface font-body-md overflow-x-hidden">
+<!-- SIDE NAVIGATION (From Shared Components) -->
+<aside class="fixed left-0 top-0 h-full flex flex-col h-screen w-64 border-r border-surface-container-highest bg-surface-container-lowest z-50">
+<div class="px-6 py-8">
+<h1 class="font-headline-md text-headline-md text-primary tracking-wider">PRO-FUEL</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-60">Admin Dashboard</p>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-bold text-label-bold">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-label-bold text-label-bold">Orders</span>
+</a>
+<!-- Active State for Products -->
+<a class="flex items-center gap-3 px-4 py-3 text-primary bg-primary-container/10 border-r-2 border-primary active:scale-95 transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-bold text-label-bold">Products</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-bold text-label-bold">Customers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-bold text-label-bold">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-bold text-label-bold">Settings</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<button class="w-full flex items-center justify-center gap-2 py-3 border border-outline-variant rounded-lg font-label-bold text-label-bold hover:bg-primary hover:text-on-primary transition-all duration-300">
+<span class="material-symbols-outlined text-sm">support_agent</span>
+                Support
+            </button>
+</div>
+</aside>
+<!-- TOP APP BAR -->
+<header class="sticky top-0 z-40 flex justify-between items-center px-gutter py-4 ml-64 w-[calc(100%-16rem)] bg-surface/80 backdrop-blur-xl border-b border-surface-container-highest shadow-sm">
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant">search</span>
+<input class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-sm focus:ring-1 focus:ring-primary w-64 transition-all" placeholder="Search product data..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+<div class="flex items-center gap-3 border-l border-outline-variant pl-6">
+<div class="text-right">
+<p class="font-label-bold text-label-bold text-on-surface">Alex Rivera</p>
+<p class="text-[10px] uppercase tracking-widest text-primary font-bold">Admin</p>
+</div>
+<img class="w-10 h-10 rounded-full border border-primary-fixed-dim object-cover" data-alt="Close-up professional studio portrait of a high-performance athlete in minimalist training gear, dark atmospheric lighting, high contrast shadows, premium gym aesthetic, fitness professional look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkRoX_pn0lQu8o9ED6V88ENmvDfcZiM_YUTbXq_ZVnk-_S5-Y3mGvO_IZ0_3PtPDwe0sb0DestyWTUvPTmWrBvOLmb689wUhCu2pU4W_t836aVbhyKWJWhPD1fOBMVPhsIaBpLos9UiTVL3Eikp8qmnFPjpa9jw7R-NrjP9MpLmg8EZXVN0coeWKrE9lK2vPAGPw6IKAcDA80Bq7XUbxRSfK7q2vgXxZGHomtvrrJCQbnI3JX-SNH7HvsMMtFcqOaUGLqNuApv-tI"/>
+</div>
+</div>
+</header>
+<!-- MAIN CONTENT CANVAS -->
+<main class="ml-64 p-8 min-h-screen bg-surface-container-lowest">
+<!-- Action Header -->
+<div class="flex justify-between items-end mb-10">
+<div>
+<nav class="flex items-center gap-2 text-label-sm text-on-surface-variant mb-2">
+<a class="hover:text-primary transition-colors" href="#">Products</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-on-surface">Edit Product</span>
+</nav>
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">Edit <span class="text-primary-fixed-dim">Protibae Choco Peanut</span></h2>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2 rounded-lg font-label-bold text-label-bold text-on-surface hover:bg-surface-container-high transition-colors">
+                    Cancel
+                </button>
+<button class="px-8 py-2 rounded-lg bg-primary-container text-white font-headline-md text-[20px] custom-glow hover:scale-105 active:scale-95 transition-all">
+                    SAVE CHANGES
+                </button>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-gutter">
+<!-- LEFT COLUMN: Content & Media -->
+<div class="col-span-8 space-y-gutter">
+<!-- Product Identity Section -->
+<section class="bg-surface-container-high p-8 rounded-xl border border-outline-variant">
+<div class="space-y-6">
+<div>
+<label class="block font-label-bold text-label-bold text-on-surface-variant mb-2 uppercase tracking-widest">Product Title</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg p-4 font-headline-md text-[24px] text-on-surface transition-all" type="text" value="Protibae Choco Peanut"/>
+</div>
+<div>
+<label class="block font-label-bold text-label-bold text-on-surface-variant mb-2 uppercase tracking-widest">Description</label>
+<div class="border border-outline-variant rounded-lg overflow-hidden">
+<div class="bg-surface-container-highest p-2 flex items-center gap-4 border-b border-outline-variant">
+<button class="p-1 hover:text-primary"><span class="material-symbols-outlined text-[20px]">format_bold</span></button>
+<button class="p-1 hover:text-primary"><span class="material-symbols-outlined text-[20px]">format_italic</span></button>
+<button class="p-1 hover:text-primary"><span class="material-symbols-outlined text-[20px]">format_list_bulleted</span></button>
+<div class="h-4 w-[1px] bg-outline-variant"></div>
+<button class="p-1 hover:text-primary"><span class="material-symbols-outlined text-[20px]">link</span></button>
+</div>
+<textarea class="w-full bg-surface-container-lowest border-none p-4 text-on-surface focus:ring-0" rows="8">The ultimate fuel for peak performance. Protibae Choco Peanut combines premium whey isolate with natural roasted peanut butter and rich dark cocoa. Engineered for rapid recovery and unparalleled taste. 13g Protein, Zero Added Sugar, Keto Friendly.</textarea>
+</div>
+</div>
+</div>
+</section>
+<!-- Media Gallery -->
+<section class="bg-surface-container-high p-8 rounded-xl border border-outline-variant">
+<div class="flex justify-between items-center mb-6">
+<label class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-widest">Product Gallery</label>
+<button class="text-primary font-label-bold text-label-bold flex items-center gap-1 hover:underline">
+<span class="material-symbols-outlined text-sm">add</span>
+                            Upload New
+                        </button>
+</div>
+<div class="grid grid-cols-4 gap-4">
+<div class="aspect-square relative group cursor-pointer border-2 border-primary rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="High-gloss professional studio product photography of a premium chocolate peanut butter protein bar, sharp focus, vibrant pink packaging highlights, dynamic splash of dark chocolate in the background, luxury fitness brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXCTt7_UaWS28xzuNdWS0nywtTIFq_-HU3vgth0chUmI2okUZOvgBc5J6wg1cCk-10EsyZsJ3R3Q8Ec9JmBLQrRSI22sKrCaZp6LhNA84LhfF0mE7XJXxRtE8iPW0D9BtgKtgzmA7SLhI_rZ1_W_fuWBc_jbJkYfyEDiWNxzwufWWQG0AC-Srr-0F6HtD3jHwB-pu1qJNxf4SRbqWjTLg79D2kyfRz2AVsO_tJgIrqpWIfOx2Vq84aDB51EXZvWcN-5tGRSv40HUE"/>
+<div class="absolute inset-0 bg-primary/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white">edit</span>
+</div>
+<div class="absolute top-2 left-2 bg-primary text-white text-[8px] font-bold px-2 py-1 rounded">PRIMARY</div>
+</div>
+<div class="aspect-square relative group cursor-pointer border border-outline-variant rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="Artistic macro photography of peanut chunks falling into creamy dark chocolate, textured shadows, premium nutrition brand style, high contrast dark lighting with intense pink highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-08JSY2Z5OrtLiiZvJwKHMUHmRsaA61uBUNd3bwrCF107LLNtE-h2rebpMUsB8-IY2KwAboh4wWz702C7IgS56jVfP_5pn9knDrtE18oc5VRThnZESEjxEfp7PJzlRmFJyqVzXL1BzPf-ZtwCu57Y6e5riXMHYpI0z-N3vQ9gQtjiSISjnWXAE86EsvK0IeLNDiWl8-ygjtlCZPkmKCG_ciWgalKoWNwAzhSjHfCouKtChQMhyjCsA6E6gbTyO0u6poYiu4pp40o"/>
+<div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white">delete</span>
+</div>
+</div>
+<div class="aspect-square relative group cursor-pointer border border-outline-variant rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="Lifestyle athletic shot of a protein bar on a textured black slate surface next to a chrome shaker bottle, fitness performance mood, low key lighting, cinematic atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyPLbxv3OKAmf--LKlpzzQIsjPVcEuhcXzXrlY_oSy08YLDmvQVXVVzmvbfOnal_Miq5F13fFNLccL5ud93O4t-VCJPZUKc_0Y9j6SdBwOrXGSGspjkyL1qIJ4vy5-xIM-9gWaZeni0y7ZYu1q1Dl2SNmuwJGZsDOmCuMyJf36uf2RIjg1p45--7e6X7I-UwbXkm0SHUh-s-FNL5NMZrYH-yjLWel9NJv_ShRXfgjIw9rbWa6cMGYQP8wFYYOI7UJswaJHfkiLYGk"/>
+<div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-white">delete</span>
+</div>
+</div>
+<div class="aspect-square flex flex-col items-center justify-center border-2 border-dashed border-outline-variant rounded-lg hover:border-primary transition-colors group cursor-pointer">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary mb-2">upload_file</span>
+<span class="text-[10px] text-on-surface-variant uppercase font-bold">Add Image</span>
+</div>
+</div>
+</section>
+</div>
+<!-- RIGHT COLUMN: Settings & Metadata -->
+<div class="col-span-4 space-y-gutter">
+<!-- Status & Category -->
+<section class="bg-surface-container-high p-6 rounded-xl border border-outline-variant">
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<label class="font-label-bold text-label-bold text-on-surface uppercase tracking-widest">Product Status</label>
+<div class="flex items-center gap-2 bg-surface-container-lowest p-1 rounded-full border border-outline-variant">
+<button class="px-4 py-1 text-[10px] font-bold rounded-full transition-all bg-primary text-on-primary">ACTIVE</button>
+<button class="px-4 py-1 text-[10px] font-bold rounded-full transition-all text-on-surface-variant hover:text-on-surface">DRAFT</button>
+</div>
+</div>
+<div>
+<label class="block font-label-bold text-label-bold text-on-surface-variant mb-2 uppercase tracking-widest">Category</label>
+<select class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3 text-on-surface focus:ring-1 focus:ring-primary">
+<option>Protein Bars</option>
+<option>Pre-Workout</option>
+<option>Supplements</option>
+<option>Apparel</option>
+</select>
+</div>
+</div>
+</section>
+<!-- Pricing Cards -->
+<section class="bg-surface-container-high p-6 rounded-xl border border-outline-variant">
+<label class="block font-label-bold text-label-bold text-on-surface-variant mb-4 uppercase tracking-widest">Pricing</label>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-lowest p-4 rounded-lg border border-outline-variant">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold mb-1">Price</p>
+<div class="flex items-center gap-1">
+<span class="text-primary font-bold">$</span>
+<input class="w-full bg-transparent border-none p-0 text-xl font-headline-md text-on-surface focus:ring-0" type="text" value="3.99"/>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-lg border border-outline-variant opacity-60">
+<p class="text-[10px] text-on-surface-variant uppercase font-bold mb-1">Compare</p>
+<div class="flex items-center gap-1">
+<span class="text-on-surface-variant font-bold">$</span>
+<input class="w-full bg-transparent border-none p-0 text-xl font-headline-md text-on-surface focus:ring-0" type="text" value="4.50"/>
+</div>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<input checked="" class="rounded bg-surface-container-lowest border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-[12px] text-on-surface-variant">Charge tax on this product</span>
+</div>
+</section>
+<!-- Inventory Levels -->
+<section class="bg-surface-container-high p-6 rounded-xl border border-outline-variant">
+<label class="block font-label-bold text-label-bold text-on-surface-variant mb-4 uppercase tracking-widest">Inventory</label>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest rounded-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">warehouse</span>
+<span class="text-sm font-medium">Main Warehouse</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 flex items-center justify-center rounded bg-surface-container-high hover:bg-surface-variant transition-colors">-</button>
+<input class="w-16 text-center bg-transparent border-none font-bold text-primary p-0" type="text" value="1,240"/>
+<button class="w-8 h-8 flex items-center justify-center rounded bg-surface-container-high hover:bg-surface-variant transition-colors">+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest rounded-lg border border-primary/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">local_shipping</span>
+<span class="text-sm font-medium">In Transit</span>
+</div>
+<span class="font-bold text-on-surface">450</span>
+</div>
+<div class="p-4 bg-primary/5 rounded-lg border border-primary/10">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] font-bold text-primary uppercase">Stock Health</span>
+<span class="text-[10px] font-bold text-primary">HIGH</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[85%]"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Danger Zone -->
+<button class="w-full flex items-center justify-center gap-2 py-4 rounded-xl border border-error/20 text-error font-label-bold text-label-bold hover:bg-error/10 transition-colors">
+<span class="material-symbols-outlined">delete</span>
+                    ARCHIVE PRODUCT
+                </button>
+</div>
+</div>
+</main>
+<script>
+        // Simple micro-interactions for inputs
+        document.querySelectorAll('input, select, textarea').forEach(element => {
+            element.addEventListener('focus', () => {
+                element.parentElement.classList.add('border-primary');
+            });
+            element.addEventListener('blur', () => {
+                element.parentElement.classList.remove('border-primary');
+            });
+        });
+
+        // Toggle handling
+        const toggleBtns = document.querySelectorAll('.bg-surface-container-lowest button');
+        toggleBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                toggleBtns.forEach(b => {
+                    b.classList.remove('bg-primary', 'text-on-primary');
+                    b.classList.add('text-on-surface-variant');
+                });
+                btn.classList.add('bg-primary', 'text-on-primary');
+                btn.classList.remove('text-on-surface-variant');
+            });
+        });
+    </script>
+</body></html>

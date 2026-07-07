@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PROTIBAE | Admin Dashboard</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Hanken+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#ffb1c1",
+                    "surface-container": "#1e1f23",
+                    "primary": "#ffb1c1",
+                    "secondary-fixed": "#e2e2e2",
+                    "tertiary-container": "#676666",
+                    "surface-dim": "#121317",
+                    "on-error": "#690005",
+                    "primary-fixed": "#ffd9df",
+                    "on-secondary-container": "#b4b5b5",
+                    "inverse-surface": "#e3e2e7",
+                    "surface": "#121317",
+                    "on-tertiary": "#313030",
+                    "surface-tint": "#ffb1c1",
+                    "on-primary-fixed-variant": "#90003e",
+                    "inverse-on-surface": "#2f3034",
+                    "surface-container-highest": "#343539",
+                    "on-tertiary-container": "#e7e5e4",
+                    "surface-container-lowest": "#0d0e12",
+                    "on-background": "#e3e2e7",
+                    "surface-variant": "#343539",
+                    "error": "#ffb4ab",
+                    "inverse-primary": "#b81154",
+                    "outline": "#a8898e",
+                    "on-secondary": "#2f3131",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "surface-container-high": "#292a2e",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "surface-bright": "#38393d",
+                    "on-error-container": "#ffdad6",
+                    "on-surface-variant": "#e1bec3",
+                    "error-container": "#93000a",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "on-primary-container": "#ffdee3",
+                    "on-secondary-fixed-variant": "#454747",
+                    "on-primary": "#66002a",
+                    "tertiary": "#c8c6c5",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "secondary": "#c6c6c7",
+                    "on-surface": "#e3e2e7",
+                    "surface-container-low": "#1a1b1f",
+                    "secondary-container": "#454747",
+                    "primary-container": "#c41e5c",
+                    "outline-variant": "#594045",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "background": "#121317",
+                    "on-primary-fixed": "#3f0017"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "section-desktop": "120px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "section-mobile": "64px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Bebas Neue"],
+                    "headline-lg": ["Bebas Neue"],
+                    "display-hero": ["Bebas Neue"],
+                    "headline-lg-mobile": ["Bebas Neue"],
+                    "label-bold": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"],
+                    "label-sm": ["Hanken Grotesk"],
+                    "body-lg": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-md": ["32px", { "lineHeight": "36px", "fontWeight": "400" }],
+                    "headline-lg": ["64px", { "lineHeight": "64px", "letterSpacing": "0.02em", "fontWeight": "400" }],
+                    "display-hero": ["96px", { "lineHeight": "90px", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+                    "headline-lg-mobile": ["48px", { "lineHeight": "48px", "fontWeight": "400" }],
+                    "label-bold": ["14px", { "lineHeight": "16px", "fontWeight": "700" }],
+                    "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                    "label-sm": ["12px", { "lineHeight": "14px", "fontWeight": "500" }],
+                    "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0d0e12;
+            color: #e3e2e7;
+            font-family: 'Hanken Grotesk', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .premium-card {
+            background-color: #292a2e;
+            border: 1px solid #343539;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .premium-card:hover {
+            border-color: #c41e5c;
+        }
+
+        .pink-glow {
+            filter: drop-shadow(0 0 10px rgba(196, 30, 92, 0.4));
+        }
+
+        .status-pill {
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-radius: 2px;
+        }
+
+        /* Material Symbol custom sizes */
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .table-row-hover:hover {
+            background-color: rgba(196, 30, 92, 0.05);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d0e12;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2c2c2e;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c41e5c;
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest">
+<!-- SideNavBar (Authority: JSON) -->
+<aside class="fixed left-0 top-0 h-full flex flex-col h-screen w-64 border-r border-surface-container-highest bg-surface-container-lowest dark:bg-surface-container-lowest z-50">
+<div class="px-6 py-8">
+<h1 class="font-headline-md text-headline-md text-primary tracking-wider uppercase">PRO-FUEL</h1>
+<p class="font-label-bold text-label-bold text-on-surface-variant opacity-60">Admin Dashboard</p>
+</div>
+<nav class="flex-1 mt-4">
+<!-- Dashboard (Active) -->
+<a class="flex items-center gap-3 px-6 py-4 text-primary bg-primary-container/10 border-r-2 border-primary transition-transform duration-150 active:scale-95 group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">dashboard</span>
+<span class="font-label-bold text-label-bold">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200 group active:scale-95" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">shopping_cart</span>
+<span class="font-label-bold text-label-bold">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200 group active:scale-95" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">inventory_2</span>
+<span class="font-label-bold text-label-bold">Products</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200 group active:scale-95" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">group</span>
+<span class="font-label-bold text-label-bold">Customers</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200 group active:scale-95" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">monitoring</span>
+<span class="font-label-bold text-label-bold">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors duration-200 group active:scale-95" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">settings</span>
+<span class="font-label-bold text-label-bold">Settings</span>
+</a>
+</nav>
+<div class="p-6">
+<button class="w-full py-3 bg-surface-container-high border border-outline-variant hover:border-primary transition-all text-label-bold font-label-bold flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">help</span>
+                Support
+            </button>
+</div>
+</aside>
+<!-- TopAppBar (Authority: JSON) -->
+<header class="sticky top-0 z-40 flex justify-between items-center px-gutter py-4 ml-64 w-[calc(100%-16rem)] bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-surface-container-highest shadow-sm">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full bg-surface-container-low border-none focus:ring-1 focus:ring-primary text-body-md py-2 pl-10 pr-4 rounded-lg placeholder:text-on-surface-variant/40" placeholder="Search data..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional close-up studio portrait of a high-level executive with a confident expression, set against a dark, minimalist industrial background. The lighting is dramatic and moody, emphasizing a premium aesthetic with subtle pink rim lighting that aligns with the brand's primary color palette. The image quality is sharp and high-gloss." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKUvgXbdCT-Ed5g8p_L6TAB1ylAI735bovQFt8Wppng9tf341l4NcoY0DRLnqt7h0Y91y3ix7805QsF3kB4ONTxXyhr3xv0svqaYuIyE23UaHsokhd9Nxhfzs5x3wGwZo3sk4p2H5u9Hbf6ZgKDAWBUIKW4mlhUqBwvOLArf19SipHh8Y9G7tzc0VWsnLsh-KBQIfXsi7xhmx4b_puoSYKzUvec8NnsuVxUlLORtu8hA1MK6TZInDrjrkJwY-3mqYFLH5zQCfcuKs"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-64 p-gutter max-w-[1600px]">
+<!-- Header -->
+<div class="mb-10">
+<h2 class="font-headline-lg text-headline-md text-on-surface uppercase tracking-tight">Overview Dashboard</h2>
+<p class="font-body-md text-on-surface-variant max-w-2xl mt-2">Real-time performance metrics for PRO-FUEL performance snacks. Tracking momentum and gourmet fuel logistics.</p>
+</div>
+<!-- KPI Cards Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+<!-- Revenue -->
+<div class="premium-card p-6 flex flex-col justify-between h-40">
+<div class="flex justify-between items-start">
+<span class="font-label-bold text-label-bold text-on-surface-variant opacity-60 uppercase tracking-widest">Total Revenue</span>
+<span class="material-symbols-outlined text-primary pink-glow">payments</span>
+</div>
+<div class="mt-4">
+<div class="font-headline-md text-[36px] text-on-surface">$128,430.50</div>
+<div class="flex items-center gap-1 text-primary text-[12px] font-bold mt-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                        +12.5% vs last month
+                    </div>
+</div>
+</div>
+<!-- Orders -->
+<div class="premium-card p-6 flex flex-col justify-between h-40">
+<div class="flex justify-between items-start">
+<span class="font-label-bold text-label-bold text-on-surface-variant opacity-60 uppercase tracking-widest">Active Orders</span>
+<span class="material-symbols-outlined text-primary pink-glow">shopping_bag</span>
+</div>
+<div class="mt-4">
+<div class="font-headline-md text-[36px] text-on-surface">1,242</div>
+<div class="flex items-center gap-1 text-primary text-[12px] font-bold mt-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                        +8.2% vs last month
+                    </div>
+</div>
+</div>
+<!-- Inventory -->
+<div class="premium-card p-6 flex flex-col justify-between h-40">
+<div class="flex justify-between items-start">
+<span class="font-label-bold text-label-bold text-on-surface-variant opacity-60 uppercase tracking-widest">Inventory Fuel</span>
+<span class="material-symbols-outlined text-primary pink-glow">bolt</span>
+</div>
+<div class="mt-4">
+<div class="font-headline-md text-[36px] text-on-surface">84%</div>
+<div class="flex items-center gap-1 text-on-surface-variant text-[12px] font-bold mt-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                        Healthy Stock Levels
+                    </div>
+</div>
+</div>
+<!-- Customers -->
+<div class="premium-card p-6 flex flex-col justify-between h-40">
+<div class="flex justify-between items-start">
+<span class="font-label-bold text-label-bold text-on-surface-variant opacity-60 uppercase tracking-widest">Athletes Joined</span>
+<span class="material-symbols-outlined text-primary pink-glow">fitness_center</span>
+</div>
+<div class="mt-4">
+<div class="font-headline-md text-[36px] text-on-surface">3,892</div>
+<div class="flex items-center gap-1 text-primary text-[12px] font-bold mt-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                        +24.1% user growth
+                    </div>
+</div>
+</div>
+</section>
+<!-- Charts Section -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+<!-- Revenue Area Chart Placeholder -->
+<div class="lg:col-span-2 premium-card p-6 relative overflow-hidden h-[400px]">
+<div class="flex justify-between items-center mb-8 relative z-10">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface uppercase">Revenue over time</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-60">Last 30 days performance</p>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-primary-container text-white text-[10px] font-bold rounded">MONTH</button>
+<button class="px-3 py-1 bg-surface-container-highest text-on-surface-variant text-[10px] font-bold rounded">WEEK</button>
+</div>
+</div>
+<!-- Chart Visual Simulation -->
+<div class="absolute inset-x-0 bottom-0 h-64 flex items-end px-4">
+<svg class="w-full h-full opacity-30" viewbox="0 0 800 200">
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#c41e5c" stop-opacity="0.8"></stop>
+<stop offset="100%" stop-color="#c41e5c" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,150 Q100,120 200,160 T400,100 T600,140 T800,80 V200 H0 Z" fill="url(#chartGradient)"></path>
+<path class="pink-glow" d="M0,150 Q100,120 200,160 T400,100 T600,140 T800,80" fill="none" stroke="#c41e5c" stroke-width="4"></path>
+</svg>
+</div>
+<!-- Grid lines simulation -->
+<div class="absolute inset-0 pointer-events-none grid grid-cols-6 grid-rows-4 opacity-5">
+<div class="border-r border-b border-white"></div><div class="border-r border-b border-white"></div><div class="border-r border-b border-white"></div><div class="border-r border-b border-white"></div><div class="border-r border-b border-white"></div><div class="border-b border-white"></div>
+<div class="border-r border-b border-white"></div><div class="border-r border-b border-white"></div><div class="border-r border-b border-white"></div><div class="border-r border-b border-white"></div><div class="border-r border-b border-white"></div><div class="border-b border-white"></div>
+<div class="border-r border-b border-white"></div><div class="border-r border-b border-white"></div><div class="border-r border-b border-white"></div><div class="border-r border-b border-white"></div><div class="border-r border-b border-white"></div><div class="border-b border-white"></div>
+</div>
+</div>
+<!-- Distribution Doughnut Chart Placeholder -->
+<div class="premium-card p-6 flex flex-col h-[400px]">
+<h3 class="font-headline-md text-headline-md text-on-surface uppercase mb-2">Order Distribution</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-60 mb-8">Live status allocation</p>
+<div class="flex-1 flex items-center justify-center relative">
+<!-- Fake Doughnut -->
+<div class="w-48 h-48 rounded-full border-[16px] border-surface-container-highest flex items-center justify-center relative">
+<div class="absolute inset-[-16px] w-48 h-48 rounded-full border-[16px] border-t-primary border-l-primary border-primary/20 rotate-45 pink-glow"></div>
+<div class="text-center">
+<div class="font-headline-md text-headline-md text-on-surface">1.2K</div>
+<div class="font-label-sm text-[10px] text-on-surface-variant uppercase tracking-tighter">Total Active</div>
+</div>
+</div>
+</div>
+<div class="mt-6 space-y-3">
+<div class="flex justify-between items-center text-label-sm">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="text-on-surface">Delivered</span>
+</div>
+<span class="font-bold">65%</span>
+</div>
+<div class="flex justify-between items-center text-label-sm">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-on-surface">Processing</span>
+</div>
+<span class="font-bold">25%</span>
+</div>
+<div class="flex justify-between items-center text-label-sm">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-surface-container-highest"></span>
+<span class="text-on-surface">Pending</span>
+</div>
+<span class="font-bold">10%</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Orders Table -->
+<section class="premium-card overflow-hidden">
+<div class="px-6 py-5 border-b border-surface-container-highest flex justify-between items-center bg-surface-container-low/50">
+<h3 class="font-headline-md text-headline-md text-on-surface uppercase">Recent Orders</h3>
+<button class="text-primary font-label-bold text-label-bold flex items-center gap-1 hover:underline">
+                    View All
+                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container text-on-surface-variant font-label-bold text-label-bold border-b border-surface-container-highest">
+<th class="px-6 py-4">Order #</th>
+<th class="px-6 py-4">Customer</th>
+<th class="px-6 py-4">Amount</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4">Date</th>
+<th class="px-6 py-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-highest font-body-md">
+<!-- Row 1 -->
+<tr class="table-row-hover transition-colors">
+<td class="px-6 py-5 font-bold">#PRO-9402</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A close-up studio headshot of a fit young woman with athletic gear, representing a premium fitness brand customer. The background is a minimalist dark grey, and her expression is focused. Lighting is high-contrast with subtle pink accents on her skin to match the brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCi8qwSvtw5MRTlZxNJ36vPBYWDQo5h3cBEnFny2jhD_6ELbi6gcZ9oevN-DuiWG3gIdZNtEdvpqnnmaU3oYyNYaGn6qeHZx77VyH3dUNcKlBVF6p3iIMieJ2CFEk4PkrT9w9mEVwRHcNqgexUB-5o_J_dxSeJC6AEOAX5-gflD_hpdk29h_EPmJDe9Lt0vdqMEzz7gll3y7t-oX60gnBbTaHUuNpdBXgdnQXJ413nbk-SSoxnpSw4-8OMPcfSL-0vv9_sRMQ3eeCc"/>
+</div>
+<span>Marcus Thorne</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface">$245.00</td>
+<td class="px-6 py-5">
+<span class="status-pill bg-green-500/10 text-green-400 border border-green-500/20">Delivered</span>
+</td>
+<td class="px-6 py-5 text-on-surface-variant">Oct 24, 2023</td>
+<td class="px-6 py-5 text-right">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="table-row-hover transition-colors">
+<td class="px-6 py-5 font-bold">#PRO-9403</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of a male professional athlete in high-performance workout attire. The style is cinematic and dark, focusing on a premium and intense mood. High-contrast lighting highlights his form against a deep black background, consistent with a high-end nutrition brand dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMUVz8TtUvxJLrXL2uioMws-wcmMsqkTa-udSlPBIrd1-yiXB0G-JZ8r1hQ7UgaTzkT-M6wnkBalm52mAnf8djYZxgqlbOIE4dRVKbxyGoJn3bNkiAEXU771hr8E2McD55fQrqMUbJnzL9wcqYRVWKKTisVqbD7ZmFYTCBD2X0tguAuSfcU2opSZG6EkWBr60sl-rUMTEcyGkmm8sDfRi5yCsS9DPTxwh7XYyti7Uzi2ZqerFzKPRxtq6PpDtni1YA26IO-1_cig4"/>
+</div>
+<span>Elena Rodriguez</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface">$1,120.45</td>
+<td class="px-6 py-5">
+<span class="status-pill bg-primary/10 text-primary border border-primary/20">Processing</span>
+</td>
+<td class="px-6 py-5 text-on-surface-variant">Oct 24, 2023</td>
+<td class="px-6 py-5 text-right">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="table-row-hover transition-colors">
+<td class="px-6 py-5 font-bold">#PRO-9404</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A high-resolution portrait of a middle-aged male customer looking professional and determined. He is wearing high-end gym apparel. The aesthetic is gritty but premium, with dark tones and a sharp focus on his face. Warm glowing accents from the surrounding interface colors create a cohesive look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1Z9ZemCE2yzell86AAaDv4hwI3hGu-MnP-QET3fkUOn48xkL4F97vmcAe3R27GATMcj6k5Wm210cHZgA85z4HI-OElN9p25ixtVDvmALe760OzI5GYHSj-G5ZsuFr4mJIW1011Gath20Uq3geQ53Wb_Pnq1VDv9C7hcY6qgiQVFIiSDfci9_rMS1h4_gdAOUd57d65S8hhbfgWFweUYN0bNmuavHP_WBj2J6bvfyz-kjYIoTrJUGNJhGRGzYxK7kxoby9AaHg-s0"/>
+</div>
+<span>Jasper Black</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface">$89.90</td>
+<td class="px-6 py-5">
+<span class="status-pill bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">Pending</span>
+</td>
+<td class="px-6 py-5 text-on-surface-variant">Oct 23, 2023</td>
+<td class="px-6 py-5 text-right">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="table-row-hover transition-colors">
+<td class="px-6 py-5 font-bold">#PRO-9405</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A close-up of a modern, athletic woman with a ponytail, looking ahead with focus. She is in a minimalist dark gym environment. The image uses a cinematic lighting style, featuring deep shadows and highlights in primary pink to align with the brand. It conveys strength and premium quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5YkMAcn1WOVWsPBaZZ9452cTiJ7MvEXxxUB6Kz-S2o-laUdCkSrhU3uFdz3TQeyyHL5bLQSgDAERVJy6epr4SrdTlt8kIDGQrqSdbqPNqb-4ZcynCOLLGlfM8q8ykNjh4UifYEWeydEW_6yEmhdwyyl9d_jjPwIRbxRVzG7jExu28RtUgfCeSZWBOqwy59_IDfBLlMx2Qq4h-e-AaSjXYro8V6wEZylfb3zcOmwXg7nvJ8ZvhPrYf9ML3fg4FqmCYB0Wb2AgjDKU"/>
+</div>
+<span>Sarah Chen</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface">$432.10</td>
+<td class="px-6 py-5">
+<span class="status-pill bg-green-500/10 text-green-400 border border-green-500/20">Delivered</span>
+</td>
+<td class="px-6 py-5 text-on-surface-variant">Oct 23, 2023</td>
+<td class="px-6 py-5 text-right">
+<button class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<!-- Micro-interaction JS -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Logic for active navigation hover effects
+            const navItems = document.querySelectorAll('nav a');
+            navItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    item.style.transform = 'translateX(4px)';
+                });
+                item.addEventListener('mouseleave', () => {
+                    item.style.transform = 'translateX(0px)';
+                });
+            });
+
+            // Sparkline/Chart simple animation logic could go here
+            console.log("PRO-FUEL Admin Dashboard Initialized.");
+        });
+    </script>
+</body></html>
