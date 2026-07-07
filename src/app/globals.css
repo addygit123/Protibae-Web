@@ -1,0 +1,247 @@
+@import 'tailwindcss';
+
+/* ============================================
+   PROTIBAE — GLOBAL DESIGN TOKENS (Stitch)
+   Source of truth: Stitch "High-Performance Pulse"
+   ============================================ */
+
+@theme {
+  /* --- Fonts (CSS variables injected by next/font at runtime) --- */
+  /* --font-display and --font-body are set via className on <html> */
+  --font-display-fallback: 'Bebas Neue', sans-serif;
+  --font-body-fallback: 'Hanken Grotesk', sans-serif;
+
+  /* --- Brand Color Palette (from Stitch design system) --- */
+  --color-background:                 #121317;
+  --color-surface:                    #121317;
+  --color-surface-dim:                #121317;
+  --color-surface-bright:             #38393d;
+  --color-surface-container-lowest:   #0d0e12;
+  --color-surface-container-low:      #1a1b1f;
+  --color-surface-container:          #1e1f23;
+  --color-surface-container-high:     #292a2e;
+  --color-surface-container-highest:  #343539;
+  --color-surface-variant:            #343539;
+
+  --color-on-background:              #e3e2e7;
+  --color-on-surface:                 #e3e2e7;
+  --color-on-surface-variant:         #e1bec3;
+
+  --color-outline:                    #a8898e;
+  --color-outline-variant:            #594045;
+
+  --color-primary:                    #ffb1c1;
+  --color-on-primary:                 #66002a;
+  --color-primary-container:          #c41e5c;
+  --color-on-primary-container:       #ffdee3;
+  --color-on-primary-fixed-variant:   #90003e;
+
+  --color-secondary:                  #c6c6c7;
+  --color-on-secondary:               #2f3131;
+  --color-secondary-container:        #454747;
+  --color-on-secondary-container:     #b4b5b5;
+
+  --color-error:                      #ffb4ab;
+  --color-error-container:            #93000a;
+
+  /* --- Typography Scale (matching Stitch exactly) --- */
+  --text-display-hero-size:           96px;
+  --text-display-hero-height:         90px;
+  --text-display-hero-spacing:        -0.02em;
+
+  --text-headline-lg-size:            64px;
+  --text-headline-lg-height:          64px;
+  --text-headline-lg-spacing:         0.02em;
+
+  --text-headline-lg-mobile-size:     48px;
+  --text-headline-lg-mobile-height:   48px;
+
+  --text-headline-md-size:            32px;
+  --text-headline-md-height:          36px;
+
+  --text-body-lg-size:                18px;
+  --text-body-lg-height:              28px;
+
+  --text-body-md-size:                16px;
+  --text-body-md-height:              24px;
+
+  --text-label-bold-size:             14px;
+  --text-label-bold-height:           16px;
+  --text-label-bold-weight:           700;
+
+  --text-label-sm-size:               12px;
+  --text-label-sm-height:             14px;
+  --text-label-sm-weight:             500;
+
+  /* --- Border Radii (Stitch: Soft-Geometric) --- */
+  --radius-none:    0;
+  --radius-sm:      0.125rem;   /* 2px - default sharp */
+  --radius-DEFAULT: 0.25rem;    /* 4px */
+  --radius-lg:      0.75rem;    /* 12px - cards/containers */
+  --radius-full:    9999px;     /* pills/badges */
+
+  /* --- Spacing Scale --- */
+  --spacing-base:             8px;
+  --spacing-gutter:           24px;
+  --spacing-container-max:    1280px;
+  --spacing-section-desktop:  120px;
+  --spacing-section-mobile:   64px;
+
+  /* --- Premium Shadows --- */
+  --shadow-glow-primary: 0 0 15px rgba(196, 30, 92, 0.4);
+  --shadow-glow-hero:    0 20px 50px rgba(196, 30, 92, 0.3);
+  --shadow-glow-nav:     0 0 20px rgba(196, 30, 92, 0.15);
+
+  /* --- Keyframe Animations --- */
+  --animate-floating:  floating 3s ease-in-out infinite;
+  --animate-fade-in:   fadeIn 0.5s ease-out both;
+  --animate-slide-up:  slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-marquee:   marquee 30s linear infinite;
+}
+
+/* --- Keyframes --- */
+@keyframes floating {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(15px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* --- Global Base Styles --- */
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #121317;
+    color: #e3e2e7;
+    font-family: 'Hanken Grotesk', sans-serif;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Custom scrollbar (Stitch spec) */
+  ::-webkit-scrollbar         { width: 8px; }
+  ::-webkit-scrollbar-track   { background: #121317; }
+  ::-webkit-scrollbar-thumb   { background: #c41e5c; border-radius: 4px; }
+
+  /* Text selection */
+  ::selection {
+    background-color: #c41e5c;
+    color: #ffffff;
+  }
+
+  /* Reset */
+  * {
+    border-color: #594045;
+    box-sizing: border-box;
+  }
+}
+
+/* --- Utility Classes (Stitch design tokens as utilities) --- */
+@layer utilities {
+  .font-display    { font-family: var(--font-display, 'Bebas Neue', sans-serif); }
+  .font-body       { font-family: var(--font-body, 'Hanken Grotesk', sans-serif); }
+
+  .text-display-hero {
+    font-family: var(--font-display, 'Bebas Neue', sans-serif);
+    font-size: 96px;
+    line-height: 90px;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+
+  .text-headline-lg {
+    font-family: var(--font-display, 'Bebas Neue', sans-serif);
+    font-size: 64px;
+    line-height: 64px;
+    letter-spacing: 0.02em;
+    font-weight: 400;
+  }
+
+  .text-headline-lg-mobile {
+    font-family: var(--font-display, 'Bebas Neue', sans-serif);
+    font-size: 48px;
+    line-height: 48px;
+    font-weight: 400;
+  }
+
+  .text-headline-md {
+    font-family: var(--font-display, 'Bebas Neue', sans-serif);
+    font-size: 32px;
+    line-height: 36px;
+    font-weight: 400;
+  }
+
+  .text-body-lg {
+    font-family: var(--font-body, 'Hanken Grotesk', sans-serif);
+    font-size: 18px;
+    line-height: 28px;
+    font-weight: 400;
+  }
+
+  .text-body-md {
+    font-family: var(--font-body, 'Hanken Grotesk', sans-serif);
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+  }
+
+  .text-label-bold {
+    font-family: var(--font-body, 'Hanken Grotesk', sans-serif);
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 700;
+  }
+
+  .text-label-sm {
+    font-family: var(--font-body, 'Hanken Grotesk', sans-serif);
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: 500;
+  }
+
+  /* Glow effects */
+  .glow-primary {
+    filter: drop-shadow(0 0 15px rgba(196, 30, 92, 0.4));
+  }
+
+  .glow-text-primary {
+    text-shadow: 0 0 20px rgba(196, 30, 92, 0.6);
+  }
+
+  .glow-nav {
+    box-shadow: 0 0 20px rgba(196, 30, 92, 0.15);
+  }
+
+  /* Animations */
+  .animate-floating { animation: floating 3s ease-in-out infinite; }
+  .animate-fade-in  { animation: fadeIn 0.5s ease-out both; }
+  .animate-slide-up { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .animate-marquee  { animation: marquee 30s linear infinite; }
+
+  /* Section containers */
+  .section-padding-desktop { padding-top: 120px; padding-bottom: 120px; }
+  .section-padding-mobile  { padding-top: 64px; padding-bottom: 64px; }
+  .container-max           { max-width: 1280px; margin-left: auto; margin-right: auto; }
+  .px-gutter               { padding-left: 24px; padding-right: 24px; }
+}

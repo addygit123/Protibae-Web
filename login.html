@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PROTIBAE | Fuel Your Ambition</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Hanken+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-container": "#676666",
+                    "background": "#121317",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "error": "#ffb4ab",
+                    "error-container": "#93000a",
+                    "tertiary": "#c8c6c5",
+                    "inverse-surface": "#e3e2e7",
+                    "outline": "#a8898e",
+                    "surface-bright": "#38393d",
+                    "on-tertiary": "#313030",
+                    "on-primary-fixed-variant": "#90003e",
+                    "on-secondary-fixed-variant": "#454747",
+                    "surface-variant": "#343539",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "on-background": "#e3e2e7",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-error-container": "#ffdad6",
+                    "outline-variant": "#594045",
+                    "primary": "#ffb1c1",
+                    "surface-container": "#1e1f23",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "surface-container-high": "#292a2e",
+                    "on-secondary": "#2f3131",
+                    "on-primary-fixed": "#3f0017",
+                    "primary-container": "#c41e5c",
+                    "on-primary-container": "#ffdee3",
+                    "secondary": "#c6c6c7",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "inverse-primary": "#b81154",
+                    "on-secondary-container": "#b4b5b5",
+                    "inverse-on-surface": "#2f3034",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "secondary-container": "#454747",
+                    "on-surface": "#e3e2e7",
+                    "surface-dim": "#121317",
+                    "surface-container-lowest": "#0d0e12",
+                    "on-primary": "#66002a",
+                    "secondary-fixed": "#e2e2e2",
+                    "surface-tint": "#ffb1c1",
+                    "primary-fixed": "#ffd9df",
+                    "surface": "#121317",
+                    "surface-container-highest": "#343539",
+                    "on-surface-variant": "#e1bec3",
+                    "on-tertiary-container": "#e7e5e4",
+                    "on-error": "#690005",
+                    "primary-fixed-dim": "#ffb1c1",
+                    "surface-container-low": "#1a1b1f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "container-max": "1280px",
+                    "section-mobile": "64px",
+                    "gutter": "24px",
+                    "base": "8px",
+                    "section-desktop": "120px"
+            },
+            "fontFamily": {
+                    "display-hero": ["Bebas Neue"],
+                    "body-md": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Bebas Neue"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "label-bold": ["Hanken Grotesk"],
+                    "label-sm": ["Hanken Grotesk"],
+                    "headline-md": ["Bebas Neue"],
+                    "headline-lg": ["Bebas Neue"]
+            },
+            "fontSize": {
+                    "display-hero": ["96px", {"lineHeight": "90px", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["48px", {"lineHeight": "48px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-bold": ["14px", {"lineHeight": "16px", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "headline-md": ["32px", {"lineHeight": "36px", "fontWeight": "400"}],
+                    "headline-lg": ["64px", {"lineHeight": "64px", "letterSpacing": "0.02em", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0d0e12;
+            color: #e3e2e7;
+            overflow-x: hidden;
+        }
+        .glass-effect {
+            backdrop-filter: blur(20px);
+            background: rgba(18, 19, 23, 0.8);
+        }
+        .input-focus-glow:focus {
+            box-shadow: 0 0 15px rgba(196, 30, 92, 0.2);
+            border-color: #ffb1c1;
+        }
+        .btn-glow {
+            box-shadow: 0 0 20px rgba(196, 30, 92, 0.4);
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 30px rgba(196, 30, 92, 0.6);
+            transform: scale(1.02);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .auth-transition {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md">
+<main class="min-h-screen flex flex-col md:flex-row overflow-hidden">
+<!-- Branding Overlay (Desktop Only) -->
+<div class="absolute top-10 left-10 z-50 pointer-events-none md:block hidden">
+<h1 class="font-display-hero text-headline-md text-on-background tracking-tighter italic">PROTIBAE</h1>
+</div>
+<!-- Left Column: Visual/Product Branding -->
+<section class="relative w-full md:w-1/2 min-h-[409px] md:min-h-screen overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-r from-background/80 via-transparent to-transparent z-10"></div>
+<div class="absolute inset-0 bg-cover bg-center scale-105 group-hover:scale-100 transition-transform duration-1000 ease-out" data-alt="A high-gloss, ultra-premium studio photograph of a gourmet chocolate protein bar breaking in half, with scattered almonds and sea salt crystals suspended in mid-air. The background is a deep, textured matte black with dramatic side lighting that creates sharp highlights on the protein bar's dark chocolate coating. The overall mood is intense, athletic, and sophisticated, featuring the brand's primary pink light accents." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDRolBGvmsGiPpZneqmbxJBPfVzELmccjUN2gb3WFcms_Ff_KnK2_Ok2BZ67pm1NSH7cWY5Q-yFj8NdIo2zDCxKPBgyUrrnYGTf5cuUZlym_43mEPYSOajSoOn7PrUjNfylHdKrSNiPxn40wF8SlyDy2H3DsUGqLBrB2cd4yrzprbjRXKSArzTty_jul4h9BeUv4PPcFgMmV82m3o06NvN6QgHRKkqwzdsDspWMDKiZbFHeTGnfctrdKLFcimA4TPy3Hsil4xoUZwg')">
+</div>
+<!-- Mobile Branding -->
+<div class="absolute top-8 left-8 z-20 md:hidden">
+<h1 class="font-display-hero text-headline-md text-on-background tracking-tighter italic">PROTIBAE</h1>
+</div>
+<div class="absolute bottom-12 left-12 z-20 max-w-md hidden md:block">
+<p class="font-label-bold text-primary uppercase tracking-[0.2em] mb-4">Uncompromising Nutrition</p>
+<h2 class="font-display-hero text-headline-lg leading-tight mb-6">FUEL THE <br/>BEAST WITHIN.</h2>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<div class="flex">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="font-label-bold text-label-bold">50,000+ ELITE ATHLETES FUELED</span>
+</div>
+</div>
+</section>
+<!-- Right Column: Authentication Forms -->
+<section class="w-full md:w-1/2 bg-surface flex items-center justify-center p-gutter relative">
+<!-- Login Form Container -->
+<div class="w-full max-w-md auth-transition opacity-100 translate-x-0" id="login-container">
+<header class="mb-10">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2 uppercase tracking-tight">Welcome Back</h2>
+<p class="text-on-surface-variant font-body-md">Enter your credentials to access your nutrition dashboard.</p>
+</header>
+<form class="space-y-6" onsubmit="event.preventDefault();">
+<div class="space-y-2">
+<label class="font-label-bold text-label-bold uppercase tracking-widest text-on-surface-variant ml-1">Email Address</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low border border-outline-variant/30 rounded-none px-4 py-4 text-on-surface placeholder:text-outline focus:outline-none input-focus-glow transition-all" placeholder="name@example.com" type="email"/>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center px-1">
+<label class="font-label-bold text-label-bold uppercase tracking-widest text-on-surface-variant">Password</label>
+<a class="text-label-sm font-label-bold text-primary hover:underline" href="#">Forgot?</a>
+</div>
+<div class="relative">
+<input class="w-full bg-surface-container-low border border-outline-variant/30 rounded-none px-4 py-4 text-on-surface placeholder:text-outline focus:outline-none input-focus-glow transition-all" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<div class="pt-2">
+<button class="w-full bg-primary-container text-on-primary-container font-display-hero text-headline-md py-4 tracking-wider btn-glow transition-all flex items-center justify-center gap-3 active:scale-95">
+                            SIGN IN
+                            <span class="material-symbols-outlined">bolt</span>
+</button>
+</div>
+<div class="relative py-4">
+<div class="absolute inset-0 flex items-center"><div class="w-full border-t border-outline-variant/20"></div></div>
+<div class="relative flex justify-center text-label-sm uppercase tracking-widest"><span class="bg-surface px-4 text-outline">Or continue with</span></div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center gap-2 border border-outline-variant/30 py-3 font-label-bold text-label-bold hover:bg-surface-container-high transition-colors">
+<img alt="Google Logo" class="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDf1Zml-N0FWpaeWf0dZSe4C1xe_g6MfjzlxUfLtxpP1Ss_LJLZfZvnkXC2FA2-VObr-BWHYFDbN-RWC4YOJcPFNaQ5Xe5N6gXapGu11Y9pVl7PXnA1XM_fIxdLWpsFGA78o8zgsEhK6CuEAk5C6l2b2IciPGGSPyW8oeodLH66NiklKNit1gIArN5il6o2mk1eJdYGuxiNGo3TUSiz5WwOl5gat8z9A3-Yu6iQfeCDih6b0bUvNgXnVCqGzf1-XqadsxXCGS2ATHs"/>
+                            GOOGLE
+                        </button>
+<button class="flex items-center justify-center gap-2 border border-outline-variant/30 py-3 font-label-bold text-label-bold hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">apps</span>
+                            APPLE
+                        </button>
+</div>
+</form>
+<footer class="mt-10 text-center">
+<p class="text-on-surface-variant font-body-md">
+                        Don't have an account? 
+                        <button class="text-primary font-label-bold hover:underline ml-1" onclick="toggleAuth('signup')">JOIN THE SQUAD</button>
+</p>
+</footer>
+</div>
+<!-- Signup Form Container (Hidden by default) -->
+<div class="w-full max-w-md auth-transition opacity-0 translate-x-12 absolute hidden" id="signup-container">
+<header class="mb-10">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2 uppercase tracking-tight">Join Protibae</h2>
+<p class="text-on-surface-variant font-body-md">Start your performance journey with premium fuel.</p>
+</header>
+<form class="space-y-4" onsubmit="event.preventDefault();">
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-2">
+<label class="font-label-bold text-label-bold uppercase tracking-widest text-on-surface-variant ml-1">First Name</label>
+<input class="w-full bg-surface-container-low border border-outline-variant/30 rounded-none px-4 py-3 text-on-surface focus:outline-none input-focus-glow transition-all" placeholder="John" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-bold text-label-bold uppercase tracking-widest text-on-surface-variant ml-1">Last Name</label>
+<input class="w-full bg-surface-container-low border border-outline-variant/30 rounded-none px-4 py-3 text-on-surface focus:outline-none input-focus-glow transition-all" placeholder="Doe" type="text"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-bold text-label-bold uppercase tracking-widest text-on-surface-variant ml-1">Email Address</label>
+<input class="w-full bg-surface-container-low border border-outline-variant/30 rounded-none px-4 py-3 text-on-surface focus:outline-none input-focus-glow transition-all" placeholder="name@example.com" type="email"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-bold text-label-bold uppercase tracking-widest text-on-surface-variant ml-1">Create Password</label>
+<input class="w-full bg-surface-container-low border border-outline-variant/30 rounded-none px-4 py-3 text-on-surface focus:outline-none input-focus-glow transition-all" placeholder="Min. 8 characters" type="password"/>
+</div>
+<div class="flex items-start gap-3 py-2">
+<input class="mt-1 w-4 h-4 rounded-none bg-surface-container-low border-outline-variant text-primary focus:ring-primary" id="terms" type="checkbox"/>
+<label class="text-label-sm text-on-surface-variant leading-tight" for="terms">
+                            I agree to the <a class="text-primary hover:underline" href="#">Terms of Service</a> and <a class="text-primary hover:underline" href="#">Privacy Policy</a>.
+                        </label>
+</div>
+<div class="pt-4">
+<button class="w-full bg-primary-container text-on-primary-container font-display-hero text-headline-md py-4 tracking-wider btn-glow transition-all flex items-center justify-center gap-3 active:scale-95">
+                            CREATE ACCOUNT
+                            <span class="material-symbols-outlined">person_add</span>
+</button>
+</div>
+</form>
+<footer class="mt-10 text-center">
+<p class="text-on-surface-variant font-body-md">
+                        Already part of the team? 
+                        <button class="text-primary font-label-bold hover:underline ml-1" onclick="toggleAuth('login')">SIGN IN</button>
+</p>
+</footer>
+</div>
+<!-- Footer Small -->
+<div class="absolute bottom-8 left-1/2 -translate-x-1/2 w-full text-center px-gutter">
+<p class="text-[10px] uppercase tracking-widest text-outline-variant/60 font-label-bold">
+                    © 2024 PROTIBAE PERFORMANCE NUTRITION. FUEL YOUR AMBITION.
+                </p>
+</div>
+</section>
+</main>
+<script>
+        function toggleAuth(view) {
+            const login = document.getElementById('login-container');
+            const signup = document.getElementById('signup-container');
+
+            if (view === 'signup') {
+                // Animate Out Login
+                login.classList.add('opacity-0', '-translate-x-12');
+                setTimeout(() => {
+                    login.classList.add('hidden');
+                    // Prepare and Animate In Signup
+                    signup.classList.remove('hidden');
+                    setTimeout(() => {
+                        signup.classList.remove('opacity-0', 'translate-x-12');
+                        signup.classList.add('opacity-100', 'translate-x-0');
+                    }, 50);
+                }, 400);
+            } else {
+                // Animate Out Signup
+                signup.classList.add('opacity-0', 'translate-x-12');
+                setTimeout(() => {
+                    signup.classList.add('hidden');
+                    // Prepare and Animate In Login
+                    login.classList.remove('hidden');
+                    setTimeout(() => {
+                        login.classList.remove('opacity-0', '-translate-x-12');
+                        login.classList.add('opacity-100', 'translate-x-0');
+                    }, 50);
+                }, 400);
+            }
+        }
+
+        // Simple parallax on mouse move for the background
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            const image = document.querySelector('[data-alt]');
+            if(image) {
+                image.style.transform = `scale(1.05) translate(${(x - 0.5) * 20}px, ${(y - 0.5) * 20}px)`;
+            }
+        });
+    </script>
+</body></html>

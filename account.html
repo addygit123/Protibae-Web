@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Account | PROTIBAE PERFORMANCE NUTRITION</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Hanken+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-container": "#676666",
+                    "background": "#121317",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "error": "#ffb4ab",
+                    "error-container": "#93000a",
+                    "tertiary": "#c8c6c5",
+                    "inverse-surface": "#e3e2e7",
+                    "outline": "#a8898e",
+                    "surface-bright": "#38393d",
+                    "on-tertiary": "#313030",
+                    "on-primary-fixed-variant": "#90003e",
+                    "on-secondary-fixed-variant": "#454747",
+                    "surface-variant": "#343539",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "on-background": "#e3e2e7",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-error-container": "#ffdad6",
+                    "outline-variant": "#594045",
+                    "primary": "#ffb1c1",
+                    "surface-container": "#1e1f23",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "surface-container-high": "#292a2e",
+                    "on-secondary": "#2f3131",
+                    "on-primary-fixed": "#3f0017",
+                    "primary-container": "#c41e5c",
+                    "on-primary-container": "#ffdee3",
+                    "secondary": "#c6c6c7",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "inverse-primary": "#b81154",
+                    "on-secondary-container": "#b4b5b5",
+                    "inverse-on-surface": "#2f3034",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "secondary-container": "#454747",
+                    "on-surface": "#e3e2e7",
+                    "surface-dim": "#121317",
+                    "surface-container-lowest": "#0d0e12",
+                    "on-primary": "#66002a",
+                    "secondary-fixed": "#e2e2e2",
+                    "surface-tint": "#ffb1c1",
+                    "primary-fixed": "#ffd9df",
+                    "surface": "#121317",
+                    "surface-container-highest": "#343539",
+                    "on-surface-variant": "#e1bec3",
+                    "on-tertiary-container": "#e7e5e4",
+                    "on-error": "#690005",
+                    "primary-fixed-dim": "#ffb1c1",
+                    "surface-container-low": "#1a1b1f"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "container-max": "1280px",
+                    "section-mobile": "64px",
+                    "gutter": "24px",
+                    "base": "8px",
+                    "section-desktop": "120px"
+            },
+            "fontFamily": {
+                    "display-hero": ["Bebas Neue"],
+                    "body-md": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Bebas Neue"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "label-bold": ["Hanken Grotesk"],
+                    "label-sm": ["Hanken Grotesk"],
+                    "headline-md": ["Bebas Neue"],
+                    "headline-lg": ["Bebas Neue"]
+            },
+            "fontSize": {
+                    "display-hero": ["96px", {"lineHeight": "90px", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["48px", {"lineHeight": "48px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-bold": ["14px", {"lineHeight": "16px", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "headline-md": ["32px", {"lineHeight": "36px", "fontWeight": "400"}],
+                    "headline-lg": ["64px", {"lineHeight": "64px", "letterSpacing": "0.02em", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .nav-link-hover:hover {
+            text-shadow: 0 0 8px rgba(196, 30, 92, 0.4);
+        }
+        .glossy-card {
+            background: linear-gradient(135deg, rgba(30, 31, 35, 1) 0%, rgba(26, 27, 31, 1) 100%);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="bg-background/90 backdrop-blur-xl docked full-width top-0 sticky z-50 border-b border-outline-variant/30 shadow-[0_0_20px_rgba(196,30,92,0.15)]">
+<nav class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-20">
+<div class="font-display-hero text-headline-md text-on-background tracking-tighter italic uppercase">PROTIBAE</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="font-display-hero text-label-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300 nav-link-hover" href="#">SHOP ALL</a>
+<a class="font-display-hero text-label-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300 nav-link-hover" href="#">PROTEIN BARS</a>
+<a class="font-display-hero text-label-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300 nav-link-hover" href="#">NUTS &amp; SEEDS</a>
+<a class="font-display-hero text-label-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300 nav-link-hover" href="#">COMBOS</a>
+<a class="font-display-hero text-label-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300 nav-link-hover" href="#">REWARDS</a>
+<a class="font-display-hero text-label-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300 nav-link-hover" href="#">OUR STORY</a>
+</div>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors" data-icon="search">search</span>
+<span class="material-symbols-outlined text-primary border-b-2 border-primary pb-1 cursor-pointer transition-colors" data-icon="person">person</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors relative" data-icon="shopping_bag">shopping_bag</span>
+</div>
+</nav>
+</header>
+<main class="max-w-container-max mx-auto px-gutter py-12 md:py-20">
+<!-- Dashboard Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+<div>
+<h1 class="font-display-hero text-headline-lg uppercase mb-2 tracking-tighter">MY ACCOUNT</h1>
+<div class="inline-block bg-primary-container px-4 py-1 skew-x-[-12deg] mb-6">
+<p class="font-display-hero text-headline-md text-on-primary-container italic uppercase skew-x-[12deg]">You vs You. Every day.</p>
+</div>
+<p class="text-on-surface-variant max-w-md">Manage your orders, addresses and account details in one place. Fuel your journey with premium nutrition.</p>
+</div>
+<!-- User Summary Profile Overlay (Referencing structure from image) -->
+<div class="flex items-center gap-6 bg-surface-container p-6 rounded-xl border border-outline-variant/20 shadow-xl">
+<div class="w-20 h-20 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-display-hero text-headline-lg">A</div>
+<div>
+<h2 class="font-display-hero text-headline-md leading-tight">Hey, Aarav!</h2>
+<p class="text-primary font-label-bold uppercase tracking-widest flex items-center gap-1 text-sm">Welcome back <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span></p>
+<div class="mt-2 space-y-1">
+<p class="text-on-surface-variant text-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-xs">mail</span> aarav.sharma@gmail.com
+                        </p>
+<p class="text-on-surface-variant text-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-xs">call</span> +91 98765 43210
+                        </p>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Side Navigation -->
+<aside class="md:col-span-3 space-y-2">
+<nav class="bg-surface-container rounded-xl p-4 border border-outline-variant/10">
+<a class="flex items-center gap-3 p-3 rounded-lg bg-primary-container text-on-primary-container transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-bold uppercase">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_basket">shopping_basket</span>
+<span class="font-label-bold uppercase">My Orders</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+<span class="font-label-bold uppercase">My Addresses</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-bold uppercase">Account Details</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+<span class="font-label-bold uppercase">Change Password</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span class="font-label-bold uppercase">Wishlist</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="star">star</span>
+<span class="font-label-bold uppercase">Rewards</span>
+</a>
+<div class="pt-4 mt-4 border-t border-outline-variant/20">
+<a class="flex items-center gap-3 p-3 rounded-lg text-error hover:bg-error-container/20 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-bold uppercase">Logout</span>
+</a>
+</div>
+</nav>
+</aside>
+<!-- Main Dashboard Content -->
+<div class="md:col-span-9 space-y-gutter">
+<!-- Bento Grid Overview Stats -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-surface-container p-6 rounded-xl border border-outline-variant/10 text-center flex flex-col items-center justify-center group hover:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-primary mb-2 text-3xl group-hover:scale-110 transition-transform" data-icon="shopping_bag">shopping_bag</span>
+<p class="font-display-hero text-headline-md leading-none">3</p>
+<p class="text-[10px] text-on-surface-variant font-label-bold uppercase tracking-widest mt-1">Total Orders</p>
+</div>
+<div class="bg-surface-container p-6 rounded-xl border border-outline-variant/10 text-center flex flex-col items-center justify-center group hover:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-primary mb-2 text-3xl group-hover:scale-110 transition-transform" data-icon="local_shipping">local_shipping</span>
+<p class="font-display-hero text-headline-md leading-none">2</p>
+<p class="text-[10px] text-on-surface-variant font-label-bold uppercase tracking-widest mt-1">Delivered</p>
+</div>
+<div class="bg-surface-container p-6 rounded-xl border border-outline-variant/10 text-center flex flex-col items-center justify-center group hover:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-primary mb-2 text-3xl group-hover:scale-110 transition-transform" data-icon="home_pin">home_pin</span>
+<p class="font-display-hero text-headline-md leading-none">2</p>
+<p class="text-[10px] text-on-surface-variant font-label-bold uppercase tracking-widest mt-1">Saved Addresses</p>
+</div>
+<div class="bg-surface-container p-6 rounded-xl border border-outline-variant/10 text-center flex flex-col items-center justify-center group hover:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-primary mb-2 text-3xl group-hover:scale-110 transition-transform" data-icon="military_tech">military_tech</span>
+<p class="font-display-hero text-headline-md leading-none text-primary">320</p>
+<p class="text-[10px] text-on-surface-variant font-label-bold uppercase tracking-widest mt-1">Reward Points</p>
+</div>
+</div>
+<!-- Recent Orders & Profile Details (Two-column layout) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Recent Orders -->
+<div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant/10">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-display-hero text-headline-md uppercase">Recent Orders</h3>
+<a class="text-primary font-label-bold text-xs uppercase hover:underline" href="#">View All</a>
+</div>
+<div class="space-y-4">
+<!-- Order Item -->
+<div class="flex items-center justify-between p-4 bg-surface-container rounded-lg group hover:bg-surface-container-high transition-all">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-highest rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="inventory_2">inventory_2</span>
+</div>
+<div>
+<p class="font-bold text-sm">Order #PTB1256</p>
+<p class="text-xs text-on-surface-variant">29 May 2024 • ₹499</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">Delivered</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Order Item -->
+<div class="flex items-center justify-between p-4 bg-surface-container rounded-lg group hover:bg-surface-container-high transition-all">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-highest rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="inventory_2">inventory_2</span>
+</div>
+<div>
+<p class="font-bold text-sm">Order #PTB1187</p>
+<p class="text-xs text-on-surface-variant">12 May 2024 • ₹499</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">Delivered</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Order Item -->
+<div class="flex items-center justify-between p-4 bg-surface-container rounded-lg group hover:bg-surface-container-high transition-all">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-highest rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="inventory_2">inventory_2</span>
+</div>
+<div>
+<p class="font-bold text-sm">Order #PTB1073</p>
+<p class="text-xs text-on-surface-variant">28 Apr 2024 • ₹499</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="bg-secondary-container text-on-secondary-container text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">Processing</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Profile Detailed Card -->
+<div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant/10 h-full">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-display-hero text-headline-md uppercase">Account Details</h3>
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-label-bold text-xs uppercase">
+<span class="material-symbols-outlined text-xs" data-icon="edit">edit</span> Edit
+                            </button>
+</div>
+<div class="space-y-6">
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-on-surface-variant mt-1" data-icon="person_outline">person_outline</span>
+<div>
+<p class="text-[10px] text-on-surface-variant font-label-bold uppercase tracking-widest">Full Name</p>
+<p class="font-medium">Aarav Sharma</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-on-surface-variant mt-1" data-icon="alternate_email">alternate_email</span>
+<div>
+<p class="text-[10px] text-on-surface-variant font-label-bold uppercase tracking-widest">Email Address</p>
+<p class="font-medium">aarav.sharma@gmail.com</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-on-surface-variant mt-1" data-icon="phone_enabled">phone_enabled</span>
+<div>
+<p class="text-[10px] text-on-surface-variant font-label-bold uppercase tracking-widest">Phone Number</p>
+<p class="font-medium">+91 98765 43210</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<span class="material-symbols-outlined text-on-surface-variant mt-1" data-icon="history">history</span>
+<div>
+<p class="text-[10px] text-on-surface-variant font-label-bold uppercase tracking-widest">Member Since</p>
+<p class="font-medium">May 2024</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Rewards Progress Banner (Referencing image logic) -->
+<div class="relative overflow-hidden rounded-2xl bg-surface-container-high border border-primary/20 p-8 shadow-[0_0_30px_rgba(196,30,92,0.1)]">
+<div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center border border-primary/40">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<div>
+<p class="text-xs font-label-bold uppercase tracking-widest text-on-surface-variant">YOU EARNED IT.</p>
+<h3 class="font-display-hero text-headline-lg text-primary leading-none mt-1">320 POINTS</h3>
+<p class="text-on-surface-variant mt-1">Keep going! Great things await you.</p>
+</div>
+</div>
+<div class="flex flex-wrap items-center justify-center gap-4">
+<div class="text-center bg-surface-container-highest p-3 rounded-xl border border-outline-variant/30 min-w-[100px] grayscale opacity-60">
+<p class="text-[10px] font-bold text-on-surface-variant">100 Points</p>
+<p class="text-sm font-bold mt-1">₹50 OFF</p>
+</div>
+<div class="text-center bg-surface-container-highest p-3 rounded-xl border border-outline-variant/30 min-w-[100px] grayscale opacity-60">
+<p class="text-[10px] font-bold text-on-surface-variant">250 Points</p>
+<p class="text-sm font-bold mt-1">₹125 OFF</p>
+</div>
+<div class="text-center bg-surface-container-highest p-3 rounded-xl border border-primary/40 min-w-[100px] shadow-lg shadow-primary/10">
+<p class="text-[10px] font-bold text-primary">500 Points</p>
+<p class="text-sm font-bold mt-1">₹300 OFF</p>
+</div>
+<button class="ml-4 bg-primary-container text-on-primary-container px-6 py-3 font-display-hero text-headline-md uppercase tracking-wide hover:scale-105 transition-transform">VIEW REWARDS</button>
+</div>
+</div>
+<!-- Background aesthetic flare -->
+<div class="absolute -right-20 -bottom-20 w-64 h-64 bg-primary/10 rounded-full blur-[80px]"></div>
+</div>
+<!-- Trust Badges (Horizontal Section) -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter pt-8">
+<div class="flex flex-col items-center text-center">
+<div class="w-12 h-12 mb-4 flex items-center justify-center rounded-full bg-surface-container border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary" data-icon="local_shipping">local_shipping</span>
+</div>
+<h4 class="font-label-bold uppercase text-[10px] tracking-widest mb-1">Fast &amp; Reliable Delivery</h4>
+<p class="text-[10px] text-on-surface-variant max-w-[150px]">Delivered fresh to your doorstep.</p>
+</div>
+<div class="flex flex-col items-center text-center">
+<div class="w-12 h-12 mb-4 flex items-center justify-center rounded-full bg-surface-container border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary" data-icon="verified_user">verified_user</span>
+</div>
+<h4 class="font-label-bold uppercase text-[10px] tracking-widest mb-1">100% Secure Payment</h4>
+<p class="text-[10px] text-on-surface-variant max-w-[150px]">Your payment details are safe with us.</p>
+</div>
+<div class="flex flex-col items-center text-center">
+<div class="w-12 h-12 mb-4 flex items-center justify-center rounded-full bg-surface-container border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary" data-icon="assignment_return">assignment_return</span>
+</div>
+<h4 class="font-label-bold uppercase text-[10px] tracking-widest mb-1">7 Day Easy Returns</h4>
+<p class="text-[10px] text-on-surface-variant max-w-[150px]">Not satisfied? We've got you.</p>
+</div>
+<div class="flex flex-col items-center text-center">
+<div class="w-12 h-12 mb-4 flex items-center justify-center rounded-full bg-surface-container border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary" data-icon="headset_mic">headset_mic</span>
+</div>
+<h4 class="font-label-bold uppercase text-[10px] tracking-widest mb-1">Customer Support</h4>
+<p class="text-[10px] text-on-surface-variant max-w-[150px]">We're here for you, always.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Component -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant mt-20">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter w-full px-gutter py-section-desktop max-w-container-max mx-auto">
+<div class="space-y-6">
+<div class="font-display-hero text-headline-lg text-primary tracking-tighter uppercase italic">PROTIBAE</div>
+<p class="text-on-surface-variant italic font-label-bold uppercase text-xs tracking-widest">You vs You. Everyday.</p>
+<div class="space-y-2">
+<p class="text-sm font-bold">Clean ingredients. High protein.</p>
+<p class="text-sm font-bold">Bold flavors. Built for you.</p>
+</div>
+</div>
+<div>
+<h4 class="font-label-bold text-label-bold uppercase tracking-wider text-primary mb-6">QUICK LINKS</h4>
+<ul class="space-y-4">
+<li><a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 block text-sm" href="#">Shop</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 block text-sm" href="#">Our Story</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 block text-sm" href="#">Ingredients</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 block text-sm" href="#">FAQ</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 block text-sm" href="#">Contact</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-bold text-label-bold uppercase tracking-wider text-primary mb-6">ACCOUNT</h4>
+<ul class="space-y-4">
+<li><a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 block text-sm" href="#">My Orders</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 block text-sm" href="#">My Addresses</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 block text-sm" href="#">Account Details</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 block text-sm" href="#">Rewards</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 block text-sm" href="#">Help &amp; Support</a></li>
+</ul>
+</div>
+<div class="space-y-6">
+<h4 class="font-label-bold text-label-bold uppercase tracking-wider text-primary mb-6">STAY IN THE LOOP</h4>
+<p class="text-on-surface-variant text-sm">Subscribe to get updates on new drops and offers.</p>
+<form class="flex border-b border-outline-variant pb-2 focus-within:border-primary transition-colors">
+<input class="bg-transparent border-none focus:ring-0 w-full text-sm placeholder:text-on-surface-variant/50" placeholder="Enter your email" type="email"/>
+<button class="text-primary hover:scale-110 transition-transform" type="submit">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+</button>
+</form>
+<div class="flex gap-4">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">brand_family</span></a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">movie_edit</span></a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined">share</span></a>
+</div>
+</div>
+</div>
+<div class="w-full px-gutter py-8 border-t border-outline-variant/30 text-center">
+<p class="text-[10px] font-label-bold text-on-surface-variant tracking-[0.2em] uppercase">© 2024 PROTIBAE PERFORMANCE NUTRITION. FUEL YOUR AMBITION.</p>
+</div>
+</footer>
+<script>
+        // Smooth scaling for interactive cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.classList.add('scale-95');
+            });
+            card.addEventListener('mouseup', () => {
+                card.classList.remove('scale-95');
+            });
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('scale-95');
+            });
+        });
+    </script>
+</body></html>
