@@ -5,10 +5,11 @@ import { ProductEditForm } from '@/components/admin/ProductEditForm';
 export default async function AdminProductEditPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   const product = await prisma.product.findUnique({
-    where: { id: params.id }
+    where: { id }
   });
 
   if (!product) {

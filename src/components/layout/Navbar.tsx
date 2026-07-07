@@ -26,6 +26,10 @@ export function Navbar() {
   const cartCount = useCartStore((state) => state.getCartItemCount());
   const { data: session, status } = useSession();
 
+  if (pathname.startsWith('/admin')) {
+    return null;
+  }
+
   const displayCount = isMounted ? cartCount : 0;
   const isLoggedIn = status === 'authenticated' && !!session;
 

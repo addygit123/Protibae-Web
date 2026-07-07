@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma';
-import Image from 'next/image';
 import Link from 'next/link';
+
+export const dynamic = 'force-dynamic';
 
 export default async function AdminOrdersPage({
   searchParams,
@@ -26,6 +27,7 @@ export default async function AdminOrdersPage({
     prisma.order.count({
       where: {
         createdAt: {
+          // eslint-disable-next-line react-hooks/purity
           gte: new Date(Date.now() - 24 * 60 * 60 * 1000)
         }
       }

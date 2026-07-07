@@ -4,8 +4,9 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { updateProduct } from '@/app/admin/products/actions';
 import Image from 'next/image';
+import type { Product } from '@prisma/client';
 
-export function ProductEditForm({ product }: { product: any }) {
+export function ProductEditForm({ product }: { product: Product }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isActive, setIsActive] = useState(product.isActive);

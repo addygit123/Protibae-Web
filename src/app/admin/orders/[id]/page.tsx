@@ -2,14 +2,17 @@ import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { revalidatePath } from 'next/cache';
+import { PrintButton } from '@/components/admin/PrintButton';
 
 export default async function AdminOrderDetailsPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   const order = await prisma.order.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       user: true,
       address: true,
@@ -215,17 +218,32 @@ export default async function AdminOrderDetailsPage({
 
         {/* Drawer Footer */}
         <div className="p-6 border-t border-[#343539] grid grid-cols-2 gap-4 bg-[#0d0e12]/80 backdrop-blur-sm rounded-b-xl">
-          <button className="flex items-center justify-center gap-2 px-6 py-4 border-2 border-[#e3e2e7] text-[#e3e2e7] font-label-bold text-[14px] uppercase tracking-widest hover:bg-white hover:text-black transition-all rounded">
-            <span className="material-symbols-outlined">print</span> Print Invoice
-          </button>
+          <PrintButton orderId={order.id} />
           
-          <form className="w-full" action={async (formData) => {
+          <form className="w-full flex items-center gap-2" action={async (formData) => {
             'use server';
             const newStatus = formData.get('status') as string;
-            // Add server action logic here if needed
+            if (newStatus && ['PENDING', 'PAID', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED', 'REFUNDED'].includes(newStatus)) {
+              await prisma.order.update({
+                where: { id: order.id },
+                data: { status: newStatus as import('@prisma/client').OrderStatus }
+              });
+              revalidatePath(`/admin/orders/${order.id}`);
+            }
           }}>
-            <button className="w-full h-full flex items-center justify-center gap-2 px-6 py-4 bg-[#c41e5c] text-white font-label-bold text-[14px] uppercase tracking-widest hover:brightness-110 shadow-[0_0_20px_rgba(196,30,92,0.3)] transition-all rounded">
-              Update Status
+            <select 
+              name="status" 
+              defaultValue={order.status}
+              className="flex-1 h-full min-h-[52px] bg-[#1a1b1f] border-2 border-[#343539] text-[#e3e2e7] px-4 rounded font-label-bold focus:ring-[#ffb1c1]"
+            >
+              <option value="PENDING">Pending</option>
+              <option value="PROCESSING">Processing</option>
+              <option value="SHIPPED">Shipped</option>
+              <option value="DELIVERED">Delivered</option>
+              <option value="CANCELLED">Cancelled</option>
+            </select>
+            <button className="h-full min-h-[52px] flex items-center justify-center px-6 bg-[#c41e5c] text-white font-label-bold text-[14px] uppercase tracking-widest hover:brightness-110 shadow-[0_0_20px_rgba(196,30,92,0.3)] transition-all rounded">
+              Update
             </button>
           </form>
         </div>

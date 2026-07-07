@@ -1,6 +1,12 @@
-import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import AdminGuard from '@/components/admin/AdminGuard';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Protibae Admin',
+  description: 'Admin Portal for Protibae',
+};
 
 export default async function AdminLayout({
   children,
@@ -9,13 +15,9 @@ export default async function AdminLayout({
 }) {
   const session = await getServerSession(authOptions);
 
-  if (!session || session.user.role !== 'ADMIN') {
-    redirect('/');
-  }
-
   return (
-    <div className="min-h-screen bg-[#0d0e12] text-white p-10">
+    <AdminGuard session={session}>
       {children}
-    </div>
+    </AdminGuard>
   );
 }
