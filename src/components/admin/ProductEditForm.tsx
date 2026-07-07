@@ -177,11 +177,11 @@ export function ProductEditForm({ product }: { product: Product }) {
                 </div>
               </div>
               
-              <div className="bg-[#0d0e12] p-4 rounded-lg border border-[#594045] opacity-60">
-                <p className="text-[10px] text-[#e1bec3] uppercase font-bold mb-1 tracking-widest">Compare</p>
+              <div className="bg-[#0d0e12] p-4 rounded-lg border border-[#594045]">
+                <p className="text-[10px] text-[#e1bec3] uppercase font-bold mb-1 tracking-widest">Pack of 6 Price</p>
                 <div className="flex items-center gap-1">
                   <span className="text-[#e1bec3] font-bold">₹</span>
-                  <input name="compareAtPrice" defaultValue={product.compareAtPrice || ''} className="w-full bg-transparent border-none p-0 text-xl font-display-hero text-[#e3e2e7] focus:ring-0" type="number" step="0.01" />
+                  <input name="price6" defaultValue={product.price6 || ''} className="w-full bg-transparent border-none p-0 text-xl font-display-hero text-[#e3e2e7] focus:ring-0" type="number" step="0.01" />
                 </div>
               </div>
             </div>

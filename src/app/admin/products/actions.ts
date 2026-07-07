@@ -7,9 +7,16 @@ export async function updateProduct(id: string, formData: FormData) {
   const name = formData.get('name') as string;
   const description = formData.get('description') as string;
   const category = formData.get('category') as string;
-  const price = parseFloat(formData.get('price') as string);
-  const compareAtPrice = formData.get('compareAtPrice') ? parseFloat(formData.get('compareAtPrice') as string) : null;
-  const inventory = parseInt(formData.get('inventory') as string, 10);
+  const priceStr = formData.get('price') as string;
+  const price = priceStr ? parseFloat(priceStr) : 0;
+  
+  const price6Str = formData.get('price6') as string;
+  const price6 = price6Str && price6Str.trim() !== '' ? parseFloat(price6Str) : null;
+  
+  const compareStr = formData.get('compareAtPrice') as string;
+  const compareAtPrice = compareStr && compareStr.trim() !== '' ? parseFloat(compareStr) : null;
+  
+  const inventory = parseInt(formData.get('inventory') as string, 10) || 0;
   const isActive = formData.get('isActive') === 'true';
 
   try {
@@ -20,6 +27,7 @@ export async function updateProduct(id: string, formData: FormData) {
         description,
         category,
         price,
+        price6,
         compareAtPrice,
         inventory,
         isActive

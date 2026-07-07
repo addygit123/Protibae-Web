@@ -137,6 +137,7 @@ model Product {
   slug           String   @unique
   description    String   @db.Text
   price          Float
+  price6         Float?
   compareAtPrice Float?
   sku            String   @unique
   inventory      Int      @default(0)
@@ -258,6 +259,7 @@ model OrderItem {
   orderId   String
   productId String
   quantity  Int
+  packSize  String?
   price     Float    // Locked price at time of purchase
   createdAt DateTime @default(now())
 

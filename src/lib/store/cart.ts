@@ -3,7 +3,8 @@ import { persist } from 'zustand/middleware';
 
 export interface CartItemProduct {
   name: string;
-  price: string;
+  price: number;
+  price6?: number | null;
   image: string;
   imageAlt: string;
   badges: { label: string; variant: 'primary' | 'secondary' | 'accent' | 'inverse' }[];
@@ -13,14 +14,14 @@ export interface CartItemProduct {
 export interface CartItem {
   id: string; // unique id for the cart item, e.g., `${productId}-${packSize}`
   productId: string;
-  packSize: '6' | '12' | '24';
+  packSize: '1' | '6';
   quantity: number;
   product: CartItemProduct;
 }
 
 interface CartState {
   items: CartItem[];
-  addItem: (productId: string, packSize: '6' | '12' | '24', quantity: number, product: CartItemProduct) => void;
+  addItem: (productId: string, packSize: '1' | '6', quantity: number, product: CartItemProduct) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
@@ -28,15 +29,11 @@ interface CartState {
   getCartItemCount: () => number;
 }
 
-// Helper to get price based on pack size
-export function getPackPrice(basePriceStr: string, pack: '6' | '12' | '24') {
-  const match = basePriceStr.replace(/[₹,]/g, '').match(/\d+/);
-  const basePrice = match ? parseInt(match[0], 10) : 909; // fallback
-  switch (pack) {
-    case '6': return Math.round(basePrice * 0.55);
-    case '12': return basePrice;
-    case '24': return Math.round(basePrice * 1.85);
+export function getPackPrice(price: number, price6: number | null | undefined, pack: '1' | '6') {
+  if (pack === '6') {
+    return price6 ?? price * 6;
   }
+  return price;
 }
 
 export const useCartStore = create<CartState>()(
@@ -79,7 +76,7 @@ export const useCartStore = create<CartState>()(
 
       getCartTotal: () => {
         return get().items.reduce((total, item) => {
-          const price = getPackPrice(item.product.price, item.packSize);
+          const price = getPackPrice(item.product.price, item.product.price6, item.packSize);
           return total + price * item.quantity;
         }, 0);
       },

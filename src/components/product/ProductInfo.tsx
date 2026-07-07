@@ -11,10 +11,12 @@ interface ProductInfoProps {
 }
 
 export function ProductInfo({ product }: ProductInfoProps) {
-  // Try to parse the base price, fallback to 909 if it fails
   const [quantity, setQuantity] = useState(1);
-  const [selectedPack, setSelectedPack] = useState<'6' | '12' | '24'>('12');
+  const [selectedPack, setSelectedPack] = useState<'1' | '6'>('1');
   const addItem = useCartStore((state) => state.addItem);
+
+  // Dynamic price based on selected pack
+  const displayPrice = selectedPack === '1' ? product.price : (product.price6 ?? product.price * 6);
 
   const barsPerPack = Number(selectedPack);
   const maxQuantity = Math.floor(product.inventory / barsPerPack);
@@ -38,6 +40,9 @@ export function ProductInfo({ product }: ProductInfoProps) {
         <h1 className="text-display-hero text-[#e3e2e7] uppercase mb-2 leading-none">
           {product.name}
         </h1>
+        <span className="font-display text-headline-md tracking-widest text-[#ffb1c1]">
+          ₹{displayPrice}
+        </span>
         <div className="bg-[#c41e5c] w-fit px-4 py-1 mb-6">
           <span className="text-headline-md text-white uppercase font-display-hero">
             {product.category === 'protein-bars' ? 'PROTEIN BAR' : 'PREMIUM SNACK'}
@@ -83,13 +88,11 @@ export function ProductInfo({ product }: ProductInfoProps) {
           ) : null}
         </div>
         <div className="grid grid-cols-3 gap-3">
-          {(['6', '12', '24'] as const).map((pack) => {
+          {(['1', '6'] as const).map((pack) => {
             const isSelected = selectedPack === pack;
-            const price = getPackPrice(product.price, pack);
+            const price = getPackPrice(product.price, product.price6, pack);
             let discount = '';
-            if (pack === '6') discount = 'SAVE 15%';
-            if (pack === '12') discount = 'SAVE 22%';
-            if (pack === '24') discount = 'SAVE 28%';
+            if (pack === '6') discount = 'SAVE 15%'; // mock discount string for UI
 
             const maxForPack = Math.floor(product.inventory / Number(pack));
             const isPackOutOfStock = maxForPack <= 0;
@@ -118,7 +121,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
                   isSelected ? 'text-[#ffb1c1]' : 'text-[#e1bec3] group-hover:text-[#ffb1c1]',
                   isPackOutOfStock && 'text-[#594045] group-hover:text-[#594045]'
                 )}>
-                  PACK OF {pack}
+                  {pack === '1' ? 'SINGLE BAR' : 'PACK OF 6'}
                 </span>
                 <span className={cn(
                   "text-lg font-bold mt-1",
@@ -129,9 +132,10 @@ export function ProductInfo({ product }: ProductInfoProps) {
                   isSelected
                     ? 'bg-[#c41e5c]/20 text-[#ffb1c1]'
                     : 'bg-[#c41e5c]/10 text-[#c41e5c] group-hover:bg-[#c41e5c]/20',
-                  isPackOutOfStock && 'bg-[#343539] text-[#594045] group-hover:bg-[#343539]'
+                  isPackOutOfStock && 'bg-[#343539] text-[#594045] group-hover:bg-[#343539]',
+                  !discount && 'opacity-0' // hide if no discount
                 )}>
-                  {isPackOutOfStock ? 'UNAVAILABLE' : discount}
+                  {isPackOutOfStock ? 'UNAVAILABLE' : discount || 'NONE'}
                 </span>
               </button>
             );

@@ -43,13 +43,9 @@ export function CheckoutSummary() {
           items.map((item) => {
             const product = item.product;
             if (!product) return null;
-            const packPrice = getPackPrice(product.price, item.packSize);
+            const packPrice = getPackPrice(product.price, product.price6, item.packSize);
 
-            // Simplified display of price (e.g. ₹909)
-            // In a real app, price should be stored as a number, but here we strip non-digits for math,
-            // or rely on cart store if it gives us the item price.
-            // Since `cart.ts` handles getPackPrice we don't have it directly exposed per item here,
-            // but we can just use the item's unit price if we had it. Let's assume the cart store gives us `getCartTotal` accurately.
+
 
             return (
               <div key={item.id} className="flex items-center gap-4">
@@ -67,11 +63,9 @@ export function CheckoutSummary() {
                     {product.name}
                   </h3>
                   <p className="text-xs tracking-wider text-[#e1bec3] uppercase">
-                    {item.packSize === '6'
-                      ? 'Pack of 6'
-                      : item.packSize === '12'
-                        ? 'Pack of 12'
-                        : 'Pack of 24'}
+                    {item.packSize === '1'
+                      ? 'Single Bar'
+                      : 'Pack of 6'}
                   </p>
                   <div className="mt-2 flex items-center justify-between">
                     <span className="text-xs text-[#a8898e]">

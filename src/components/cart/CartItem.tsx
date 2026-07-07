@@ -16,7 +16,7 @@ export function CartItem({ item }: CartItemProps) {
 
   if (!product) return null;
 
-  const price = getPackPrice(product.price, item.packSize);
+  const price = getPackPrice(product.price, product.price6, item.packSize);
   const total = price * item.quantity;
   const originalPrice = Math.round(price * 1.2); // Mocking original price for UI
   const discount = Math.round(((originalPrice - price) / originalPrice) * 100);
@@ -40,7 +40,9 @@ export function CartItem({ item }: CartItemProps) {
         </div>
         <div>
           <h3 className="font-display-hero text-2xl uppercase tracking-tight text-[#e3e2e7]">{product.name}</h3>
-          <p className="text-[#c41e5c] font-label-bold text-label-bold text-sm">Pack of {item.packSize} Bars</p>
+          <p className="text-[#c41e5c] font-label-bold text-label-bold text-sm">
+            {item.packSize === '1' ? 'Single Bar' : `Pack of ${item.packSize} Bars`}
+          </p>
           <div className="flex space-x-3 mt-1">
             <span className="text-[10px] px-2 py-0.5 border border-[#594045] rounded text-[#e1bec3]">{proteinBadge}</span>
             <span className="text-[10px] px-2 py-0.5 border border-[#594045] rounded text-[#e1bec3]">{sugarBadge}</span>

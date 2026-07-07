@@ -59,6 +59,7 @@ export function CheckoutForm() {
       const items = useCartStore.getState().items.map((i) => ({
         productId: i.productId,
         quantity: i.quantity,
+        packSize: i.packSize,
       }));
 
       // 1. Initialize payment session on server (mock)

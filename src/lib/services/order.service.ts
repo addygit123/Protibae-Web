@@ -1,10 +1,12 @@
 import { prisma } from '@/lib/prisma';
 import { OrderStatus, PaymentStatus, AddressType } from '@prisma/client';
 import { randomBytes } from 'crypto';
+import { getPackPrice } from '@/lib/store/cart';
 
 interface OrderItemInput {
   productId: string;
   quantity: number;
+  packSize: '1' | '6';
 }
 
 interface ShippingDetailsInput {
@@ -65,17 +67,20 @@ export const orderService = {
         throw new Error(`Product not found: ${item.productId}`);
       }
 
-      if (product.inventory < item.quantity) {
+      const totalBars = item.quantity * parseInt(item.packSize, 10);
+      if (product.inventory < totalBars) {
         throw new Error(`Insufficient inventory for ${product.name}`);
       }
 
-      const itemTotal = product.price * item.quantity;
+      const packPrice = getPackPrice(product.price, product.price6, item.packSize);
+      const itemTotal = packPrice * item.quantity;
       subtotal += itemTotal;
 
       return {
         productId: product.id,
         quantity: item.quantity,
-        price: product.price,
+        packSize: item.packSize,
+        price: packPrice,
       };
     });
 
@@ -129,9 +134,10 @@ export const orderService = {
 
       // Update Inventory (Optional depending on business rules, but good practice)
       for (const item of orderItemsData) {
+        const totalBars = item.quantity * parseInt(item.packSize, 10);
         await tx.product.update({
           where: { id: item.productId },
-          data: { inventory: { decrement: item.quantity } },
+          data: { inventory: { decrement: totalBars } },
         });
       }
 

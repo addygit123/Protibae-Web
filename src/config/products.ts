@@ -11,7 +11,8 @@ export interface Product {
   id: string;
   name: string;
   slug: string;
-  price: string;        // display string e.g. "₹83/bar"
+  price: number;        // base numeric price from Prisma
+  price6?: number | null; // Pack of 6 price
   packInfo: string;     // e.g. "Pack of 6/12/24"
   description: string;
   category: 'protein-bars' | 'nuts-seeds' | 'combos';
@@ -52,18 +53,11 @@ function mapPrismaToClientProduct(p: PrismaProduct): Product {
     'Rosemary Extract'
   ];
 
-  // Convert numeric price to display string (mock logic to match current UI assumption)
-  // Assuming p.price is total pack price or unit price? UI expects string "₹83/bar"
-  // If price is 999 for pack of 12, then it's ~83/bar. 
-  // Let's just create a string formatting it.
-  const unitPrice = Math.round(p.price / 12);
-  const displayPrice = `₹${unitPrice}/bar`;
-
   return {
     id: p.id,
     name: p.name,
     slug: p.slug,
-    price: displayPrice,
+    price: p.price,
     packInfo: 'Pack of 6/12/24',
     description: p.description,
     category: p.category as 'protein-bars' | 'nuts-seeds' | 'combos',

@@ -23,17 +23,11 @@ function filterProducts(products: Product[], category: Category): Product[] {
   return products.filter((p) => p.category === category);
 }
 
-// Price sort: parse the first numeric value from the display string
-function parsePrice(p: Product): number {
-  const match = p.price.replace(/[₹,]/g, '').match(/\d+/);
-  return match ? parseInt(match[0], 10) : 0;
-}
-
 function sortProducts(products: Product[], sort: SortKey): Product[] {
   const copy = [...products];
   switch (sort) {
-    case 'price-asc':  return copy.sort((a, b) => parsePrice(a) - parsePrice(b));
-    case 'price-desc': return copy.sort((a, b) => parsePrice(b) - parsePrice(a));
+    case 'price-asc':  return copy.sort((a, b) => a.price - b.price);
+    case 'price-desc': return copy.sort((a, b) => b.price - a.price);
     case 'newest':     return copy.reverse(); // newest = last in array for now
     default:           return copy; // best-sellers = original order
   }
