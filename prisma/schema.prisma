@@ -284,3 +284,19 @@ model Payment {
 
   @@index([transactionId])
 }
+
+// ------------------------------------------
+// Support & Messaging
+// ------------------------------------------
+
+model SupportTicket {
+  id        String   @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String
+  issueType String
+  message   String   @db.Text
+  status    String   @default("OPEN")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

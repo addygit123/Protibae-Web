@@ -10,12 +10,11 @@ export const siteConfig = {
 } as const;
 
 export const navLinks = [
-  { label: 'SHOP ALL', href: '/shop' },
-  { label: 'PROTEIN BARS', href: '/shop/protein-bars' },
-  { label: 'NUTS & SEEDS', href: '/shop/nuts-seeds' },
-  { label: 'COMBOS', href: '/shop/combos' },
+  { label: 'SHOP', href: '/shop' },
+  { label: 'PROTEIN BARS', href: '/shop' },
   { label: 'REWARDS', href: '/rewards' },
   { label: 'OUR STORY', href: '/our-story' },
+  { label: 'HELP', href: '/help' },
 ] as const;
 
 export const footerLinks = {

@@ -65,7 +65,7 @@ export function Navbar() {
               const isActive = pathname === link.href;
               return (
                 <Link
-                  key={link.href}
+                  key={link.label}
                   href={link.href}
                   className={cn(
                     'font-body text-label-bold uppercase tracking-widest transition-colors duration-300 pb-1',
@@ -225,7 +225,7 @@ export function Navbar() {
                 {navLinks.map((link) => {
                   const isActive = pathname === link.href;
                   return (
-                    <li key={link.href}>
+                    <li key={link.label}>
                       <Link
                         href={link.href}
                         onClick={() => setMobileOpen(false)}

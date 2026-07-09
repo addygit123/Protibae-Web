@@ -34,8 +34,8 @@ export const orderService = {
     }
     console.log('Items received:', items);
     // 1. Fetch product prices securely from the database
-    const productSlugs = items.map((item) => item.productId);
-    console.log('Slugs received:', productSlugs);
+    const productIds = items.map((item) => item.productId);
+    console.log('Slugs received:', productIds);
     const allProducts = await prisma.product.findMany({
       select: {
         id: true,
@@ -47,21 +47,21 @@ export const orderService = {
     console.log('All products in DB:', allProducts);
     const products = await prisma.product.findMany({
       where: {
-        slug: {
-          in: productSlugs,
+        id: {
+          in: productIds,
         },
       },
     });
     console.log('Products found:', products);
 
-    if (products.length !== productSlugs.length) {
+    if (products.length !== productIds.length) {
       throw new Error('One or more products are invalid or unavailable.');
     }
 
     // 2. Calculate totals
     let subtotal = 0;
     const orderItemsData = items.map((item) => {
-      const product = products.find((p) => p.slug === item.productId);
+      const product = products.find((p) => p.id === item.productId);
 
       if (!product) {
         throw new Error(`Product not found: ${item.productId}`);
