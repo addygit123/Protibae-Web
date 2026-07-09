@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { shiprocketService } from '@/lib/services/shiprocket.service';
+import { emailService } from '@/lib/services/email.service';
 
 export async function POST(
   req: Request,
@@ -84,6 +85,22 @@ export async function POST(
           status: 'SHIPPED'
         }
       });
+
+      // Send Mock Shipment Email
+      await emailService.sendShipmentEmail(
+        order.user.email || '',
+        `Your order has shipped! - #${order.orderNumber}`,
+        {
+          title: "Your Order is on the way!",
+          message: `Great news, ${order.address.firstName}. We've packed your order and handed it over to our delivery partners.`,
+          orderNumber: order.orderNumber,
+          courier: shipment.courierName || 'Mock Courier',
+          awbNumber: shipment.awbNumber || '',
+          trackingUrl: shipment.trackingUrl || '',
+          estimatedDelivery: "3-5 Business Days"
+        }
+      );
+
       return NextResponse.json({ success: true, shipment });
     }
 
@@ -107,6 +124,21 @@ export async function POST(
       where: { id: order.id },
       data: { status: 'SHIPPED' }
     });
+
+    // Send Real Shipment Email
+    await emailService.sendShipmentEmail(
+      order.user.email || '',
+      `Your order has shipped! - #${order.orderNumber}`,
+      {
+        title: "Your Order is on the way!",
+        message: `Great news, ${order.address.firstName}. We've packed your order and handed it over to our delivery partners.`,
+        orderNumber: order.orderNumber,
+        courier: shipment.courierName || 'Standard Delivery',
+        awbNumber: shipment.awbNumber || '',
+        trackingUrl: shipment.trackingUrl || '',
+        estimatedDelivery: "3-5 Business Days"
+      }
+    );
 
     return NextResponse.json({ success: true, shipment });
 

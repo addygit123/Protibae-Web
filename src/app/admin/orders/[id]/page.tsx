@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import { PrintButton } from '@/components/admin/PrintButton';
 import { CreateShipmentButton } from '@/components/admin/CreateShipmentButton';
+import { emailService } from '@/lib/services/email.service';
+import { env } from '@/lib/env';
 
 export default async function AdminOrderDetailsPage({
   params,
@@ -290,6 +292,33 @@ export default async function AdminOrderDetailsPage({
                 where: { id: order.id },
                 data: { status: newStatus as import('@prisma/client').OrderStatus }
               });
+
+              if (newStatus === 'CANCELLED' || newStatus === 'REFUNDED') {
+                const title = newStatus === 'CANCELLED' ? 'Order Cancelled' : 'Refund Processed';
+                const message = newStatus === 'CANCELLED' 
+                  ? `Your order #${order.orderNumber} has been cancelled.` 
+                  : `A refund has been processed for your order #${order.orderNumber}.`;
+                  
+                await emailService.sendOrderEmail(
+                  order.user.email || '',
+                  `${title} - #${order.orderNumber}`,
+                  {
+                    title: title,
+                    message: message,
+                    orderNumber: order.orderNumber,
+                    items: order.items.map(i => ({
+                      name: i.product.name + (i.packSize ? ` (Pack of ${i.packSize})` : ''),
+                      quantity: i.quantity,
+                      price: i.price,
+                    })),
+                    shipping: order.shipping,
+                    total: order.total,
+                    address: `${order.address.firstName} ${order.address.lastName}\n${order.address.street}\n${order.address.city}, ${order.address.state} ${order.address.zip}\n${order.address.country || 'India'}`,
+                    orderUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/account/orders/${order.id}`
+                  }
+                );
+              }
+
               revalidatePath(`/admin/orders/${order.id}`);
             }
           }}>
@@ -303,6 +332,7 @@ export default async function AdminOrderDetailsPage({
               <option value="SHIPPED">Shipped</option>
               <option value="DELIVERED">Delivered</option>
               <option value="CANCELLED">Cancelled</option>
+              <option value="REFUNDED">Refunded</option>
             </select>
             <button className="h-full min-h-[52px] flex items-center justify-center px-6 bg-[#c41e5c] text-white font-label-bold text-[14px] uppercase tracking-widest hover:brightness-110 shadow-[0_0_20px_rgba(196,30,92,0.3)] transition-all rounded">
               Update

@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
-import { OrderStatus, PaymentStatus, AddressType } from '@prisma/client';
+import { OrderStatus, PaymentStatus, AddressType, Prisma } from '@prisma/client';
 import { randomBytes } from 'crypto';
+import { emailService } from './email.service';
+import { env } from '../env';
 import { getPackPrice } from '@/lib/store/cart';
 
 interface OrderItemInput {
@@ -134,10 +136,15 @@ export const orderService = {
    * Updates payment and order status, and deducts inventory.
    */
   async finalizeOrderPayment(orderId: string, razorpayPaymentId: string) {
-    return prisma.$transaction(async (tx) => {
+    const orderData = await prisma.$transaction(async (tx) => {
       const order = await tx.order.findUnique({
         where: { id: orderId },
-        include: { payment: true, items: true },
+        include: { 
+          payment: true, 
+          items: { include: { product: true } },
+          address: true,
+          user: true,
+        },
       });
 
       if (!order) throw new Error('Order not found');
@@ -174,18 +181,47 @@ export const orderService = {
         });
       }
 
-      return updatedOrder;
+      // Return the fully populated order for email sending
+      return { ...updatedOrder, items: order.items, address: order.address, user: order.user };
     });
+
+    if (orderData.status === OrderStatus.PAID) {
+      await emailService.sendOrderEmail(
+        orderData.user.email || '',
+        `Order Confirmation - #${orderData.orderNumber}`,
+        {
+          title: "Order Confirmed",
+          message: `Thank you for your order! We're preparing it for shipment.`,
+          orderNumber: orderData.orderNumber,
+          items: orderData.items.map((i: any) => ({
+            name: i.product.name + (i.packSize ? ` (Pack of ${i.packSize})` : ''),
+            quantity: i.quantity,
+            price: i.price,
+          })),
+          shipping: orderData.shipping,
+          total: orderData.total,
+          address: `${orderData.address.firstName} ${orderData.address.lastName}\n${orderData.address.street}\n${orderData.address.city}, ${orderData.address.state} ${orderData.address.zip}\n${orderData.address.country || 'India'}`,
+          orderUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/account/orders/${orderData.id}`
+        }
+      );
+    }
+
+    return orderData;
   },
 
   /**
    * Handles a failed payment attempt.
    */
   async handleFailedPayment(orderId: string, razorpayPaymentId?: string) {
-    return prisma.$transaction(async (tx) => {
+    const orderData = await prisma.$transaction(async (tx) => {
       const order = await tx.order.findUnique({
         where: { id: orderId },
-        include: { payment: true },
+        include: { 
+          payment: true,
+          items: { include: { product: true } },
+          address: true,
+          user: true, 
+        },
       });
 
       if (!order || order.status === OrderStatus.PAID) return order;
@@ -200,11 +236,36 @@ export const orderService = {
         });
       }
 
-      return tx.order.update({
+      const updatedOrder = await tx.order.update({
         where: { id: orderId },
         data: { status: OrderStatus.CANCELLED },
       });
+
+      return { ...updatedOrder, items: order.items, address: order.address, user: order.user };
     });
+
+    if (orderData?.status === OrderStatus.CANCELLED) {
+      await emailService.sendOrderEmail(
+        orderData.user.email || '',
+        `Order Cancelled - #${orderData.orderNumber}`,
+        {
+          title: "Order Cancelled",
+          message: `Your order #${orderData.orderNumber} has been cancelled due to payment failure.`,
+          orderNumber: orderData.orderNumber,
+          items: orderData.items.map((i: any) => ({
+            name: i.product.name + (i.packSize ? ` (Pack of ${i.packSize})` : ''),
+            quantity: i.quantity,
+            price: i.price,
+          })),
+          shipping: orderData.shipping,
+          total: orderData.total,
+          address: `${orderData.address.firstName} ${orderData.address.lastName}\n${orderData.address.street}\n${orderData.address.city}, ${orderData.address.state} ${orderData.address.zip}\n${orderData.address.country || 'India'}`,
+          orderUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/account/orders/${orderData.id}`
+        }
+      );
+    }
+
+    return orderData;
   },
 
   /**

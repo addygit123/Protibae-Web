@@ -17,11 +17,12 @@ const envSchema = z.object({
   SHIPROCKET_EMAIL: z.string().optional(),
   SHIPROCKET_PASSWORD: z.string().optional(),
   
+  // Email (Resend)
+  RESEND_API_KEY: z.string().optional(),
+  
   // Storage (Cloudinary)
   CLOUDINARY_URL: z.string().optional(),
   
-  // Emails (Resend)
-  RESEND_API_KEY: z.string().optional(),
   
   // Environment
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),

@@ -5,9 +5,10 @@ import Link from 'next/link';
 export default async function AdminProductsPage({
   searchParams,
 }: {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page?: string }>;
 }) {
-  const page = Number(searchParams.page) || 1;
+  const { page: pageParam } = await searchParams;
+  const page = Number(pageParam) || 1;
   const take = 10;
   const skip = (page - 1) * take;
 
