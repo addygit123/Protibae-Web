@@ -249,6 +249,7 @@ model Order {
   address     Address     @relation(fields: [addressId], references: [id], onDelete: Restrict)
   items       OrderItem[]
   payment     Payment?
+  shipment    Shipment?
 
   @@index([userId])
   @@index([orderNumber])
@@ -287,6 +288,20 @@ model Payment {
   @@index([transactionId])
   @@index([razorpayOrderId])
   @@index([razorpayPaymentId])
+}
+
+model Shipment {
+  id              String   @id @default(cuid())
+  orderId         String   @unique
+  shiprocketId    String?  @unique // shipmentId from Shiprocket
+  awbNumber       String?  @unique
+  courierName     String?
+  trackingUrl     String?
+  status          String   @default("PENDING") // maps to Shiprocket's status
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  order           Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 // ------------------------------------------

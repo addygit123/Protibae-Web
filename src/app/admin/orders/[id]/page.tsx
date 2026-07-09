@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import { PrintButton } from '@/components/admin/PrintButton';
+import { CreateShipmentButton } from '@/components/admin/CreateShipmentButton';
 
 export default async function AdminOrderDetailsPage({
   params,
@@ -17,6 +18,7 @@ export default async function AdminOrderDetailsPage({
       user: true,
       address: true,
       payment: true,
+      shipment: true,
       items: {
         include: {
           product: true
@@ -124,6 +126,56 @@ export default async function AdminOrderDetailsPage({
                 </div>
                 <span className="text-[#e1bec3] font-label-bold text-[14px]">₹{order.shipping.toFixed(2)}</span>
               </div>
+            </div>
+          </section>
+
+          {/* Fulfillment & Shiprocket Section */}
+          <section>
+            <h4 className="font-label-bold text-[14px] uppercase tracking-widest text-[#e1bec3] mb-4">Fulfillment</h4>
+            <div className="border border-[#343539] rounded p-5 space-y-4">
+              {order.shipment ? (
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center pb-4 border-b border-[#343539]">
+                    <div className="flex items-center gap-2 text-[#e3e2e7]">
+                      <span className="material-symbols-outlined text-[#ffb1c1]">package</span>
+                      <span className="font-label-bold">Shiprocket Shipment</span>
+                    </div>
+                    <span className="px-2 py-1 bg-[#292a2e] text-[#e3e2e7] font-mono text-[12px] rounded uppercase border border-[#343539]">
+                      {order.shipment.status}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-[#e1bec3] text-[12px] uppercase font-label-bold tracking-widest mb-1">AWB Number</p>
+                      <p className="text-[#e3e2e7] font-mono">{order.shipment.awbNumber || 'N/A'}</p>
+                    </div>
+                    <div>
+                      <p className="text-[#e1bec3] text-[12px] uppercase font-label-bold tracking-widest mb-1">Courier</p>
+                      <p className="text-[#e3e2e7] font-mono">{order.shipment.courierName || 'N/A'}</p>
+                    </div>
+                  </div>
+                  {order.shipment.trackingUrl && (
+                    <div className="pt-2">
+                      <a href={order.shipment.trackingUrl} target="_blank" rel="noopener noreferrer" className="text-[#ffb1c1] text-[14px] font-label-bold hover:underline flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[16px]">open_in_new</span>
+                        Track Package
+                      </a>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-6 text-center">
+                  <span className="material-symbols-outlined text-[32px] text-[#343539] mb-3">inventory_2</span>
+                  <p className="text-[#e1bec3] text-[14px] mb-4">No shipment created yet.</p>
+                  {order.status !== 'PENDING' ? (
+                    <div className="w-full max-w-[250px]">
+                      <CreateShipmentButton orderId={order.id} />
+                    </div>
+                  ) : (
+                    <p className="text-[#e1bec3] text-[12px] italic">Order must be paid before creating a shipment.</p>
+                  )}
+                </div>
+              )}
             </div>
           </section>
 
