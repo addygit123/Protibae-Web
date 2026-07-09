@@ -9,9 +9,18 @@ import {
   checkoutSchema,
   type CheckoutFormData,
 } from '@/lib/validations/checkout';
-import { paymentProvider } from '@/lib/payments/payment-adapter';
 import { useCartStore } from '@/lib/store/cart';
 import { useRouter } from 'next/navigation';
+
+const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
 
 export function CheckoutForm() {
   const router = useRouter();
@@ -62,51 +71,95 @@ export function CheckoutForm() {
         packSize: i.packSize,
       }));
 
-      // 1. Initialize payment session on server (mock)
-      const total = getCartTotal();
-      const shipping = total > 499 ? 0 : 250;
-      const finalAmount = total + shipping;
-      const initData = await paymentProvider.initializePayment(
-        finalAmount,
-        'INR'
-      );
+      // 1. Initialize Order and calculate totals via our API
+      const initRes = await fetch('/api/orders/init', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items,
+          shippingDetails: data,
+        }),
+      });
 
-      // 2. Process payment on client (mock)
-      const result = await paymentProvider.processPayment(initData, data);
-
-      if (result.success) {
-        // 3. Create the real order in the database
-        const res = await fetch('/api/orders', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            items,
-            shippingDetails: data,
-          }),
-        });
-
-        if (!res.ok) {
-          const errData = await res.json();
-          throw new Error(errData.error || 'Failed to create order');
-        }
-
-        const orderData = await res.json();
-
-        clearCart();
-        // Redirect to a success page with the newly created Order ID
-        router.push(`/checkout/success?orderId=${orderData.orderId}`);
-      } else {
-        setPaymentError(result.error || 'Payment failed. Please try again.');
+      if (!initRes.ok) {
+        const errData = await initRes.json();
+        throw new Error(errData.error || 'Failed to initialize order');
       }
+
+      const initData = await initRes.json();
+
+      // 2. If running in mock mode, redirect to success
+      if (initData.mock) {
+        clearCart();
+        router.push(`/checkout/success?orderId=${initData.orderId}`);
+        return;
+      }
+
+      // 3. Load Razorpay script
+      const res = await loadRazorpayScript();
+      if (!res) {
+        throw new Error('Razorpay SDK failed to load. Are you online?');
+      }
+
+      // 4. Open Razorpay Checkout
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Use NEXT_PUBLIC if available, though Razorpay infers from order
+        amount: Math.round(initData.amount * 100),
+        currency: initData.currency,
+        name: 'Protibae',
+        description: 'Order Payment',
+        order_id: initData.razorpayOrderId,
+        prefill: {
+          name: `${data.firstName} ${data.lastName}`,
+          email: data.email,
+          contact: data.phone,
+        },
+        theme: {
+          color: '#c41e5c',
+        },
+        handler: async function (response: any) {
+          try {
+            const verifyRes = await fetch('/api/payments/verify', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                orderId: initData.orderId,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature,
+              }),
+            });
+
+            if (!verifyRes.ok) throw new Error('Payment verification failed');
+            
+            clearCart();
+            router.push(`/checkout/success?orderId=${initData.orderId}`);
+          } catch (err: any) {
+            setPaymentError(err.message || 'Payment verification failed. Contact support.');
+            setIsProcessing(false);
+          }
+        },
+        modal: {
+          ondismiss: function () {
+            setPaymentError('Payment was cancelled.');
+            setIsProcessing(false);
+          },
+        },
+      };
+
+      const rzp1 = new (window as any).Razorpay(options);
+      rzp1.on('payment.failed', function (response: any) {
+        setPaymentError(response.error.description || 'Payment failed.');
+        setIsProcessing(false);
+      });
+      rzp1.open();
+
     } catch (err: unknown) {
       if (err instanceof Error) {
         setPaymentError(err.message);
       } else {
         setPaymentError('An unexpected error occurred.');
       }
-    } finally {
       setIsProcessing(false);
     }
   };

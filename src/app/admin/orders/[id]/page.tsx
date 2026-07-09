@@ -99,9 +99,19 @@ export default async function AdminOrderDetailsPage({
             <h4 className="font-label-bold text-[14px] uppercase tracking-widest text-[#e1bec3] mb-4">Payment & Logistics</h4>
             <div className="space-y-4">
               <div className="flex items-center justify-between p-4 border border-[#343539] rounded">
-                <div className="flex items-center gap-3 text-[#e3e2e7]">
-                  <span className="material-symbols-outlined text-[#ffb1c1]">credit_card</span>
-                  <span className="font-body text-[16px]">Paid via {order.payment?.provider || 'Unknown'}</span>
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-3 text-[#e3e2e7]">
+                    <span className="material-symbols-outlined text-[#ffb1c1]">credit_card</span>
+                    <span className="font-body text-[16px]">Paid via {order.payment?.provider || 'Unknown'}</span>
+                  </div>
+                  {order.payment?.razorpayPaymentId && (
+                    <div className="pl-9 font-body text-[12px] text-[#e1bec3] space-y-1 mt-2">
+                      <p>Payment ID: <span className="font-mono text-[#e3e2e7]">{order.payment.razorpayPaymentId}</span></p>
+                      {order.payment.razorpayOrderId && (
+                        <p>Order ID: <span className="font-mono text-[#e3e2e7]">{order.payment.razorpayOrderId}</span></p>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <span className={`font-label-bold text-[14px] ${paymentStatusColor}`}>
                   {order.payment?.status || 'PENDING'}

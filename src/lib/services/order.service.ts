@@ -21,60 +21,33 @@ interface ShippingDetailsInput {
 
 export const orderService = {
   /**
-   * Creates a new order, calculates totals securely using DB prices,
-   * and generates related Address, OrderItems, and Payment records.
+   * Calculates totals securely using DB prices without creating an order.
    */
-  async createOrder(
-    userId: string,
-    items: OrderItemInput[],
-    shippingDetails: ShippingDetailsInput
-  ) {
+  async calculateOrderTotals(items: OrderItemInput[]) {
     if (!items || items.length === 0) {
       throw new Error('Order must contain at least one item.');
     }
-    console.log('Items received:', items);
-    // 1. Fetch product prices securely from the database
+    
     const productIds = items.map((item) => item.productId);
-    console.log('Slugs received:', productIds);
-    const allProducts = await prisma.product.findMany({
-      select: {
-        id: true,
-        name: true,
-        slug: true,
-      },
-    });
-
-    console.log('All products in DB:', allProducts);
     const products = await prisma.product.findMany({
-      where: {
-        id: {
-          in: productIds,
-        },
-      },
+      where: { id: { in: productIds } },
     });
-    console.log('Products found:', products);
 
     if (products.length !== productIds.length) {
       throw new Error('One or more products are invalid or unavailable.');
     }
 
-    // 2. Calculate totals
     let subtotal = 0;
     const orderItemsData = items.map((item) => {
-      const product = products.find((p) => p.id === item.productId);
-
-      if (!product) {
-        throw new Error(`Product not found: ${item.productId}`);
-      }
-
+      const product = products.find((p) => p.id === item.productId)!;
       const totalBars = item.quantity * parseInt(item.packSize, 10);
+      
       if (product.inventory < totalBars) {
         throw new Error(`Insufficient inventory for ${product.name}`);
       }
 
       const packPrice = getPackPrice(product.price, product.price6, item.packSize);
-      const itemTotal = packPrice * item.quantity;
-      subtotal += itemTotal;
+      subtotal += packPrice * item.quantity;
 
       return {
         productId: product.id,
@@ -86,6 +59,23 @@ export const orderService = {
 
     const shipping = subtotal > 499 ? 0 : 250;
     const total = subtotal + shipping;
+
+    return { subtotal, shipping, total, orderItemsData };
+  },
+
+  /**
+   * Creates a new order, calculates totals securely using DB prices,
+   * and generates related Address, OrderItems, and Payment records.
+   * Inventory is NOT deducted here.
+   */
+  async createOrder(
+    userId: string,
+    items: OrderItemInput[],
+    shippingDetails: ShippingDetailsInput,
+    razorpayOrderId?: string
+  ) {
+    // 1 & 2. Calculate totals securely
+    const { subtotal, shipping, total, orderItemsData } = await this.calculateOrderTotals(items);
 
     // Generate a unique order number (e.g. ORD-12345678)
     const orderNumber = `ORD-${randomBytes(4).toString('hex').toUpperCase()}`;
@@ -125,26 +115,96 @@ export const orderService = {
           payment: {
             create: {
               status: PaymentStatus.PENDING,
-              provider: 'checkout_mock',
+              provider: razorpayOrderId ? 'razorpay' : 'checkout_mock',
               amount: total,
+              razorpayOrderId: razorpayOrderId || null,
             },
           },
         },
       });
 
-      // Update Inventory (Optional depending on business rules, but good practice)
-      for (const item of orderItemsData) {
-        const totalBars = item.quantity * parseInt(item.packSize, 10);
+      return newOrder;
+    });
+
+    return order;
+  },
+
+  /**
+   * Finalizes an order upon successful payment verification.
+   * Updates payment and order status, and deducts inventory.
+   */
+  async finalizeOrderPayment(orderId: string, razorpayPaymentId: string) {
+    return prisma.$transaction(async (tx) => {
+      const order = await tx.order.findUnique({
+        where: { id: orderId },
+        include: { payment: true, items: true },
+      });
+
+      if (!order) throw new Error('Order not found');
+      
+      // If already paid, prevent double execution
+      if (order.status === OrderStatus.PAID) {
+        return order;
+      }
+
+      // 1. Update Payment Status
+      if (order.payment) {
+        await tx.payment.update({
+          where: { id: order.payment.id },
+          data: {
+            status: PaymentStatus.SUCCESS,
+            razorpayPaymentId,
+            transactionId: razorpayPaymentId,
+          },
+        });
+      }
+
+      // 2. Update Order Status
+      const updatedOrder = await tx.order.update({
+        where: { id: orderId },
+        data: { status: OrderStatus.PAID },
+      });
+
+      // 3. Deduct Inventory
+      for (const item of order.items) {
+        const totalBars = item.quantity * parseInt(item.packSize || '1', 10);
         await tx.product.update({
           where: { id: item.productId },
           data: { inventory: { decrement: totalBars } },
         });
       }
 
-      return newOrder;
+      return updatedOrder;
     });
+  },
 
-    return order;
+  /**
+   * Handles a failed payment attempt.
+   */
+  async handleFailedPayment(orderId: string, razorpayPaymentId?: string) {
+    return prisma.$transaction(async (tx) => {
+      const order = await tx.order.findUnique({
+        where: { id: orderId },
+        include: { payment: true },
+      });
+
+      if (!order || order.status === OrderStatus.PAID) return order;
+
+      if (order.payment) {
+        await tx.payment.update({
+          where: { id: order.payment.id },
+          data: {
+            status: PaymentStatus.FAILED,
+            ...(razorpayPaymentId && { razorpayPaymentId, transactionId: razorpayPaymentId }),
+          },
+        });
+      }
+
+      return tx.order.update({
+        where: { id: orderId },
+        data: { status: OrderStatus.CANCELLED },
+      });
+    });
   },
 
   /**

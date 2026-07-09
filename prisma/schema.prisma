@@ -271,18 +271,22 @@ model OrderItem {
 }
 
 model Payment {
-  id            String        @id @default(cuid())
-  orderId       String        @unique
-  status        PaymentStatus @default(PENDING)
-  provider      String        // e.g., 'razorpay'
-  transactionId String?       @unique
-  amount        Float
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  id                String        @id @default(cuid())
+  orderId           String        @unique
+  status            PaymentStatus @default(PENDING)
+  provider          String        // e.g., 'razorpay'
+  transactionId     String?       @unique
+  razorpayOrderId   String?       @unique
+  razorpayPaymentId String?       @unique
+  amount            Float
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
 
-  order         Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order             Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@index([transactionId])
+  @@index([razorpayOrderId])
+  @@index([razorpayPaymentId])
 }
 
 // ------------------------------------------
