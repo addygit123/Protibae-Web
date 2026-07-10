@@ -169,7 +169,7 @@ export default async function AdminOrderDetailsPage({
                 <div className="flex flex-col items-center justify-center py-6 text-center">
                   <span className="material-symbols-outlined text-[32px] text-[#343539] mb-3">inventory_2</span>
                   <p className="text-[#e1bec3] text-[14px] mb-4">No shipment created yet.</p>
-                  {order.status !== 'PENDING' ? (
+                  {order.status !== 'PENDING' || order.payment?.provider === 'cod' ? (
                     <div className="w-full max-w-[250px]">
                       <CreateShipmentButton orderId={order.id} />
                     </div>

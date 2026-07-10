@@ -13,7 +13,7 @@ export const checkoutSchema = z.object({
   postalCode: z.string().min(5, 'Postal code must be at least 5 digits').max(10),
 
   // Step 3: Payment Method
-  paymentMethod: z.enum(['card', 'upi', 'netbanking']),
+  paymentMethod: z.enum(['card', 'upi', 'netbanking', 'cod']),
 });
 
 export type CheckoutFormData = z.infer<typeof checkoutSchema>;

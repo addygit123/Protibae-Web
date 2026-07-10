@@ -38,7 +38,7 @@ export async function POST(
       return NextResponse.json({ error: 'Shipment already exists for this order' }, { status: 400 });
     }
 
-    if (order.status === 'PENDING') {
+    if (order.status === 'PENDING' && order.payment?.provider !== 'cod') {
       return NextResponse.json({ error: 'Order is not paid yet' }, { status: 400 });
     }
 
@@ -63,7 +63,7 @@ export async function POST(
         units: item.quantity,
         selling_price: item.price,
       })),
-      payment_method: 'Prepaid',
+      payment_method: order.payment?.provider === 'cod' ? 'COD' : 'Prepaid',
       shipping_charges: order.shipping,
       sub_total: order.total,
       // Hardcoded dimensions/weight as per standard box

@@ -2,11 +2,25 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { orderService } from '@/lib/services/order.service';
-import { verifyRazorpaySignature } from '@/lib/payments/razorpay';
+import { verifyRazorpaySignature, razorpay } from '@/lib/payments/razorpay';
 import { z } from 'zod';
+import { PaymentStatus } from '@prisma/client';
 
 const verifySchema = z.object({
-  orderId: z.string(),
+  items: z.array(z.object({
+    productId: z.string(),
+    quantity: z.number().int().positive(),
+    packSize: z.enum(['1', '6']),
+  })).min(1),
+  shippingDetails: z.object({
+    firstName: z.string(),
+    lastName: z.string(),
+    address: z.string(),
+    city: z.string(),
+    postalCode: z.string(),
+    phone: z.string(),
+    email: z.string().email(),
+  }),
   razorpay_payment_id: z.string(),
   razorpay_order_id: z.string(),
   razorpay_signature: z.string(),
@@ -26,28 +40,34 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid data' }, { status: 400 });
     }
 
-    const { orderId, razorpay_payment_id, razorpay_order_id, razorpay_signature } = result.data;
-
-    console.log('[POST /api/payments/verify] Body:', { orderId, razorpay_payment_id, razorpay_order_id, razorpay_signature });
+    const { items, shippingDetails, razorpay_payment_id, razorpay_order_id, razorpay_signature } = result.data;
 
     // Verify signature
-    const isValid = verifyRazorpaySignature(
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature
-    );
-
-    console.log('[POST /api/payments/verify] Signature valid:', isValid);
-
+    const isValid = verifyRazorpaySignature(razorpay_order_id, razorpay_payment_id, razorpay_signature);
     if (!isValid) {
-      await orderService.handleFailedPayment(orderId, razorpay_payment_id);
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
     }
 
-    // Update order status, payment status, deduct inventory
-    await orderService.finalizeOrderPayment(orderId, razorpay_payment_id);
+    // Verify Amount
+    const { total } = await orderService.calculateOrderTotals(items);
+    const amountInPaise = Math.round(total * 100);
 
-    return NextResponse.json({ success: true });
+    const rzpOrder = await razorpay.orders.fetch(razorpay_order_id);
+    if (!rzpOrder || rzpOrder.amount !== amountInPaise) {
+      return NextResponse.json({ error: 'Amount mismatch' }, { status: 400 });
+    }
+
+    // Create the DB Order (defer status to SUCCESS)
+    const order = await orderService.createOrder(session.user.id, items, shippingDetails, {
+      provider: 'razorpay',
+      razorpayOrderId: razorpay_order_id,
+      status: PaymentStatus.SUCCESS
+    });
+
+    // Deduct inventory and finalize
+    await orderService.finalizeOrderPayment(order.id, razorpay_payment_id);
+
+    return NextResponse.json({ success: true, orderId: order.id });
   } catch (error) {
     console.error('[POST /api/payments/verify] Error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

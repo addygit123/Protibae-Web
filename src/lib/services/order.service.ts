@@ -74,7 +74,11 @@ export const orderService = {
     userId: string,
     items: OrderItemInput[],
     shippingDetails: ShippingDetailsInput,
-    razorpayOrderId?: string
+    paymentOptions?: {
+      provider: 'razorpay' | 'cod' | 'checkout_mock';
+      razorpayOrderId?: string | null;
+      status: PaymentStatus;
+    }
   ) {
     // 1 & 2. Calculate totals securely
     const { subtotal, shipping, total, orderItemsData } = await this.calculateOrderTotals(items);
@@ -116,10 +120,10 @@ export const orderService = {
           },
           payment: {
             create: {
-              status: PaymentStatus.PENDING,
-              provider: razorpayOrderId ? 'razorpay' : 'checkout_mock',
+              status: paymentOptions?.status || PaymentStatus.PENDING,
+              provider: paymentOptions?.provider || 'checkout_mock',
               amount: total,
-              razorpayOrderId: razorpayOrderId || null,
+              razorpayOrderId: paymentOptions?.razorpayOrderId || null,
             },
           },
         },
@@ -215,6 +219,68 @@ export const orderService = {
         }
       );
     }
+
+    return orderData;
+  },
+
+  /**
+   * Finalizes a Cash on Delivery (COD) order.
+   * Keeps status as PENDING, but deducts inventory and sends confirmation email.
+   */
+  async finalizeCodOrder(orderId: string) {
+    const orderData = await prisma.$transaction(async (tx) => {
+      const order = await tx.order.findUnique({
+        where: { id: orderId },
+        include: { 
+          payment: true, 
+          items: { include: { product: true } },
+          address: true,
+          user: true,
+        },
+      });
+
+      if (!order) throw new Error('Order not found');
+
+      // Deduct Inventory
+      for (const item of order.items) {
+        let multiplier = 1;
+        if (item.packSize) {
+          const match = item.packSize.match(/\d+/);
+          if (match) {
+            multiplier = parseInt(match[0], 10);
+          } else if (item.packSize.includes('6')) {
+            multiplier = 6;
+          }
+        }
+        const totalBars = item.quantity * multiplier;
+        
+        await tx.product.update({
+          where: { id: item.productId },
+          data: { inventory: { decrement: totalBars } },
+        });
+      }
+
+      return { ...order, items: order.items, address: order.address, user: order.user };
+    });
+
+    await emailService.sendOrderEmail(
+      orderData.user.email || '',
+      `Order Confirmation (COD) - #${orderData.orderNumber}`,
+      {
+        title: "Order Confirmed (Cash on Delivery)",
+        message: `Thank you for your order! We're preparing it for shipment. You can pay with cash upon delivery.`,
+        orderNumber: orderData.orderNumber,
+        items: orderData.items.map((i: any) => ({
+          name: i.product.name + (i.packSize ? ` (Pack of ${i.packSize})` : ''),
+          quantity: i.quantity,
+          price: i.price,
+        })),
+        shipping: orderData.shipping,
+        total: orderData.total,
+        address: `${orderData.address.firstName} ${orderData.address.lastName}\n${orderData.address.street}\n${orderData.address.city}, ${orderData.address.state} ${orderData.address.zip}\n${orderData.address.country || 'India'}`,
+        orderUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/account/orders/${orderData.id}`
+      }
+    );
 
     return orderData;
   },

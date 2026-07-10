@@ -3,10 +3,9 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { orderService } from '@/lib/services/order.service';
 import { z } from 'zod';
-import { razorpay } from '@/lib/payments/razorpay';
-import { env } from '@/lib/env';
+import { PaymentStatus } from '@prisma/client';
 
-const initOrderSchema = z.object({
+const codOrderSchema = z.object({
   items: z
     .array(
       z.object({
@@ -35,7 +34,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const result = initOrderSchema.safeParse(body);
+    const result = codOrderSchema.safeParse(body);
 
     if (!result.success) {
       return NextResponse.json(
@@ -44,38 +43,24 @@ export async function POST(req: Request) {
       );
     }
 
-    // Calculate exact total server-side
-    const { total } = await orderService.calculateOrderTotals(result.data.items);
+    // Create Prisma Order (PENDING status) with COD Provider
+    const order = await orderService.createOrder(
+      session.user.id,
+      result.data.items,
+      result.data.shippingDetails,
+      {
+        provider: 'cod',
+        status: PaymentStatus.PENDING,
+      }
+    );
 
-    // If Razorpay is not configured (mock mode fallback)
-    if (!env.NEXT_PUBLIC_RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET) {
-      return NextResponse.json({
-        orderId: `mock_${Date.now()}`,
-        amount: total,
-        currency: 'INR',
-        mock: true
-      }, { status: 201 });
-    }
-
-    // Create Razorpay Order
-    const amountInPaise = Math.round(total * 100);
-    const razorpayOrder = await razorpay.orders.create({
-      amount: amountInPaise,
-      currency: 'INR',
-      receipt: `rcpt_${Date.now()}`,
-    });
-
-    if (!razorpayOrder || !razorpayOrder.id) {
-      throw new Error('Failed to create Razorpay order');
-    }
+    await orderService.finalizeCodOrder(order.id);
 
     return NextResponse.json({
-      razorpayOrderId: razorpayOrder.id,
-      amount: total,
-      currency: 'INR'
+      orderId: order.id,
     }, { status: 201 });
   } catch (error) {
-    console.error('[POST /api/orders/init] Error initializing order:', error);
+    console.error('[POST /api/orders/cod] Error creating COD order:', error);
     return NextResponse.json(
       {
         error: error instanceof Error ? error.message : 'Internal Server Error',

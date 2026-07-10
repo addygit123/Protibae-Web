@@ -71,6 +71,28 @@ export function CheckoutForm() {
         packSize: i.packSize,
       }));
 
+      // 0. Branch for COD vs Razorpay
+      if (data.paymentMethod === 'cod') {
+        const codRes = await fetch('/api/orders/cod', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            items,
+            shippingDetails: data,
+          }),
+        });
+
+        if (!codRes.ok) {
+          const errData = await codRes.json();
+          throw new Error(errData.error || 'Failed to place COD order');
+        }
+
+        const codData = await codRes.json();
+        clearCart();
+        router.push(`/checkout/success?orderId=${codData.orderId}`);
+        return;
+      }
+
       // 1. Initialize Order and calculate totals via our API
       const initRes = await fetch('/api/orders/init', {
         method: 'POST',
@@ -123,7 +145,8 @@ export function CheckoutForm() {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                orderId: initData.orderId,
+                items,
+                shippingDetails: data,
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_signature: response.razorpay_signature,
@@ -134,9 +157,10 @@ export function CheckoutForm() {
               const errData = await verifyRes.json().catch(() => ({}));
               throw new Error(errData.error || `Payment verification failed (${verifyRes.status})`);
             }
-
+            
+            const verifyData = await verifyRes.json();
             clearCart();
-            router.push(`/checkout/success?orderId=${initData.orderId}`);
+            router.push(`/checkout/success?orderId=${verifyData.orderId}`);
           } catch (err: any) {
             setPaymentError(err.message || 'Payment verification failed. Contact support.');
             setIsProcessing(false);
@@ -481,6 +505,21 @@ export function CheckoutForm() {
                   <span className="font-bold text-[#e3e2e7]">Net Banking</span>
                   <span className="text-xs text-[#e1bec3]">
                     Support for all major banks
+                  </span>
+                </div>
+              </label>
+
+              <label className="flex cursor-pointer items-center gap-4 rounded border border-[#594045]/30 bg-[#1a1b1f] p-4 transition-colors hover:border-[#c41e5c]/50">
+                <input
+                  {...register('paymentMethod')}
+                  type="radio"
+                  value="cod"
+                  className="h-5 w-5 accent-[#c41e5c]"
+                />
+                <div className="flex flex-col">
+                  <span className="font-bold text-[#e3e2e7]">Cash on Delivery (COD)</span>
+                  <span className="text-xs text-[#e1bec3]">
+                    Pay with cash when your order arrives
                   </span>
                 </div>
               </label>
