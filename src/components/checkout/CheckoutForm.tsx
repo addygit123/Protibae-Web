@@ -130,8 +130,11 @@ export function CheckoutForm() {
               }),
             });
 
-            if (!verifyRes.ok) throw new Error('Payment verification failed');
-            
+            if (!verifyRes.ok) {
+              const errData = await verifyRes.json().catch(() => ({}));
+              throw new Error(errData.error || `Payment verification failed (${verifyRes.status})`);
+            }
+
             clearCart();
             router.push(`/checkout/success?orderId=${initData.orderId}`);
           } catch (err: any) {

@@ -1,9 +1,9 @@
 import Razorpay from 'razorpay';
-import crypto from 'crypto';
+import { validatePaymentVerification, validateWebhookSignature } from 'razorpay/dist/utils/razorpay-utils';
 import { env } from '@/lib/env';
 
 export const razorpay = new Razorpay({
-  key_id: env.RAZORPAY_KEY_ID || 'dummy_key',
+  key_id: env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'dummy_key',
   key_secret: env.RAZORPAY_KEY_SECRET || 'dummy_secret',
 });
 
@@ -15,12 +15,16 @@ export function verifyRazorpaySignature(
   const secret = env.RAZORPAY_KEY_SECRET;
   if (!secret) return false;
 
-  const generatedSignature = crypto
-    .createHmac('sha256', secret)
-    .update(`${orderId}|${paymentId}`)
-    .digest('hex');
-
-  return generatedSignature === signature;
+  try {
+    return validatePaymentVerification(
+      { order_id: orderId, payment_id: paymentId },
+      signature,
+      secret
+    );
+  } catch (error) {
+    console.error('Signature verification error:', error);
+    return false;
+  }
 }
 
 export function verifyRazorpayWebhookSignature(
@@ -30,10 +34,10 @@ export function verifyRazorpayWebhookSignature(
   const secret = env.RAZORPAY_WEBHOOK_SECRET;
   if (!secret) return false;
 
-  const generatedSignature = crypto
-    .createHmac('sha256', secret)
-    .update(body)
-    .digest('hex');
-
-  return generatedSignature === signature;
+  try {
+    return validateWebhookSignature(body, signature, secret);
+  } catch (error) {
+    console.error('Webhook signature verification error:', error);
+    return false;
+  }
 }

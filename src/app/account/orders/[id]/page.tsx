@@ -112,11 +112,11 @@ export default async function OrderDetailsPage(props: {
                     <div className="flex-grow">
                       <h3 className="font-bold text-white mb-1">{item.product.name}</h3>
                       <p className="text-sm text-on-surface-variant mb-2">Qty: {item.quantity}</p>
-                      <p className="font-mono text-white">₹{(item.price / 100).toFixed(2)}</p>
+                      <p className="font-mono text-white">₹{item.price.toFixed(2)}</p>
                     </div>
                     <div className="text-right">
                       <p className="font-mono font-bold text-white text-lg">
-                        ₹{((item.price * item.quantity) / 100).toFixed(2)}
+                        ₹{(item.price * item.quantity).toFixed(2)}
                       </p>
                     </div>
                   </div>
@@ -125,17 +125,17 @@ export default async function OrderDetailsPage(props: {
               <div className="p-6 bg-surface-container/30 space-y-3 border-t border-outline-variant/10">
                 <div className="flex justify-between text-sm text-on-surface-variant">
                   <span>Subtotal</span>
-                  <span className="font-mono text-white">₹{(order.subtotal / 100).toFixed(2)}</span>
+                  <span className="font-mono text-white">₹{order.subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm text-on-surface-variant">
                   <span>Shipping</span>
                   <span className="font-mono text-white">
-                    {order.shipping === 0 ? 'FREE' : `₹${(order.shipping / 100).toFixed(2)}`}
+                    {order.shipping === 0 ? 'FREE' : `₹${order.shipping.toFixed(2)}`}
                   </span>
                 </div>
                 <div className="pt-3 border-t border-outline-variant/10 flex justify-between items-center">
                   <span className="font-label-bold tracking-widest text-white uppercase">Total</span>
-                  <span className="font-mono text-xl font-bold text-primary">₹{(order.total / 100).toFixed(2)}</span>
+                  <span className="font-mono text-xl font-bold text-primary">₹{order.total.toFixed(2)}</span>
                 </div>
               </div>
             </div>

@@ -48,20 +48,20 @@ export async function POST(req: Request) {
     const { total } = await orderService.calculateOrderTotals(result.data.items);
 
     // If Razorpay is not configured (mock mode fallback)
-    if (!env.RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET) {
+    if (!env.NEXT_PUBLIC_RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET) {
       const order = await orderService.createOrder(
         session.user.id,
         result.data.items,
         result.data.shippingDetails
       );
-      
+
       // In mock mode, we immediately finalize it since there's no real payment to wait for
       const mockPaymentId = `mock_pay_${Date.now()}`;
       await orderService.finalizeOrderPayment(order.id, mockPaymentId);
 
-      return NextResponse.json({ 
-        orderId: order.id, 
-        amount: total, 
+      return NextResponse.json({
+        orderId: order.id,
+        amount: total,
         currency: 'INR',
         mock: true
       }, { status: 201 });
@@ -87,10 +87,10 @@ export async function POST(req: Request) {
       razorpayOrder.id
     );
 
-    return NextResponse.json({ 
-      orderId: order.id, 
+    return NextResponse.json({
+      orderId: order.id,
       razorpayOrderId: razorpayOrder.id,
-      amount: total, 
+      amount: total,
       currency: 'INR'
     }, { status: 201 });
   } catch (error) {

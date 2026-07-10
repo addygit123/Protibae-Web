@@ -174,7 +174,17 @@ export const orderService = {
 
       // 3. Deduct Inventory
       for (const item of order.items) {
-        const totalBars = item.quantity * parseInt(item.packSize || '1', 10);
+        let multiplier = 1;
+        if (item.packSize) {
+          const match = item.packSize.match(/\d+/);
+          if (match) {
+            multiplier = parseInt(match[0], 10);
+          } else if (item.packSize.includes('6')) {
+            multiplier = 6;
+          }
+        }
+        const totalBars = item.quantity * multiplier;
+        
         await tx.product.update({
           where: { id: item.productId },
           data: { inventory: { decrement: totalBars } },

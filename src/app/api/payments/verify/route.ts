@@ -28,12 +28,16 @@ export async function POST(req: Request) {
 
     const { orderId, razorpay_payment_id, razorpay_order_id, razorpay_signature } = result.data;
 
+    console.log('[POST /api/payments/verify] Body:', { orderId, razorpay_payment_id, razorpay_order_id, razorpay_signature });
+
     // Verify signature
     const isValid = verifyRazorpaySignature(
       razorpay_order_id,
       razorpay_payment_id,
       razorpay_signature
     );
+
+    console.log('[POST /api/payments/verify] Signature valid:', isValid);
 
     if (!isValid) {
       await orderService.handleFailedPayment(orderId, razorpay_payment_id);
