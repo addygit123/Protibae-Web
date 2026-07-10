@@ -60,7 +60,7 @@ function mapPrismaToClientProduct(p: PrismaProduct): Product {
     price: p.price,
     packInfo: 'Pack of 6/12/24',
     description: p.description,
-    category: p.category as 'protein-bars' | 'nuts-seeds' | 'combos',
+    category: p.category ? p.category.toLowerCase().replace(' ', '-') as any : 'protein-bars',
     badges: mockedBadges,
     image: mainImage,
     imageAlt: `${p.name} product image`,

@@ -74,7 +74,7 @@ export default function RewardsPage() {
                 <h3 className="font-display text-headline-md">RECRUIT</h3>
               </div>
               <p className="text-on-surface-variant mb-8 font-body text-body-md relative z-10">
-                Entry level status. Earn 1 point for every $1 spent. Access to seasonal sales.
+                Entry level status. Earn 1 point for every ₹1 spent. Access to seasonal sales.
               </p>
               <ul className="space-y-3 mt-auto relative z-10">
                 <li className="flex items-center gap-2 text-label-bold">
@@ -97,14 +97,14 @@ export default function RewardsPage() {
                 <h3 className="font-display text-headline-md">PRO ATHLETE</h3>
               </div>
               <p className="text-on-surface-variant mb-8 font-body text-body-md relative z-10">
-                Active performer level. Earn 1.5 points for every $1 spent. Early access to new drops.
+                Active performer level. Earn 1.5 points for every ₹1 spent. Early access to new drops.
               </p>
               <ul className="space-y-3 mt-auto relative z-10">
                 <li className="flex items-center gap-2 text-label-bold">
                   <Check className="text-[#ffb1c1]" size={16} strokeWidth={2} /> 1.5x Points Earning
                 </li>
                 <li className="flex items-center gap-2 text-label-bold">
-                  <Check className="text-[#ffb1c1]" size={16} strokeWidth={2} /> Free Shipping (Orders $50+)
+                  <Check className="text-[#ffb1c1]" size={16} strokeWidth={2} /> Free Shipping (Orders ₹500+)
                 </li>
                 <li className="flex items-center gap-2 text-label-bold text-[#ffb1c1]">
                   <Check size={16} strokeWidth={2} /> Priority Customer Support
@@ -120,7 +120,7 @@ export default function RewardsPage() {
                 <h3 className="font-display text-headline-md">ELITE PERFORMER</h3>
               </div>
               <p className="text-on-surface-variant mb-8 font-body text-body-md relative z-10">
-                Apex status. Earn 2 points for every $1 spent. Exclusive flavor testing &amp; private events.
+                Apex status. Earn 2 points for every ₹1 spent. Exclusive flavor testing &amp; private events.
               </p>
               <ul className="space-y-3 mt-auto relative z-10">
                 <li className="flex items-center gap-2 text-label-bold">

@@ -52,12 +52,20 @@ export default function Sidebar() {
         })}
       </nav>
       <div className="p-6 border-t border-[#343539]">
-        <button className="w-full py-3 bg-[#292a2e] border border-[#594045] hover:border-[#c41e5c] transition-all text-label-bold font-label-bold flex items-center justify-center gap-2 rounded-lg text-white">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <Link 
+          href="/admin/support"
+          className={cn(
+            "w-full py-3 border transition-all text-label-bold font-label-bold flex items-center justify-center gap-2 rounded-lg",
+            pathname.startsWith('/admin/support')
+              ? "bg-[#c41e5c] border-[#c41e5c] text-white shadow-[0_0_15px_rgba(196,30,92,0.3)]"
+              : "bg-[#292a2e] border-[#594045] hover:border-[#c41e5c] text-white"
+          )}
+        >
+          <svg className="w-5 h-5" fill={pathname.startsWith('/admin/support') ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           Support
-        </button>
+        </Link>
       </div>
     </aside>
   );

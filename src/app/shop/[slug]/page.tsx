@@ -53,16 +53,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
             
             {/* Gallery (Left Side) */}
             <div className="lg:col-span-7">
-              <SectionReveal>
-                <ProductGallery product={product} />
-              </SectionReveal>
+              <ProductGallery product={product} />
             </div>
 
             {/* Product Info & Actions (Right Side) */}
             <div className="lg:col-span-5">
-              <SectionReveal delay={0.1}>
-                <ProductInfo product={product} />
-              </SectionReveal>
+              <ProductInfo product={product} />
             </div>
             
           </div>

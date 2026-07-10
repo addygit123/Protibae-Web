@@ -316,6 +316,7 @@ model SupportTicket {
   issueType String
   message   String   @db.Text
   status    String   @default("OPEN")
+  priority  String   @default("MEDIUM")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

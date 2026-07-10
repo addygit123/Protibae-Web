@@ -103,7 +103,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
             {product.name}
           </h3>
           <span className="text-label-bold text-[#ffb1c1] shrink-0 ml-2">
-            ₹{Math.round(product.price / 12)}/bar
+            ₹{product.price}/bar
           </span>
         </div>
 
