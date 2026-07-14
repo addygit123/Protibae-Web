@@ -37,8 +37,6 @@ export function LoginForm({ onToggleView, isVisible }: LoginFormProps) {
     setIsLoading(true);
     setError(null);
     try {
-      console.log('Login attempt:', data);
-      
       const res = await signIn('credentials', {
         email: data.email,
         password: data.password,
@@ -53,6 +51,17 @@ export function LoginForm({ onToggleView, isVisible }: LoginFormProps) {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Invalid email or password');
     } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      await signIn('google', { callbackUrl: '/account' });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unable to sign in with Google');
       setIsLoading(false);
     }
   };
@@ -122,15 +131,16 @@ export function LoginForm({ onToggleView, isVisible }: LoginFormProps) {
           <div className="relative flex justify-center text-label-sm uppercase tracking-widest"><span className="bg-surface px-4 text-outline">Or continue with</span></div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <button type="button" className="flex items-center justify-center gap-2 border border-outline-variant/30 py-3 font-label-bold text-label-bold hover:bg-surface-container-high transition-colors">
+        <div className="grid grid-cols-1 gap-4">
+          <button
+            type="button"
+            onClick={handleGoogleSignIn}
+            disabled={isLoading}
+            className="flex items-center justify-center gap-2 border border-outline-variant/30 py-3 font-label-bold text-label-bold hover:bg-surface-container-high transition-colors disabled:cursor-not-allowed disabled:opacity-70"
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img alt="Google Logo" className="w-5 h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDf1Zml-N0FWpaeWf0dZSe4C1xe_g6MfjzlxUfLtxpP1Ss_LJLZfZvnkXC2FA2-VObr-BWHYFDbN-RWC4YOJcPFNaQ5Xe5N6gXapGu11Y9pVl7PXnA1XM_fIxdLWpsFGA78o8zgsEhK6CuEAk5C6l2b2IciPGGSPyW8oeodLH66NiklKNit1gIArN5il6o2mk1eJdYGuxiNGo3TUSiz5WwOl5gat8z9A3-Yu6iQfeCDih6b0bUvNgXnVCqGzf1-XqadsxXCGS2ATHs"/>
             GOOGLE
-          </button>
-          <button type="button" className="flex items-center justify-center gap-2 border border-outline-variant/30 py-3 font-label-bold text-label-bold hover:bg-surface-container-high transition-colors">
-            <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.17 2.31-.93 3.57-.84 1.51.11 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.85 2.05-1.98 3.51-2.53 4.08zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-            APPLE
           </button>
         </div>
       </form>
