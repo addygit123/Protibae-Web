@@ -43,6 +43,7 @@ const envSchema = z.object({
   // Logistics (Shiprocket)
   SHIPROCKET_EMAIL: z.string().optional(),
   SHIPROCKET_PASSWORD: z.string().optional(),
+  SHIPROCKET_PICKUP_POSTCODE: z.string().optional(),
 
   // Email (Resend)
   RESEND_API_KEY: z.string().optional(),
@@ -57,10 +58,24 @@ const envSchema = z.object({
 
 const rootEnvPath = resolve(process.cwd(), '../.env');
 const rootEnv = parseEnvFile(rootEnvPath);
+const localEnvPath = resolve(process.cwd(), '.env');
+const localEnv = parseEnvFile(localEnvPath);
+
 const envSource = {
   ...rootEnv,
   ...process.env,
 };
+
+if (localEnv.SHIPROCKET_PASSWORD) {
+  envSource.SHIPROCKET_PASSWORD = localEnv.SHIPROCKET_PASSWORD;
+}
+if (localEnv.SHIPROCKET_EMAIL) {
+  envSource.SHIPROCKET_EMAIL = localEnv.SHIPROCKET_EMAIL;
+}
+if (localEnv.SHIPROCKET_PICKUP_POSTCODE) {
+  envSource.SHIPROCKET_PICKUP_POSTCODE = localEnv.SHIPROCKET_PICKUP_POSTCODE;
+}
+
 
 const _env = envSchema.safeParse(envSource);
 

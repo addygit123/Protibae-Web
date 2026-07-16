@@ -142,28 +142,87 @@ export default async function AdminOrderDetailsPage({
                       <span className="material-symbols-outlined text-[#ffb1c1]">package</span>
                       <span className="font-label-bold">Shiprocket Shipment</span>
                     </div>
-                    <span className="px-2 py-1 bg-[#292a2e] text-[#e3e2e7] font-mono text-[12px] rounded uppercase border border-[#343539]">
+                    <span className="px-2 py-1 bg-[#292a2e] text-[#ffb1c1] font-mono text-[12px] rounded uppercase border border-[#343539]">
                       {order.shipment.status}
                     </span>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                     <div>
-                      <p className="text-[#e1bec3] text-[12px] uppercase font-label-bold tracking-widest mb-1">AWB Number</p>
-                      <p className="text-[#e3e2e7] font-mono">{order.shipment.awbNumber || 'N/A'}</p>
+                      <p className="text-[#e1bec3] text-[11px] uppercase font-label-bold tracking-widest mb-1">Shiprocket Order ID</p>
+                      <p className="text-[#e3e2e7] font-mono">{order.shipment.shiprocketOrderId || 'N/A'}</p>
                     </div>
                     <div>
-                      <p className="text-[#e1bec3] text-[12px] uppercase font-label-bold tracking-widest mb-1">Courier</p>
-                      <p className="text-[#e3e2e7] font-mono">{order.shipment.courierName || 'N/A'}</p>
+                      <p className="text-[#e1bec3] text-[11px] uppercase font-label-bold tracking-widest mb-1">Shipment ID</p>
+                      <p className="text-[#e3e2e7] font-mono">{order.shipment.shiprocketId || 'N/A'}</p>
+                    </div>
+                    <div>
+                      <p className="text-[#e1bec3] text-[11px] uppercase font-label-bold tracking-widest mb-1">AWB Number</p>
+                      {order.shipment.status === 'ORDER_CREATED' && !order.shipment.awbNumber ? (
+                        <p className="text-yellow-400 font-label-bold text-[12px] italic">
+                          Awaiting AWB assignment (Shiprocket wallet recharge required)
+                        </p>
+                      ) : (
+                        <p className="text-[#e3e2e7] font-mono">{order.shipment.awbNumber || 'N/A'}</p>
+                      )}
+                    </div>
+                    <div>
+                      <p className="text-[#e1bec3] text-[11px] uppercase font-label-bold tracking-widest mb-1">Courier Partner</p>
+                      <p className="text-[#e3e2e7] font-mono">
+                        {order.shipment.courierName || 'N/A'}
+                        {order.shipment.courierCompanyId ? ` (ID: ${order.shipment.courierCompanyId})` : ''}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[#e1bec3] text-[11px] uppercase font-label-bold tracking-widest mb-1">Pickup Status</p>
+                      <p className="text-[#e3e2e7] font-mono uppercase text-[12px]">{order.shipment.pickupStatus || 'N/A'}</p>
+                    </div>
+                    <div>
+                      <p className="text-[#e1bec3] text-[11px] uppercase font-label-bold tracking-widest mb-1">Shipment Status</p>
+                      <p className="text-[#ffb1c1] font-mono uppercase text-[12px]">{order.shipment.status || 'PENDING'}</p>
                     </div>
                   </div>
-                  {order.shipment.trackingUrl && (
-                    <div className="pt-2">
-                      <a href={order.shipment.trackingUrl} target="_blank" rel="noopener noreferrer" className="text-[#ffb1c1] text-[14px] font-label-bold hover:underline flex items-center gap-1">
-                        <span className="material-symbols-outlined text-[16px]">open_in_new</span>
+                  <div className="flex flex-col gap-3 pt-4 border-t border-[#343539] mt-2">
+                    {order.shipment.trackingUrl && (
+                      <a
+                        href={order.shipment.trackingUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#ffb1c1] text-[14px] font-label-bold hover:underline flex items-center gap-1.5 py-1"
+                      >
+                        <span className="material-symbols-outlined text-[18px]">local_shipping</span>
                         Track Package
                       </a>
+                    )}
+                    <div className="grid grid-cols-2 gap-3 mt-1">
+                      {order.shipment.labelUrl && (
+                        <a
+                          href={order.shipment.labelUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-2 px-3 py-2 bg-[#ffb1c1] hover:bg-[#e19da9] text-[#121317] rounded font-label-bold text-[12px] uppercase tracking-wider transition-colors font-semibold"
+                        >
+                          <span className="material-symbols-outlined text-[16px]">download</span>
+                          Download Label
+                        </a>
+                      )}
+                      {order.shipment.manifestUrl && (
+                        <a
+                          href={order.shipment.manifestUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-2 px-3 py-2 bg-[#292a2e] hover:bg-[#343539] text-[#e3e2e7] border border-[#343539] rounded font-label-bold text-[12px] uppercase tracking-wider transition-colors"
+                        >
+                          <span className="material-symbols-outlined text-[16px]">description</span>
+                          Download Manifest
+                        </a>
+                      )}
                     </div>
-                  )}
+                    {(order.shipment.status === 'ORDER_CREATED' || order.shipment.status === 'AWB_ASSIGNED') && (
+                      <div className="pt-2 border-t border-[#343539]/50 mt-2">
+                        <CreateShipmentButton orderId={order.id} label="Retry Shipment Assignment" />
+                      </div>
+                    )}
+                  </div>
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center py-6 text-center">

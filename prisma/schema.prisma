@@ -291,17 +291,23 @@ model Payment {
 }
 
 model Shipment {
-  id              String   @id @default(cuid())
-  orderId         String   @unique
-  shiprocketId    String?  @unique // shipmentId from Shiprocket
-  awbNumber       String?  @unique
-  courierName     String?
-  trackingUrl     String?
-  status          String   @default("PENDING") // maps to Shiprocket's status
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id                String   @id @default(cuid())
+  orderId           String   @unique
+  shiprocketOrderId String?  // Shiprocket Order ID
+  shiprocketId      String?  @unique // shipmentId from Shiprocket
+  awbNumber         String?  @unique
+  courierName       String?
+  courierCompanyId  String?  // Courier Company ID
+  trackingUrl       String?
+  labelUrl          String?  // Label URL
+  manifestUrl       String?  // Manifest URL
+  pickupStatus      String?  // Pickup Status
+  invoiceUrl        String?  // Invoice URL
+  status            String   @default("PENDING") // maps to Shiprocket's status (Shipment Status)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
-  order           Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  order             Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 // ------------------------------------------

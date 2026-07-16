@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export function CreateShipmentButton({ orderId }: { orderId: string }) {
+export function CreateShipmentButton({ orderId, label }: { orderId: string; label?: string }) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
@@ -39,7 +39,7 @@ export function CreateShipmentButton({ orderId }: { orderId: string }) {
       ) : (
         <span className="material-symbols-outlined text-[16px]">local_shipping</span>
       )}
-      {isLoading ? 'Creating...' : 'Create Shiprocket Shipment'}
+      {isLoading ? 'Processing...' : (label || 'Create Shiprocket Shipment')}
     </button>
   );
 }

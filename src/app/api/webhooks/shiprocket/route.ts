@@ -29,49 +29,60 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Shipment not found' }, { status: 404 });
     }
 
-    // Update shipment status
+    const normalizedStatus = current_status.trim().toUpperCase();
+
+    // Update shipment status in database
     await prisma.shipment.update({
       where: { id: shipment.id },
-      data: { status: current_status },
+      data: { status: normalizedStatus },
     });
 
-    // If delivered, also update the main order status
-    if (current_status === 'DELIVERED') {
+    // Update the main order status according to the shipment status
+    if (normalizedStatus === 'DELIVERED') {
       await prisma.order.update({
         where: { id: shipment.orderId },
         data: { status: 'DELIVERED' },
       });
+    } else if (normalizedStatus === 'SHIPPED') {
+      await prisma.order.update({
+        where: { id: shipment.orderId },
+        data: { status: 'SHIPPED' },
+      });
     }
 
-    // Send relevant emails based on status
+    // Send relevant emails based on status, handled safely without throwing
     const notifyStatuses = ['SHIPPED', 'OUT FOR DELIVERY', 'DELIVERED'];
-    if (notifyStatuses.includes(current_status)) {
+    if (notifyStatuses.includes(normalizedStatus)) {
       let title = '';
       let message = '';
 
-      if (current_status === 'SHIPPED') {
+      if (normalizedStatus === 'SHIPPED') {
         title = 'Your Order is on the way!';
         message = `Great news, ${shipment.order.address.firstName}. We've packed your order and handed it over to our delivery partners.`;
-      } else if (current_status === 'OUT FOR DELIVERY') {
+      } else if (normalizedStatus === 'OUT FOR DELIVERY') {
         title = 'Your Order is out for delivery!';
         message = `Your order is out for delivery today, ${shipment.order.address.firstName}! Keep an eye out for our delivery partner.`;
-      } else if (current_status === 'DELIVERED') {
+      } else if (normalizedStatus === 'DELIVERED') {
         title = 'Your Order has been delivered!';
         message = `Your order has been successfully delivered, ${shipment.order.address.firstName}. Enjoy!`;
       }
 
-      await emailService.sendShipmentEmail(
-        shipment.order.user.email || '',
-        `${title} - #${shipment.order.orderNumber}`,
-        {
-          title: title,
-          message: message,
-          orderNumber: shipment.order.orderNumber,
-          courier: shipment.courierName || 'Standard Delivery',
-          awbNumber: shipment.awbNumber || '',
-          trackingUrl: shipment.trackingUrl || ''
-        }
-      );
+      try {
+        await emailService.sendShipmentEmail(
+          shipment.order.user.email || '',
+          `${title} - #${shipment.order.orderNumber}`,
+          {
+            title: title,
+            message: message,
+            orderNumber: shipment.order.orderNumber,
+            courier: shipment.courierName || 'Standard Delivery',
+            awbNumber: shipment.awbNumber || '',
+            trackingUrl: shipment.trackingUrl || ''
+          }
+        );
+      } catch (emailError) {
+        console.error('[Webhook] Failed to send shipment notification email:', emailError);
+      }
     }
 
     return NextResponse.json({ success: true });
