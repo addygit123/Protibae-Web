@@ -1,14 +1,34 @@
 import { Leaf, Dumbbell, Activity, Sprout, Heart, ArrowRight, Zap, Star, Trophy } from 'lucide-react';
 import Image from 'next/image';
+import type { Metadata } from 'next';
+import { generatePageMetadata } from '@/lib/seo';
+import { JsonLd } from '@/components/seo/JsonLd';
+import { generateBreadcrumbJsonLd, generateWebPageJsonLd } from '@/lib/jsonld';
 
-export const metadata = {
+export const metadata: Metadata = generatePageMetadata({
   title: 'Our Story',
-  description: 'Elevating performance through uncompromising nutrition. Built for the ambitious.',
-};
+  description:
+    'Elevating performance through uncompromising nutrition. Built for the ambitious — discover the story behind PROTIBAE protein bars.',
+  path: '/our-story',
+  keywords: ['about PROTIBAE', 'our story', 'performance nutrition brand', 'protein bar company India'],
+});
 
 export default function OurStoryPage() {
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: 'Our Story', href: '/our-story' },
+  ]);
+  const webPageJsonLd = generateWebPageJsonLd({
+    title: 'Our Story | PROTIBAE',
+    description: 'Elevating performance through uncompromising nutrition. Built for the ambitious — discover the story behind PROTIBAE protein bars.',
+    path: '/our-story',
+  });
+
   return (
     <>
+      {/* Structured Data */}
+      <JsonLd id="jsonld-breadcrumb" data={breadcrumbJsonLd} />
+      <JsonLd id="jsonld-webpage" data={webPageJsonLd} />
+
       {/* Hero Story Section */}
       <section className="relative min-h-[921px] flex flex-col justify-center overflow-hidden pt-20">
         <div className="absolute inset-0 z-0">

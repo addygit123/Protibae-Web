@@ -7,24 +7,54 @@ import { ProductIngredients } from '@/components/product/ProductIngredients';
 import { ProductReviews } from '@/components/product/ProductReviews';
 import { RelatedProducts } from '@/components/product/RelatedProducts';
 import { SectionReveal } from '@/components/sections/SectionReveal';
+import { JsonLd } from '@/components/seo/JsonLd';
+import {
+  generateProductJsonLd,
+  generateBreadcrumbJsonLd,
+  generateWebPageJsonLd,
+} from '@/lib/jsonld';
+import { generateProductMetadata } from '@/lib/seo';
+import { CATEGORY_LABELS } from '@/config/site';
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
 }
+
+// ─── Dynamic Metadata ──────────────────────────────────────────────────────────
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
 
   if (!product) {
-    return { title: 'Product Not Found | PROTIBAE' };
+    return {
+      title: 'Product Not Found',
+      description: 'The product you are looking for does not exist.',
+      robots: { index: false, follow: false },
+    };
   }
 
-  return {
-    title: `${product.name} | PROTIBAE`,
+  return generateProductMetadata({
+    name: product.name,
+    slug: product.slug,
     description: product.description,
-  };
+    price: product.price,
+    category: product.category,
+    images: product.gallery?.map((g) => g.src) ?? (product.image ? [product.image] : []),
+    sku: product.sku ?? null,
+    flavor: product.flavor ?? null,
+    inventory: product.inventory,
+  });
 }
+
+// ─── Static Params for SSG ─────────────────────────────────────────────────────
+
+export async function generateStaticParams() {
+  const products = await getProducts();
+  return products.map((p) => ({ slug: p.slug }));
+}
+
+// ─── Page ──────────────────────────────────────────────────────────────────────
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
@@ -34,12 +64,46 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  // Related products - typically same category or popular items, excluding current
+  // Related products — same category or popular items, excluding current
   const allProducts = await getProducts();
   const relatedProducts = allProducts.filter((p) => p.id !== product.id).slice(0, 4);
 
+  const categoryLabel = CATEGORY_LABELS[product.category] ?? product.category;
+
+  // ── Structured Data ──────────────────────────────────────────────────────────
+  const productImages = product.gallery?.map((g) => g.src) ?? (product.image ? [product.image] : []);
+
+  const productJsonLd = generateProductJsonLd({
+    name: product.name,
+    slug: product.slug,
+    description: product.description,
+    price: product.price,
+    category: product.category,
+    images: productImages,
+    sku: product.sku ?? null,
+    inventory: product.inventory,
+    brand: 'PROTIBAE',
+  });
+
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: 'Shop', href: '/shop' },
+    { name: categoryLabel, href: `/shop?category=${product.category}` },
+    { name: product.name, href: `/shop/${product.slug}` },
+  ]);
+
+  const webPageJsonLd = generateWebPageJsonLd({
+    title: `${product.name} — ${categoryLabel} | PROTIBAE`,
+    description: product.description,
+    path: `/shop/${product.slug}`,
+  });
+
   return (
     <div className="min-h-screen">
+      {/* Structured Data — Product, Breadcrumb, WebPage */}
+      <JsonLd id="jsonld-product" data={productJsonLd} />
+      <JsonLd id="jsonld-breadcrumb" data={breadcrumbJsonLd} />
+      <JsonLd id="jsonld-webpage" data={webPageJsonLd} />
+
       {/* Main Product Section */}
       <main className="relative pt-[120px] pb-16 overflow-hidden">
         
@@ -74,7 +138,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       {/* Frequently Bought Together / Related */}
       <RelatedProducts products={relatedProducts} />
       
-      {/* Trust Strip (Reused from shop page layout logic conceptually, but implemented directly per PDP design) */}
+      {/* Trust Strip */}
       <section className="bg-[#0d0e12] border-t border-[#594045]/30 py-16">
         <div className="max-w-[1280px] mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
           {[

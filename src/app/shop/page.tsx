@@ -5,13 +5,21 @@ import { ProductCard } from '@/components/shared/ProductCard';
 import { ShopFiltersBar } from '@/components/shared/ShopFiltersBar';
 import { SectionReveal } from '@/components/sections/SectionReveal';
 import { getProducts, type Product } from '@/config/products';
-import { siteConfig } from '@/config/site';
+import { generatePageMetadata } from '@/lib/seo';
+import { JsonLd } from '@/components/seo/JsonLd';
+import {
+  generateBreadcrumbJsonLd,
+  generateWebPageJsonLd,
+  generateItemListJsonLd,
+} from '@/lib/jsonld';
 
-export const metadata: Metadata = {
-  title: `Shop All | ${siteConfig.name}`,
+export const metadata: Metadata = generatePageMetadata({
+  title: 'Shop All',
   description:
-    'Premium nutrition engineered for performance. High protein, clean ingredients, and zero compromise on taste.',
-};
+    'Premium protein bars engineered for performance. High protein, clean ingredients, and zero compromise on taste. Shop the full PROTIBAE range.',
+  path: '/shop',
+  keywords: ['shop protein bars', 'buy protein bars India', 'performance nutrition shop'],
+});
 
 // ─── Filtering & Sorting (pure functions, no side effects) ────────────────────
 
@@ -57,8 +65,26 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
       ? 'Nuts & Seeds'
       : 'Combos';
 
+  // ── Structured Data ────────────────────────────────────────────────────────
+  const breadcrumbJsonLd = generateBreadcrumbJsonLd([
+    { name: 'Shop', href: '/shop' },
+  ]);
+  const webPageJsonLd = generateWebPageJsonLd({
+    title: 'Shop All | PROTIBAE',
+    description: 'Premium protein bars engineered for performance. High protein, clean ingredients, and zero compromise on taste.',
+    path: '/shop',
+  });
+  const itemListJsonLd = generateItemListJsonLd(
+    sorted.map((p) => ({ name: p.name, slug: p.slug, image: p.image, price: p.price })),
+    'PROTIBAE Product Catalogue'
+  );
+
   return (
     <div className="min-h-screen">
+      {/* Structured Data */}
+      <JsonLd id="jsonld-breadcrumb" data={breadcrumbJsonLd} />
+      <JsonLd id="jsonld-webpage" data={webPageJsonLd} />
+      <JsonLd id="jsonld-itemlist" data={itemListJsonLd} />
       {/* ── Shop Hero ────────────────────────────────────────────── */}
       <section
         className="pt-[120px] pb-12 px-6 max-w-[1280px] mx-auto overflow-hidden"

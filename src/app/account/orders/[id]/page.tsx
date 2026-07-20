@@ -9,8 +9,9 @@ import { ProductImage } from '@/components/shared/ProductImage';
 import { headers } from 'next/headers';
 
 export const metadata: Metadata = {
-  title: 'Order Details | My Account',
-  description: 'View your order details',
+  title: 'Order Details',
+  description: 'View the details of your PROTIBAE order.',
+  robots: { index: false, follow: false },
 };
 
 async function getOrder(id: string) {

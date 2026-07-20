@@ -3,6 +3,14 @@ import { CartList } from '@/components/cart/CartList';
 import { OrderSummary } from '@/components/cart/OrderSummary';
 import { FreeShippingProgress } from '@/components/cart/FreeShippingProgress';
 import { SectionReveal } from '@/components/sections/SectionReveal';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Your Cart',
+  description: 'Review your PROTIBAE cart and proceed to checkout.',
+  robots: { index: false, follow: false },
+};
+
 
 export default function CartPage() {
   return (

@@ -5,8 +5,9 @@ import { redirect } from 'next/navigation';
 import LoginClient from './LoginClient';
 
 export const metadata: Metadata = {
-  title: 'Login',
-  description: 'Login to your Protibae account',
+  title: 'Sign In',
+  description: 'Sign in to your PROTIBAE account to track orders, manage rewards, and access exclusive member benefits.',
+  robots: { index: false, follow: false },
 };
 
 export default async function LoginPage() {

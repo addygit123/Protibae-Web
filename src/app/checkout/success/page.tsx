@@ -8,7 +8,9 @@ import { prisma } from '@/lib/prisma';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Order Confirmed | PROTIBAE',
+  title: 'Order Confirmed',
+  description: 'Your PROTIBAE order has been confirmed. Thank you for your purchase — your bars are on the way!',
+  robots: { index: false, follow: false },
 };
 
 export default async function OrderSuccessPage({

@@ -24,6 +24,8 @@ export interface Product {
   isFeatured?: boolean;
   isComingSoon?: boolean;
   inventory: number;
+  sku?: string | null;
+  flavor?: string | null;
 }
 
 // Map Prisma product to Client Product UI model
@@ -69,6 +71,8 @@ function mapPrismaToClientProduct(p: PrismaProduct): Product {
     isFeatured: true,
     isComingSoon: false,
     inventory: p.inventory,
+    sku: p.sku ?? null,
+    flavor: p.flavor ?? null,
   };
 }
 

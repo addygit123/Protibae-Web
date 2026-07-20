@@ -1,9 +1,13 @@
 import { Zap, Dumbbell, Trophy, Check, ShoppingCart, Share2, MessageSquare, Globe, Mail, MessageCircle } from 'lucide-react';
+import type { Metadata } from 'next';
+import { generatePageMetadata } from '@/lib/seo';
 
-export const metadata = {
-  title: 'Rewards & Performance Loyalty',
-  description: 'Track your progress, earn performance points, and unlock premium nutrition rewards.',
-};
+export const metadata: Metadata = generatePageMetadata({
+  title: 'Rewards & Loyalty',
+  description: 'Track your progress, earn performance points, and unlock premium PROTIBAE nutrition rewards. Join the loyalty programme today.',
+  path: '/rewards',
+  keywords: ['PROTIBAE rewards', 'loyalty programme', 'performance points', 'nutrition rewards'],
+});
 
 export default function RewardsPage() {
   return (

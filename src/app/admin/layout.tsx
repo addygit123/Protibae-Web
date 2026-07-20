@@ -4,8 +4,12 @@ import AdminGuard from '@/components/admin/AdminGuard';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Protibae Admin',
-  description: 'Admin Portal for Protibae',
+  title: 'Admin Portal',
+  description: 'PROTIBAE Admin Portal',
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default async function AdminLayout({

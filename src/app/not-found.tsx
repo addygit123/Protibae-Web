@@ -1,9 +1,11 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { Zap } from 'lucide-react';
 
-export const metadata = {
-  title: '404 - Lost Your Way?',
-  description: 'Even the best athletes miss a step occasionally. Let\'s get you back to the protein source.',
+export const metadata: Metadata = {
+  title: 'Page Not Found',
+  description: "The page you are looking for doesn't exist. Return to the PROTIBAE shop.",
+  robots: { index: false, follow: true },
 };
 
 export default function NotFoundPage() {
