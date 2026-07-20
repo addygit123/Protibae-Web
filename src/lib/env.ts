@@ -50,7 +50,9 @@ const envSchema = z.object({
 
   // Storage (Cloudinary)
   CLOUDINARY_URL: z.string().optional(),
-
+  CLOUDINARY_CLOUD_NAME: z.string().optional(),
+  CLOUDINARY_API_KEY: z.string().optional(),
+  CLOUDINARY_API_SECRET: z.string().optional(),
 
   // Environment
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),

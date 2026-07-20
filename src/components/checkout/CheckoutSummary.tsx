@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import { ProductImage } from '@/components/shared/ProductImage';
 import { ShieldCheck, Truck } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cart';
 import { FreeShippingProgress } from '@/components/cart/FreeShippingProgress';
@@ -50,7 +50,7 @@ export function CheckoutSummary() {
             return (
               <div key={item.id} className="flex items-center gap-4">
                 <div className="relative flex h-20 w-20 shrink-0 items-center justify-center rounded border border-[#594045]/30 bg-[#0d0e12] p-2">
-                  <Image
+                  <ProductImage
                     src={product.image}
                     alt={product.imageAlt}
                     fill

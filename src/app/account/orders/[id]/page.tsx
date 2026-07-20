@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import { AccountLayout } from '@/components/account/AccountLayout';
 import { ArrowLeft, Package, Truck, CreditCard } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { ProductImage } from '@/components/shared/ProductImage';
 import { headers } from 'next/headers';
 
 export const metadata: Metadata = {
@@ -102,7 +102,7 @@ export default async function OrderDetailsPage(props: {
                 {order.items.map((item: any) => (
                   <div key={item.id} className="p-6 flex gap-6 items-center">
                     <div className="w-20 h-20 bg-surface-container rounded border border-outline-variant/10 overflow-hidden relative shrink-0">
-                      <Image 
+                      <ProductImage 
                         src={item.product.images[0] || '/placeholder.png'} 
                         alt={item.product.name}
                         fill

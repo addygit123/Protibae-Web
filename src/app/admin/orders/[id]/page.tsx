@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
-import Image from 'next/image';
+import { ProductImage } from '@/components/shared/ProductImage';
 import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import { PrintButton } from '@/components/admin/PrintButton';
@@ -248,7 +248,7 @@ export default async function AdminOrderDetailsPage({
                 <div key={item.id} className="flex gap-4 items-center group">
                   <div className="w-16 h-16 bg-[#292a2e] rounded flex-shrink-0 border border-[#343539] overflow-hidden">
                     {item.product.images[0] && (
-                      <Image 
+                      <ProductImage 
                         src={item.product.images[0]} 
                         alt={item.product.name}
                         width={64} 

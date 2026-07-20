@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
+import { ProductImage } from '@/components/shared/ProductImage';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Product } from '@/config/products';
@@ -48,7 +48,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
 
         {/* Main Image */}
         <div className="w-4/5 h-4/5 relative drop-shadow-[0_0_15px_rgba(196,30,92,0.3)]">
-          <Image
+          <ProductImage
             src={images[currentIndex].src}
             alt={images[currentIndex].alt}
             fill
@@ -110,7 +110,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
                   : 'border-[#594045]/30 opacity-60 hover:opacity-100 hover:border-[#a8898e]'
               )}
             >
-              <Image
+              <ProductImage
                 src={img.src}
                 alt={`Thumbnail ${idx + 1}`}
                 fill

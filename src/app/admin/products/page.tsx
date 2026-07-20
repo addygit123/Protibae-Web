@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import Image from 'next/image';
+import { ProductImage } from '@/components/shared/ProductImage';
 import Link from 'next/link';
 
 export default async function AdminProductsPage({
@@ -31,10 +31,10 @@ export default async function AdminProductsPage({
           <h2 className="font-display-hero text-headline-lg text-[#e3e2e7] leading-none mb-2">PRODUCTS</h2>
           <p className="font-body text-[#e1bec3] opacity-80">Manage your catalog, inventory, and pricing.</p>
         </div>
-        <button className="px-8 py-3 bg-[#c41e5c] text-white font-label-bold rounded shadow-lg drop-shadow-[0_0_8px_rgba(196,30,92,0.4)] flex items-center gap-2 hover:scale-[1.02] transition-transform uppercase tracking-widest">
+        <Link href="/admin/products/new" className="px-8 py-3 bg-[#c41e5c] text-white font-label-bold rounded shadow-lg drop-shadow-[0_0_8px_rgba(196,30,92,0.4)] flex items-center gap-2 hover:scale-[1.02] transition-transform uppercase tracking-widest">
           <span className="material-symbols-outlined text-[20px]">add</span>
           New Product
-        </button>
+        </Link>
       </div>
 
       {/* Filters Bento-ish Bar */}
@@ -101,7 +101,7 @@ export default async function AdminProductsPage({
                       <div className="flex items-center gap-3">
                         <div className="h-10 w-10 rounded bg-[#292a2e] border border-[#594045] overflow-hidden flex-shrink-0">
                           {product.images[0] && (
-                            <Image 
+                            <ProductImage 
                               src={product.images[0]} 
                               alt={product.name}
                               width={40} 

@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import { ProductImage } from './ProductImage';
 import Link from 'next/link';
 import { ShoppingCart } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -67,7 +67,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
         </div>
 
         {/* Product Image */}
-        <Image
+        <ProductImage
           src={product.image}
           alt={product.imageAlt}
           fill

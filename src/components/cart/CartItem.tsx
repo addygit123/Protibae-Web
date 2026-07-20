@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import { ProductImage } from '@/components/shared/ProductImage';
 import { Trash2 } from 'lucide-react';
 import { useCartStore, getPackPrice } from '@/lib/store/cart';
 import type { CartItem as CartItemType } from '@/lib/store/cart';
@@ -30,7 +30,7 @@ export function CartItem({ item }: CartItemProps) {
       {/* Product Info (Col span 3) */}
       <div className="md:col-span-3 flex items-center space-x-6">
         <div className="relative w-28 h-28 bg-[#1e1f23] rounded-lg overflow-hidden flex-shrink-0">
-          <Image
+          <ProductImage
             src={product.image}
             alt={product.imageAlt}
             fill
