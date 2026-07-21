@@ -1,6 +1,6 @@
 'use client';
 
-import { useTransition } from 'react';
+import { useTransition, Suspense } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -19,13 +19,7 @@ const SORT_OPTIONS = [
   { label: 'Newest Arrival',   value: 'newest' },
 ] as const;
 
-/**
- * ShopFiltersBar — Client Component
- * Sticky below Navbar. Handles category filter chips + sort dropdown.
- * Syncs state to URL search params so filters are shareable/bookmarkable.
- * Matches Stitch "sticky top-20" bar design exactly.
- */
-export function ShopFiltersBar() {
+function ShopFiltersBarContent() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -115,5 +109,15 @@ export function ShopFiltersBar() {
         </div>
       </div>
     </div>
+  );
+}
+
+export function ShopFiltersBar() {
+  return (
+    <Suspense fallback={
+      <div className="sticky top-20 z-40 bg-[#121317]/95 border-y border-[#594045]/30 py-4 px-6 mb-12 h-[72px]" />
+    }>
+      <ShopFiltersBarContent />
+    </Suspense>
   );
 }

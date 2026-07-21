@@ -4,10 +4,10 @@ import Script from 'next/script';
 import { useConsentStore } from '@/lib/analytics/store';
 import { analyticsConfig } from '@/lib/analytics/config';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { trackPageView } from '@/lib/analytics/events';
 
-export function AnalyticsProviders() {
+function AnalyticsContent() {
   const { consent, hasConsented } = useConsentStore();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -89,5 +89,13 @@ export function AnalyticsProviders() {
         </Script>
       )}
     </>
+  );
+}
+
+export function AnalyticsProviders() {
+  return (
+    <Suspense fallback={null}>
+      <AnalyticsContent />
+    </Suspense>
   );
 }
