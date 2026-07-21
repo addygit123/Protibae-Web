@@ -5,6 +5,8 @@ import { Minus, Plus, ShoppingBag, Truck, ShieldCheck, RefreshCw } from 'lucide-
 import { cn } from '@/lib/utils';
 import type { Product } from '@/config/products';
 import { useCartStore, getPackPrice } from '@/lib/store/cart';
+import { trackProductView, trackAddToCart } from '@/lib/analytics/events';
+import { useEffect } from 'react';
 
 interface ProductInfoProps {
   product: Product;
@@ -21,6 +23,22 @@ export function ProductInfo({ product }: ProductInfoProps) {
   const barsPerPack = Number(selectedPack);
   const maxQuantity = Math.floor(product.inventory / barsPerPack);
   const outOfStock = maxQuantity <= 0;
+
+  useEffect(() => {
+    trackProductView({
+      currency: 'INR',
+      value: displayPrice,
+      items: [
+        {
+          id: product.id,
+          name: product.name,
+          price: displayPrice,
+          brand: 'PROTIBAE',
+          category: product.category,
+        },
+      ],
+    });
+  }, [product, displayPrice]);
 
   const handleDecrease = () => setQuantity((q) => Math.max(1, q - 1));
 
@@ -189,6 +207,22 @@ export function ProductInfo({ product }: ProductInfoProps) {
                 imageAlt: product.imageAlt,
                 badges: product.badges,
                 inventory: product.inventory
+              });
+
+              trackAddToCart({
+                currency: 'INR',
+                value: displayPrice * quantity,
+                items: [
+                  {
+                    id: product.id,
+                    name: product.name,
+                    price: displayPrice,
+                    quantity,
+                    brand: 'PROTIBAE',
+                    category: product.category,
+                    variant: selectedPack === '1' ? 'Single Bar' : 'Pack of 6',
+                  },
+                ],
               });
             }}
           >

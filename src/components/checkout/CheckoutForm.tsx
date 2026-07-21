@@ -11,6 +11,8 @@ import {
 } from '@/lib/validations/checkout';
 import { useCartStore } from '@/lib/store/cart';
 import { useRouter } from 'next/navigation';
+import { trackBeginCheckout, trackPurchase } from '@/lib/analytics/events';
+import { useEffect } from 'react';
 
 const loadRazorpayScript = () => {
   return new Promise((resolve) => {
@@ -28,6 +30,21 @@ export function CheckoutForm() {
   const [activeStep, setActiveStep] = useState<1 | 2 | 3>(1);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const items = useCartStore.getState().items.map((i) => ({
+      id: i.productId,
+      name: i.product?.name || 'Product',
+      price: i.product?.price || 0,
+      quantity: i.quantity,
+    }));
+    trackBeginCheckout({
+      currency: 'INR',
+      value: getCartTotal(),
+      items,
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const {
     register,
@@ -88,6 +105,19 @@ export function CheckoutForm() {
         }
 
         const codData = await codRes.json();
+        const purchaseItems = items.map((i) => ({
+          id: i.productId,
+          name: i.productId,
+          price: 0,
+          quantity: i.quantity,
+        }));
+        trackPurchase({
+          transaction_id: codData.orderId,
+          currency: 'INR',
+          value: getCartTotal(),
+          items: purchaseItems,
+        });
+
         clearCart();
         router.push(`/checkout/success?orderId=${codData.orderId}`);
         return;
@@ -159,6 +189,18 @@ export function CheckoutForm() {
             }
             
             const verifyData = await verifyRes.json();
+            const purchaseItems = items.map((i) => ({
+              id: i.productId,
+              name: i.productId,
+              price: 0,
+              quantity: i.quantity,
+            }));
+            trackPurchase({
+              transaction_id: verifyData.orderId,
+              currency: 'INR',
+              value: getCartTotal(),
+              items: purchaseItems,
+            });
             clearCart();
             router.push(`/checkout/success?orderId=${verifyData.orderId}`);
           } catch (err: any) {

@@ -4,6 +4,7 @@ import { ProductImage } from '@/components/shared/ProductImage';
 import { Trash2 } from 'lucide-react';
 import { useCartStore, getPackPrice } from '@/lib/store/cart';
 import type { CartItem as CartItemType } from '@/lib/store/cart';
+import { trackRemoveFromCart } from '@/lib/analytics/events';
 import { cn } from '@/lib/utils';
 
 interface CartItemProps {
@@ -89,7 +90,23 @@ export function CartItem({ item }: CartItemProps) {
         )}
         <button 
           className="flex items-center text-[10px] text-[#e1bec3] hover:text-[#ffb4ab] transition-colors"
-          onClick={() => removeItem(item.id)}
+          onClick={() => {
+            trackRemoveFromCart({
+              currency: 'INR',
+              value: price * item.quantity,
+              items: [
+                {
+                  id: item.productId,
+                  name: product.name,
+                  price: price,
+                  quantity: item.quantity,
+                  brand: 'PROTIBAE',
+                  variant: item.packSize === '1' ? 'Single Bar' : 'Pack of 6',
+                },
+              ],
+            });
+            removeItem(item.id);
+          }}
         >
           <Trash2 size={14} className="mr-1" /> REMOVE
         </button>

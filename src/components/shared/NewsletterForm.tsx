@@ -1,5 +1,7 @@
 'use client';
 
+import { trackNewsletterSignup } from '@/lib/analytics/events';
+
 /**
  * NewsletterForm — thin Client Component for the shop page trust strip.
  * Handles form submission. Keeps the parent page as a Server Component.
@@ -11,6 +13,7 @@ export function NewsletterForm() {
       aria-label="Newsletter signup"
       onSubmit={(e) => {
         e.preventDefault();
+        trackNewsletterSignup('footer_form');
         // TODO: wire to Resend API route
       }}
     >

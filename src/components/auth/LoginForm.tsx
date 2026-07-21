@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Zap } from 'lucide-react';
+import { trackLogin } from '@/lib/analytics/events';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 
@@ -47,6 +48,7 @@ export function LoginForm({ onToggleView, isVisible }: LoginFormProps) {
         throw new Error('Invalid email or password');
       }
 
+      trackLogin('credentials');
       router.push('/account');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Invalid email or password');

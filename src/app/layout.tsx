@@ -7,6 +7,8 @@ import { siteConfig } from '@/config/site';
 import { AuthProvider } from '@/components/providers/AuthProvider';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { generateOrganizationJsonLd, generateWebSiteJsonLd } from '@/lib/jsonld';
+import { AnalyticsProviders } from '@/components/analytics/AnalyticsProviders';
+import { CookieConsent } from '@/components/analytics/CookieConsent';
 
 // ─── Fonts ─────────────────────────────────────────────────────────────────────
 
@@ -182,6 +184,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <main id="main-content">
             {children}
           </main>
+          
+          <AnalyticsProviders />
+          <CookieConsent />
         </AuthProvider>
       </body>
     </html>

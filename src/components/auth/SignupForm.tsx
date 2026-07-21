@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { UserPlus } from 'lucide-react';
+import { trackSignup } from '@/lib/analytics/events';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 
@@ -64,6 +65,7 @@ export function SignupForm({ onToggleView, isVisible }: SignupFormProps) {
         throw new Error(signInRes.error);
       }
 
+      trackSignup('credentials');
       router.push('/account');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during signup');
