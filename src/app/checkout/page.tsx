@@ -6,6 +6,9 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import type { Metadata } from 'next';
+import { isStoreLive, isMaintenanceMode } from '@/lib/store-config';
+import { ComingSoonPage } from '@/components/store-mode/ComingSoonPage';
+import { MaintenancePage } from '@/components/store-mode/MaintenancePage';
 
 export const metadata: Metadata = {
   title: 'Secure Checkout',
@@ -14,8 +17,13 @@ export const metadata: Metadata = {
 };
 
 export default async function CheckoutPage() {
-  const session = await getServerSession(authOptions);
+  // Store mode: maintenance blocks public access entirely
+  if (isMaintenanceMode) return <MaintenancePage />;
 
+  // Store mode: coming-soon allows browsing but not checkout
+  if (!isStoreLive) return <ComingSoonPage />;
+
+  const session = await getServerSession(authOptions);
   if (!session) {
     redirect('/login?callbackUrl=/checkout');
   }

@@ -5,6 +5,7 @@ import { orderService } from '@/lib/services/order.service';
 import { z } from 'zod';
 import { razorpay } from '@/lib/payments/razorpay';
 import { env } from '@/lib/env';
+import { isStoreLive, getStoreBlockedResponse } from '@/lib/store-config';
 
 const initOrderSchema = z.object({
   items: z
@@ -28,6 +29,11 @@ const initOrderSchema = z.object({
 });
 
 export async function POST(req: Request) {
+  // ── Store mode guard ──────────────────────────────────────────────────────────
+  if (!isStoreLive) {
+    return NextResponse.json(getStoreBlockedResponse(), { status: 503 });
+  }
+
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {

@@ -5,6 +5,7 @@ import { orderService } from '@/lib/services/order.service';
 import { verifyRazorpaySignature, razorpay } from '@/lib/payments/razorpay';
 import { z } from 'zod';
 import { PaymentStatus } from '@prisma/client';
+import { isStoreLive, getStoreBlockedResponse } from '@/lib/store-config';
 
 const verifySchema = z.object({
   items: z.array(z.object({
@@ -27,6 +28,11 @@ const verifySchema = z.object({
 });
 
 export async function POST(req: Request) {
+  // ── Store mode guard ──────────────────────────────────────────────────────────
+  if (!isStoreLive) {
+    return NextResponse.json(getStoreBlockedResponse(), { status: 503 });
+  }
+
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {

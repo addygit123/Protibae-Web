@@ -4,6 +4,8 @@ import { useHydration } from '@/hooks/useHydration';
 import { Lock } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cart';
 import { useRouter } from 'next/navigation';
+import { isStoreLive } from '@/lib/store-config';
+import { CheckoutBlockedBanner } from '@/components/store-mode/CheckoutBlockedBanner';
 
 export function OrderSummary() {
   const isMounted = useHydration();
@@ -66,15 +68,21 @@ export function OrderSummary() {
           </p>
         </div>
 
-        <button
-          className="mt-8 flex w-full items-center justify-center space-x-3 rounded-lg bg-[#c41e5c] py-5 text-white transition-all duration-150 hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(196,30,92,0.3)] active:scale-[0.98]"
-          onClick={() => router.push('/checkout')}
-        >
-          <Lock fill="currentColor" size={20} />
-          <span className="font-label-bold text-lg font-bold tracking-[0.2em] uppercase">
-            PROCEED TO CHECKOUT
-          </span>
-        </button>
+        {isStoreLive ? (
+          <button
+            className="mt-8 flex w-full items-center justify-center space-x-3 rounded-lg bg-[#c41e5c] py-5 text-white transition-all duration-150 hover:scale-[1.02] hover:shadow-[0_0_20px_rgba(196,30,92,0.3)] active:scale-[0.98]"
+            onClick={() => router.push('/checkout')}
+          >
+            <Lock fill="currentColor" size={20} />
+            <span className="font-label-bold text-lg font-bold tracking-[0.2em] uppercase">
+              PROCEED TO CHECKOUT
+            </span>
+          </button>
+        ) : (
+          <div className="mt-8">
+            <CheckoutBlockedBanner />
+          </div>
+        )}
         <div className="mt-8">
           <p className="mb-4 text-center text-[10px] font-bold tracking-widest text-[#e1bec3] uppercase">
             WE ACCEPT

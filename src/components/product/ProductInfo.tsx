@@ -7,6 +7,8 @@ import type { Product } from '@/config/products';
 import { useCartStore, getPackPrice } from '@/lib/store/cart';
 import { trackProductView, trackAddToCart } from '@/lib/analytics/events';
 import { useEffect } from 'react';
+import { isStoreLive } from '@/lib/store-config';
+import { ComingSoonBanner } from '@/components/store-mode/ComingSoonBanner';
 
 interface ProductInfoProps {
   product: Product;
@@ -163,72 +165,76 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
       {/* CTA Actions */}
       <div className="space-y-4">
-        <div className="flex gap-4">
-          <div className="flex items-center border border-[#594045] rounded-lg px-4 h-14 bg-[#1a1b1f]">
+        {isStoreLive ? (
+          <div className="flex gap-4">
+            <div className="flex items-center border border-[#594045] rounded-lg px-4 h-14 bg-[#1a1b1f]">
+              <button
+                onClick={handleDecrease}
+                disabled={outOfStock}
+                className={cn("transition-colors", outOfStock ? "text-[#594045] cursor-not-allowed" : "text-[#e1bec3] hover:text-[#ffb1c1]")}
+                aria-label="Decrease quantity"
+              >
+                <Minus size={18} />
+              </button>
+              <input
+                className="w-12 bg-transparent border-none text-center text-[#e3e2e7] focus:ring-0 font-bold"
+                readOnly
+                type="text"
+                value={outOfStock ? 0 : quantity}
+                aria-label="Quantity"
+              />
+              <button
+                onClick={handleIncrease}
+                disabled={outOfStock || quantity >= maxQuantity}
+                className={cn("transition-colors", (outOfStock || quantity >= maxQuantity) ? "text-[#594045] cursor-not-allowed" : "text-[#e1bec3] hover:text-[#ffb1c1]")}
+                aria-label="Increase quantity"
+              >
+                <Plus size={18} />
+              </button>
+            </div>
             <button
-              onClick={handleDecrease}
               disabled={outOfStock}
-              className={cn("transition-colors", outOfStock ? "text-[#594045] cursor-not-allowed" : "text-[#e1bec3] hover:text-[#ffb1c1]")}
-              aria-label="Decrease quantity"
+              className={cn(
+                'flex-1 text-white',
+                'font-display-hero text-headline-md uppercase',
+                'flex items-center justify-center gap-3 rounded-lg h-14 transition-all',
+                outOfStock 
+                  ? 'bg-[#343539] text-[#594045] cursor-not-allowed' 
+                  : 'bg-[#c41e5c] hover:shadow-[0_0_20px_rgba(196,30,92,0.5)] active:scale-[0.98]'
+              )}
+              onClick={() => {
+                addItem(product.id, selectedPack, quantity, {
+                  name: product.name,
+                  price: product.price,
+                  image: product.image,
+                  imageAlt: product.imageAlt,
+                  badges: product.badges,
+                  inventory: product.inventory
+                });
+
+                trackAddToCart({
+                  currency: 'INR',
+                  value: displayPrice * quantity,
+                  items: [
+                    {
+                      id: product.id,
+                      name: product.name,
+                      price: displayPrice,
+                      quantity,
+                      brand: 'PROTIBAE',
+                      category: product.category,
+                      variant: selectedPack === '1' ? 'Single Bar' : 'Pack of 6',
+                    },
+                  ],
+                });
+              }}
             >
-              <Minus size={18} />
-            </button>
-            <input
-              className="w-12 bg-transparent border-none text-center text-[#e3e2e7] focus:ring-0 font-bold"
-              readOnly
-              type="text"
-              value={outOfStock ? 0 : quantity}
-              aria-label="Quantity"
-            />
-            <button
-              onClick={handleIncrease}
-              disabled={outOfStock || quantity >= maxQuantity}
-              className={cn("transition-colors", (outOfStock || quantity >= maxQuantity) ? "text-[#594045] cursor-not-allowed" : "text-[#e1bec3] hover:text-[#ffb1c1]")}
-              aria-label="Increase quantity"
-            >
-              <Plus size={18} />
+              {outOfStock ? 'Out of Stock' : 'Add To Cart'} <ShoppingBag size={24} />
             </button>
           </div>
-          <button
-            disabled={outOfStock}
-            className={cn(
-              'flex-1 text-white',
-              'font-display-hero text-headline-md uppercase',
-              'flex items-center justify-center gap-3 rounded-lg h-14 transition-all',
-              outOfStock 
-                ? 'bg-[#343539] text-[#594045] cursor-not-allowed' 
-                : 'bg-[#c41e5c] hover:shadow-[0_0_20px_rgba(196,30,92,0.5)] active:scale-[0.98]'
-            )}
-            onClick={() => {
-              addItem(product.id, selectedPack, quantity, {
-                name: product.name,
-                price: product.price,
-                image: product.image,
-                imageAlt: product.imageAlt,
-                badges: product.badges,
-                inventory: product.inventory
-              });
-
-              trackAddToCart({
-                currency: 'INR',
-                value: displayPrice * quantity,
-                items: [
-                  {
-                    id: product.id,
-                    name: product.name,
-                    price: displayPrice,
-                    quantity,
-                    brand: 'PROTIBAE',
-                    category: product.category,
-                    variant: selectedPack === '1' ? 'Single Bar' : 'Pack of 6',
-                  },
-                ],
-              });
-            }}
-          >
-            {outOfStock ? 'Out of Stock' : 'Add To Cart'} <ShoppingBag size={24} />
-          </button>
-        </div>
+        ) : (
+          <ComingSoonBanner />
+        )}
 
         {/* Guarantees */}
         <div className="grid grid-cols-3 gap-2 mt-6">

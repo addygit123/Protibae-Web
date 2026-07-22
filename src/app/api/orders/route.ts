@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { orderService } from '@/lib/services/order.service';
 import { z } from 'zod';
+import { isStoreLive, getStoreBlockedResponse } from '@/lib/store-config';
 
 const createOrderSchema = z.object({
   items: z
@@ -26,6 +27,11 @@ const createOrderSchema = z.object({
 });
 
 export async function POST(req: Request) {
+  // ── Store mode guard ──────────────────────────────────────────────────────────
+  if (!isStoreLive) {
+    return NextResponse.json(getStoreBlockedResponse(), { status: 503 });
+  }
+
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
