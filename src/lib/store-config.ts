@@ -17,7 +17,14 @@ export type StoreMode = 'coming-soon' | 'live' | 'maintenance';
 const VALID_MODES: StoreMode[] = ['coming-soon', 'live', 'maintenance'];
 
 function resolveStoreMode(): StoreMode {
-  const raw = process.env.STORE_MODE?.trim().toLowerCase();
+  // NEXT_PUBLIC_STORE_MODE is available in both server and client bundles.
+  // STORE_MODE is server-only (API routes, RSC). We prefer NEXT_PUBLIC_ so
+  // client components (ProductInfo, OrderSummary, etc.) get the correct value.
+  const raw = (
+    process.env.NEXT_PUBLIC_STORE_MODE ??
+    process.env.STORE_MODE
+  )?.trim().toLowerCase();
+
   if (raw && VALID_MODES.includes(raw as StoreMode)) {
     return raw as StoreMode;
   }
