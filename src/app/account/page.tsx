@@ -13,7 +13,7 @@ import { OrderStatus } from '@prisma/client';
 
 export const metadata: Metadata = {
   title: 'My Account',
-  description: 'Manage your PROTIBAE account, view orders, and track loyalty rewards.',
+  description: 'Manage your PROTIBAE account and view orders.',
   robots: { index: false, follow: false },
 };
 
