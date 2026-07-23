@@ -3,7 +3,7 @@ import { AccountLayout } from '@/components/account/AccountLayout';
 import { BentoStats } from '@/components/account/BentoStats';
 import { RecentOrders } from '@/components/account/RecentOrders';
 import { AccountDetails } from '@/components/account/AccountDetails';
-import { RewardsBanner } from '@/components/account/RewardsBanner';
+
 import { Truck, ShieldCheck, Undo2, Headset } from 'lucide-react';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
@@ -79,8 +79,6 @@ export default async function AccountPage() {
 
           <AccountDetails />
         </div>
-
-        <RewardsBanner />
 
         {/* Trust Badges */}
 

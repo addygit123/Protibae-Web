@@ -33,7 +33,6 @@ export function AccountLayout({ children }: AccountLayoutProps) {
     { name: 'Account Details', href: '/account/details', icon: User },
     { name: 'Change Password', href: '/account/password', icon: Lock },
     { name: 'Wishlist', href: '/account/wishlist', icon: Heart },
-    { name: 'Rewards', href: '/account/rewards', icon: Star },
   ];
 
   return (

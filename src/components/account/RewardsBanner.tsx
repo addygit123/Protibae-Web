@@ -1,6 +1,7 @@
 'use client';
 
 import { Zap } from 'lucide-react';
+import Link from 'next/link';
 
 export function RewardsBanner() {
   return (
@@ -33,9 +34,9 @@ export function RewardsBanner() {
             <p className="text-sm font-bold mt-1">₹300 OFF</p>
           </div>
           
-          <button className="ml-4 bg-primary-container text-on-primary-container px-6 py-3 font-display-hero text-headline-md uppercase tracking-wide hover:scale-105 transition-transform">
+          <Link href="/account/rewards" className="ml-4 bg-primary-container text-on-primary-container px-6 py-3 font-display-hero text-headline-md uppercase tracking-wide hover:scale-105 transition-transform inline-block text-center">
             VIEW REWARDS
-          </button>
+          </Link>
         </div>
       </div>
       
