@@ -103,7 +103,7 @@ export function LoginForm({ onToggleView, isVisible }: LoginFormProps) {
         <div className="space-y-2">
           <div className="flex justify-between items-center px-1">
             <label className="font-label-bold text-label-bold uppercase tracking-widest text-on-surface-variant">Password</label>
-            <a className="text-label-sm font-label-bold text-primary hover:underline" href="#">Forgot?</a>
+            <a className="text-label-sm font-label-bold text-primary hover:underline" href="/forgot-password">Forgot?</a>
           </div>
           <div className="relative">
             <input 
