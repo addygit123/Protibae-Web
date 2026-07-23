@@ -5,6 +5,7 @@ import { OrderEmail } from '@/components/emails/OrderEmail';
 import { ShipmentEmail } from '@/components/emails/ShipmentEmail';
 import { SupportEmail } from '@/components/emails/SupportEmail';
 import { PasswordResetEmail } from '@/components/emails/PasswordResetEmail';
+import { VerificationEmail } from '@/components/emails/VerificationEmail';
 
 const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null;
 const FROM_EMAIL = 'Protibae <onboarding@resend.dev>';
@@ -34,13 +35,13 @@ export const emailService = {
       });
 
       if (error) {
-        console.error('[EmailService] Resend API Error:', error);
+        console.error(`[EmailService] Resend API Error sending to ${to} (Subject: "${subject}"):`, error);
         return { success: false, error };
       }
 
       return { success: true, data };
     } catch (err) {
-      console.error('[EmailService] Unexpected Error:', err);
+      console.error(`[EmailService] Unexpected Error sending to ${to} (Subject: "${subject}"):`, err);
       return { success: false, error: err };
     }
   },
@@ -74,6 +75,14 @@ export const emailService = {
       to,
       subject,
       react: <PasswordResetEmail {...props} />
+    });
+  },
+
+  async sendVerificationEmail(to: string, subject: string, props: any) {
+    return this.sendEmail({
+      to,
+      subject,
+      react: <VerificationEmail {...props} />
     });
   }
 };

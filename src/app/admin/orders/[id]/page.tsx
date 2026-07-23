@@ -6,6 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { PrintButton } from '@/components/admin/PrintButton';
 import { CreateShipmentButton } from '@/components/admin/CreateShipmentButton';
 import { emailService } from '@/lib/services/email.service';
+import { getBaseUrl } from '@/lib/utils';
 import { env } from '@/lib/env';
 
 export default async function AdminOrderDetailsPage({
@@ -373,7 +374,7 @@ export default async function AdminOrderDetailsPage({
                     shipping: order.shipping,
                     total: order.total,
                     address: `${order.address.firstName} ${order.address.lastName}\n${order.address.street}\n${order.address.city}, ${order.address.state} ${order.address.zip}\n${order.address.country || 'India'}`,
-                    orderUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/account/orders/${order.id}`
+                    orderUrl: `${getBaseUrl()}/account/orders/${order.id}`
                   }
                 );
               }

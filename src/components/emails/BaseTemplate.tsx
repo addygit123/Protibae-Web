@@ -1,5 +1,6 @@
 import React from 'react';
 import { Html, Head, Body, Container, Section, Text, Img, Link, Tailwind, Hr } from '@react-email/components';
+import { getBaseUrl } from '@/lib/utils';
 
 export function BaseTemplate({
   children,
@@ -30,9 +31,9 @@ export function BaseTemplate({
             <Section className="bg-[#1A1B1F] p-8 text-center border-t border-[#343539]">
               <Text className="text-[#E1BEC3] text-[12px] uppercase tracking-widest mb-4">Stay Connected</Text>
               <Section className="flex justify-center gap-4 mb-4">
-                <Link href="#" className="text-[#C41E5C] underline text-[12px]">Instagram</Link>
-                <Link href="#" className="text-[#C41E5C] underline text-[12px]">Twitter</Link>
-                <Link href="#" className="text-[#C41E5C] underline text-[12px]">Contact Us</Link>
+                <Link href={`${getBaseUrl()}`} className="text-[#C41E5C] underline text-[12px]">Store</Link>
+                <Link href={`${getBaseUrl()}/account`} className="text-[#C41E5C] underline text-[12px]">Account</Link>
+                <Link href={`${getBaseUrl()}/help`} className="text-[#C41E5C] underline text-[12px]">Contact Us</Link>
               </Section>
               <Hr className="border-[#343539] my-4" />
               <Text className="text-[#8B8D98] text-[10px]">

@@ -3,6 +3,8 @@ import { OrderStatus, PaymentStatus, AddressType, Prisma } from '@prisma/client'
 import { randomBytes } from 'crypto';
 import { emailService } from './email.service';
 import { env } from '../env';
+import { authOptions } from './../auth';
+import { getBaseUrl } from '@/lib/utils';
 import { getPackPrice } from '@/lib/store/cart';
 
 interface OrderItemInput {
@@ -215,7 +217,7 @@ export const orderService = {
           shipping: orderData.shipping,
           total: orderData.total,
           address: `${orderData.address.firstName} ${orderData.address.lastName}\n${orderData.address.street}\n${orderData.address.city}, ${orderData.address.state} ${orderData.address.zip}\n${orderData.address.country || 'India'}`,
-          orderUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/account/orders/${orderData.id}`
+          orderUrl: `${getBaseUrl()}/account/orders/${orderData.id}`
         }
       );
     }
@@ -278,7 +280,7 @@ export const orderService = {
         shipping: orderData.shipping,
         total: orderData.total,
         address: `${orderData.address.firstName} ${orderData.address.lastName}\n${orderData.address.street}\n${orderData.address.city}, ${orderData.address.state} ${orderData.address.zip}\n${orderData.address.country || 'India'}`,
-        orderUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/account/orders/${orderData.id}`
+        orderUrl: `${getBaseUrl()}/account/orders/${orderData.id}`
       }
     );
 
@@ -336,7 +338,7 @@ export const orderService = {
           shipping: orderData.shipping,
           total: orderData.total,
           address: `${orderData.address.firstName} ${orderData.address.lastName}\n${orderData.address.street}\n${orderData.address.city}, ${orderData.address.state} ${orderData.address.zip}\n${orderData.address.country || 'India'}`,
-          orderUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/account/orders/${orderData.id}`
+          orderUrl: `${getBaseUrl()}/account/orders/${orderData.id}`
         }
       );
     }
