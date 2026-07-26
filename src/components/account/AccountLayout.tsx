@@ -8,9 +8,7 @@ import {
   ShoppingBasket, 
   MapPin, 
   User, 
-  Lock, 
   Heart, 
-  Star, 
   LogOut,
   Mail,
   Phone,
@@ -30,9 +28,8 @@ export function AccountLayout({ children }: AccountLayoutProps) {
     { name: 'Dashboard', href: '/account', icon: LayoutDashboard },
     { name: 'My Orders', href: '/account/orders', icon: ShoppingBasket },
     { name: 'My Addresses', href: '/account/addresses', icon: MapPin },
-    { name: 'Account Details', href: '/account/details', icon: User },
-    { name: 'Change Password', href: '/account/password', icon: Lock },
     { name: 'Wishlist', href: '/account/wishlist', icon: Heart },
+    { name: 'Account Details', href: '/account/details', icon: User },
   ];
 
   return (

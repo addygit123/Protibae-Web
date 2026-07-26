@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PROTIBAE | Order History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Hanken+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#ffd9df",
+                    "on-background": "#e3e2e7",
+                    "primary-container": "#c41e5c",
+                    "on-error-container": "#ffdad6",
+                    "tertiary-fixed": "#e5e2e1",
+                    "surface-container-high": "#292a2e",
+                    "secondary": "#c6c6c7",
+                    "on-secondary-fixed-variant": "#454747",
+                    "secondary-container": "#454747",
+                    "background": "#121317",
+                    "outline": "#a8898e",
+                    "inverse-primary": "#b81154",
+                    "outline-variant": "#594045",
+                    "surface-variant": "#343539",
+                    "surface-container-low": "#1a1b1f",
+                    "surface-container-highest": "#343539",
+                    "primary": "#ffb1c1",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "on-primary-fixed": "#3f0017",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "surface-dim": "#121317",
+                    "on-surface-variant": "#e1bec3",
+                    "on-primary-container": "#ffdee3",
+                    "on-surface": "#e3e2e7",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "tertiary-container": "#676666",
+                    "surface-container-lowest": "#0d0e12",
+                    "on-secondary-container": "#b4b5b5",
+                    "on-tertiary-container": "#e7e5e4",
+                    "surface-tint": "#ffb1c1",
+                    "on-primary": "#66002a",
+                    "surface-bright": "#38393d",
+                    "primary-fixed-dim": "#ffb1c1",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "secondary-fixed": "#e2e2e2",
+                    "error-container": "#93000a",
+                    "surface": "#121317",
+                    "tertiary": "#c8c6c5",
+                    "on-secondary": "#2f3131",
+                    "on-error": "#690005",
+                    "surface-container": "#1e1f23",
+                    "inverse-surface": "#e3e2e7",
+                    "on-tertiary": "#313030",
+                    "error": "#ffb4ab",
+                    "inverse-on-surface": "#2f3034",
+                    "on-primary-fixed-variant": "#90003e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "section-desktop": "120px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "base": "8px",
+                    "section-mobile": "64px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Hanken Grotesk"],
+                    "label-bold": ["Hanken Grotesk"],
+                    "display-hero": ["Bebas Neue"],
+                    "headline-md": ["Bebas Neue"],
+                    "body-md": ["Hanken Grotesk"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Bebas Neue"],
+                    "headline-lg": ["Bebas Neue"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "label-bold": ["14px", {"lineHeight": "16px", "fontWeight": "700"}],
+                    "display-hero": ["96px", {"lineHeight": "90px", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "36px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["48px", {"lineHeight": "48px", "fontWeight": "400"}],
+                    "headline-lg": ["64px", {"lineHeight": "64px", "letterSpacing": "0.02em", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #121317;
+            color: #e3e2e7;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-primary {
+            filter: drop-shadow(0 0 15px rgba(196, 30, 92, 0.3));
+        }
+        .glass-nav {
+            background: rgba(18, 19, 23, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 z-50 w-full h-20 bg-background/90 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_20px_rgba(196,30,92,0.15)]">
+<div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-full">
+<div class="font-display-hero text-headline-md text-on-background tracking-tighter italic">PROTIBAE</div>
+<nav class="hidden md:flex items-center space-x-8">
+<a class="font-display-hero text-label-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">SHOP ALL</a>
+<a class="font-display-hero text-label-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">PROTEIN BARS</a>
+<a class="font-display-hero text-label-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">NUTS &amp; SEEDS</a>
+<a class="font-display-hero text-label-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">COMBOS</a>
+</nav>
+<div class="flex items-center space-x-6">
+<div class="relative group">
+<span class="material-symbols-outlined text-on-surface cursor-pointer hover:text-primary transition-colors">person</span>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined text-on-surface cursor-pointer hover:text-primary transition-colors">shopping_bag</span>
+<span class="absolute -top-2 -right-2 bg-primary-container text-[10px] text-on-primary-container font-bold w-4 h-4 rounded-full flex items-center justify-center">2</span>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-20 min-h-screen max-w-container-max mx-auto flex">
+<!-- Sidebar Navigation -->
+<aside class="w-64 fixed left-0 top-20 bottom-0 px-gutter py-10 border-r border-outline-variant/20 hidden lg:block">
+<div class="space-y-8">
+<div>
+<h3 class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider mb-4">Account</h3>
+<nav class="flex flex-col space-y-2">
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-bold text-label-bold uppercase">Profile</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg bg-primary-container text-on-primary-container shadow-[0_0_15px_rgba(196,30,92,0.3)] transition-all" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-label-bold text-label-bold uppercase">Order History</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">favorite</span>
+<span class="font-label-bold text-label-bold uppercase">My Favorites</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">loyalty</span>
+<span class="font-label-bold text-label-bold uppercase">Rewards</span>
+</a>
+</nav>
+</div>
+<div>
+<h3 class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-wider mb-4">Settings</h3>
+<nav class="flex flex-col space-y-2">
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-bold text-label-bold uppercase">Preferences</span>
+</a>
+<a class="flex items-center space-x-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-bold text-label-bold uppercase">Sign Out</span>
+</a>
+</nav>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<section class="flex-1 lg:ml-64 px-gutter py-10">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<h1 class="font-display-hero text-headline-lg text-on-background uppercase tracking-tight">Order History</h1>
+<p class="text-on-surface-variant font-body-md mt-2">Manage your fuel and track your performance gains.</p>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 items-center w-full md:w-auto">
+<!-- Search Bar -->
+<div class="relative w-full sm:w-64">
+<input class="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg px-4 py-2 text-on-surface focus:outline-none focus:border-primary transition-all font-label-bold text-label-bold uppercase" placeholder="SEARCH ORDERS..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-on-surface-variant text-sm">search</span>
+</div>
+<!-- Filter -->
+<div class="relative w-full sm:w-48">
+<select class="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg px-4 py-2 text-on-surface appearance-none focus:outline-none focus:border-primary transition-all font-label-bold text-label-bold uppercase">
+<option>ALL ORDERS</option>
+<option>DELIVERED</option>
+<option>IN TRANSIT</option>
+<option>PROCESSING</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Order List -->
+<div class="space-y-6">
+<!-- Order Card 1 -->
+<div class="bg-surface-container-low border border-outline-variant/20 rounded-xl overflow-hidden hover:border-primary/40 transition-all duration-300 group">
+<div class="p-6">
+<div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+<!-- Order Info -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3">
+<span class="font-headline-md text-headline-md text-on-surface">#PR-882190</span>
+<span class="bg-primary/20 text-primary px-3 py-1 rounded text-[10px] font-label-bold uppercase tracking-widest border border-primary/30">Delivered</span>
+</div>
+<p class="text-on-surface-variant font-label-sm uppercase tracking-wider">Ordered on Oct 24, 2023 • $142.50 Total</p>
+</div>
+<!-- Thumbnails -->
+<div class="flex -space-x-4 overflow-hidden">
+<div class="w-16 h-16 rounded-lg bg-surface-container-high border-2 border-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up high-resolution professional product photography of a premium protein bar with dark chocolate coating and almond slivers, sitting on a minimalist dark stone surface with dramatic side lighting and deep shadows, emphasizing texture and athletic luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAH6WnMPBZ9oigexkmnLn4Jbx_wYCCAaR0FWhr0U7WX99cPGBmXOD9IbfUsMRbU0mpr06K_pfBUX1pk0lHLj3XDPdkc5zgp_WYMnvJ5hJ8d9quQuBgbM4EDgVyvQ9mq8TtzSGU6X2Iwi809vN3NIcNggjUmiZ4k4mqsVKW9ELuf98ij-bmjqGv3AkRBz3agG0vfDzpGDWx1U0JHs4TxdpGvtK8-9cAIkjm71Y8u4Qg9tsGgljpfe9tqoXmdY5t4Lzj76exqpBI3lMA"/>
+</div>
+<div class="w-16 h-16 rounded-lg bg-surface-container-high border-2 border-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A sleek matte black pouch of premium plant-based protein powder with bold pink typography, standing upright against a dark moody studio background with a slight magenta backlight creating a halo effect." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqALoXw0w5ZL2rAGiEe0UcJwVG2gt2nPS9wT-UkJ0zOyqEg0DbPFh2XZ-Jytcag9OSY3a1mmjD0keWBDb5A0ITUqstFlF83O00K0mwSRlORqH9FroE_rHBB2V-Sakrav8HYYzNwnfWU6Mjz0VFVBxl5YBJK7hOJVTWhIjZgNeABMlQ3Uty4Hux6d73dNN-RatcX_RJe_ThDa92uozzzhKzaovyiSsAvFu5JP-WgfjtcLjqDDqRViH8NFI-ehrmQg3PWZT2SczmBd0"/>
+</div>
+<div class="w-16 h-16 rounded-lg bg-surface-container-high border-2 border-surface-container-low flex items-center justify-center text-on-surface-variant text-label-bold bg-surface-container-highest">
+                                    +3
+                                </div>
+</div>
+<!-- Actions -->
+<div class="flex gap-4 w-full lg:w-auto">
+<button class="flex-1 lg:flex-none px-6 py-3 border-2 border-on-surface-variant/30 text-on-surface font-label-bold uppercase tracking-widest rounded-lg hover:bg-on-surface-variant/10 transition-all text-center">
+                                    VIEW DETAILS
+                                </button>
+<button class="flex-1 lg:flex-none px-6 py-3 bg-primary text-on-primary font-label-bold uppercase tracking-widest rounded-lg glow-primary hover:scale-105 active:scale-95 transition-all text-center">
+                                    REORDER
+                                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Order Card 2 -->
+<div class="bg-surface-container-low border border-outline-variant/20 rounded-xl overflow-hidden hover:border-primary/40 transition-all duration-300 group">
+<div class="p-6">
+<div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3">
+<span class="font-headline-md text-headline-md text-on-surface">#PR-881042</span>
+<span class="bg-surface-container-highest text-secondary px-3 py-1 rounded text-[10px] font-label-bold uppercase tracking-widest border border-outline-variant/30">In Transit</span>
+</div>
+<p class="text-on-surface-variant font-label-sm uppercase tracking-wider">Ordered on Oct 28, 2023 • $89.00 Total</p>
+</div>
+<div class="flex -space-x-4 overflow-hidden">
+<div class="w-16 h-16 rounded-lg bg-surface-container-high border-2 border-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A collection of gourmet roasted nuts and seeds scattered across a dark textured surface, highlighted by a sharp beam of light, showcasing high contrast and vibrant natural colors of the snack mix." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXdF2F-4wmEPSFLDL5HUs4RS0784GwPgBRt08N9EMA1JvxjlKWhOt46JC2kTquVuKGiGc0sx3Lx8YpknGkWxrtwmSsH-ustrE2t617hRA8mzJURfPSlmS0VKv8ZyCCG52HnnbP5eXoWRoPxxcC4LZktgui7lGqpsWrsAGelIfVC4gXz34jFsWbYLLqgfXpObMUKsORZ0kzVZwh-5c3J4CZX3iUzvUQ_rzyKsrCT47j4bHrJ7rHHt515J_LMR8P_x_i9kOb0wv51Xg"/>
+</div>
+</div>
+<div class="flex gap-4 w-full lg:w-auto">
+<button class="flex-1 lg:flex-none px-6 py-3 border-2 border-on-surface-variant/30 text-on-surface font-label-bold uppercase tracking-widest rounded-lg hover:bg-on-surface-variant/10 transition-all text-center">
+                                    TRACK ORDER
+                                </button>
+<button class="flex-1 lg:flex-none px-6 py-3 border-2 border-on-surface-variant/30 text-on-surface font-label-bold uppercase tracking-widest rounded-lg hover:bg-on-surface-variant/10 transition-all text-center">
+                                    VIEW DETAILS
+                                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Order Card 3 -->
+<div class="bg-surface-container-low border border-outline-variant/20 rounded-xl overflow-hidden hover:border-primary/40 transition-all duration-300 group">
+<div class="p-6">
+<div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3">
+<span class="font-headline-md text-headline-md text-on-surface">#PR-879951</span>
+<span class="bg-primary/20 text-primary px-3 py-1 rounded text-[10px] font-label-bold uppercase tracking-widest border border-primary/30">Delivered</span>
+</div>
+<p class="text-on-surface-variant font-label-sm uppercase tracking-wider">Ordered on Sep 15, 2023 • $215.00 Total</p>
+</div>
+<div class="flex -space-x-4 overflow-hidden">
+<div class="w-16 h-16 rounded-lg bg-surface-container-high border-2 border-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A premium metal shaker bottle in matte black with a chrome pink logo cap, standing on a wet gym floor with dramatic top lighting, creating a high-performance athletic atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8f6kWqJu53UqJEfigEF33x0BJT9DWzY2mI3WbX7mdCQdqGBBtSL0-0Yfiu2pdJ29WsZgFHxX-irrjhex9vN6jkQI-rEh_jaVpU0YACOjTuCveleujufqh0VjIo360TLTzcF_tMdiZi7GPNv_Z1lY8bWlp7FrVVtTK1wVdMYpKnUXKQOVbU9vOpMeMfsIdKfmIbMg2g8tKvkPYPP9R3oL2GMH3qVpe4EDGhz_e_jbR68-V9wgYHchAdZuJgKJIYMvaJcH7VRK-0oQ"/>
+</div>
+<div class="w-16 h-16 rounded-lg bg-surface-container-high border-2 border-surface-container-low overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Multiple glossy protein bar wrappers in various vibrant colors stacked neatly, shot with a shallow depth of field against a dark, tech-inspired backdrop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADl6vCiveVuHbZUi8hcNkoGwfOT67jsidcEPAZYXc89JbetBuSCLHc615bA554k5OtQyNy-U7eqxlrUvats1qKBiza2CQlWnmtXCb-ElYThOZz4tFMW4hA5AQPlb0k-yBOzktJYxXB8NQLGWwFbM_39dRgP_mEHi7nDjJxDtgMAd1b_xvELutFCZQ8LUsNVNkPTp3qSF1tEsuMKnqzboscTjfMg7orlDl5kqNGDcybPfV8TLHLswLx-AO67NmsqbBNvxFp-PASnl0"/>
+</div>
+</div>
+<div class="flex gap-4 w-full lg:w-auto">
+<button class="flex-1 lg:flex-none px-6 py-3 border-2 border-on-surface-variant/30 text-on-surface font-label-bold uppercase tracking-widest rounded-lg hover:bg-on-surface-variant/10 transition-all text-center">
+                                    VIEW DETAILS
+                                </button>
+<button class="flex-1 lg:flex-none px-6 py-3 bg-primary text-on-primary font-label-bold uppercase tracking-widest rounded-lg glow-primary hover:scale-105 active:scale-95 transition-all text-center">
+                                    REORDER
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="mt-12 flex justify-center items-center space-x-4">
+<button class="w-10 h-10 rounded-full border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<div class="flex space-x-2">
+<button class="w-10 h-10 rounded-full bg-primary text-on-primary font-label-bold">1</button>
+<button class="w-10 h-10 rounded-full border border-outline-variant/30 text-on-surface-variant font-label-bold hover:bg-surface-container-high">2</button>
+<button class="w-10 h-10 rounded-full border border-outline-variant/30 text-on-surface-variant font-label-bold hover:bg-surface-container-high">3</button>
+</div>
+<button class="w-10 h-10 rounded-full border border-outline-variant/30 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant mt-20">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter w-full px-gutter py-section-desktop max-w-container-max mx-auto">
+<div class="space-y-6">
+<div class="font-display-hero text-headline-lg text-primary tracking-tighter">PROTIBAE</div>
+<p class="text-on-surface-variant font-body-md max-w-xs">
+                    Revolutionizing nutrition for the modern athlete. Fuel your ambition with science-backed high-protein gourmet snacks.
+                </p>
+<div class="flex space-x-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">public</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">fitness_center</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer">bolt</span>
+</div>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-bold text-label-bold uppercase tracking-wider text-primary">Shop</h4>
+<ul class="space-y-2">
+<li><a class="text-on-surface-variant hover:text-on-surface transition-transform duration-200 hover:translate-x-1 block" href="#">SHOP ALL</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface transition-transform duration-200 hover:translate-x-1 block" href="#">BEST SELLERS</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface transition-transform duration-200 hover:translate-x-1 block" href="#">SUBSCRIPTION</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-bold text-label-bold uppercase tracking-wider text-primary">Support</h4>
+<ul class="space-y-2">
+<li><a class="text-on-surface-variant hover:text-on-surface transition-transform duration-200 hover:translate-x-1 block" href="#">ORDER TRACKING</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface transition-transform duration-200 hover:translate-x-1 block" href="#">SHIPPING POLICY</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface transition-transform duration-200 hover:translate-x-1 block" href="#">REFUND POLICY</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-bold text-label-bold uppercase tracking-wider text-primary">Newsletter</h4>
+<p class="text-on-surface-variant font-body-md mb-4">JOIN THE ELITE. GET 10% OFF YOUR FIRST ORDER.</p>
+<div class="flex border border-outline-variant/30 rounded-lg overflow-hidden">
+<input class="bg-surface-container-low px-4 py-3 text-on-surface w-full focus:outline-none font-label-bold text-label-bold" placeholder="EMAIL ADDRESS" type="email"/>
+<button class="bg-primary text-on-primary px-6 font-label-bold">JOIN</button>
+</div>
+</div>
+</div>
+<div class="w-full px-gutter py-8 border-t border-outline-variant/30 max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center text-on-surface-variant text-label-sm uppercase tracking-widest">
+<span>© 2024 PROTIBAE PERFORMANCE NUTRITION. FUEL YOUR AMBITION.</span>
+<div class="flex space-x-6 mt-4 md:mt-0">
+<a class="hover:text-primary transition-colors" href="#">PRIVACY POLICY</a>
+<a class="hover:text-primary transition-colors" href="#">TERMS OF SERVICE</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions and hover effects
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+    </script>
+</body></html>

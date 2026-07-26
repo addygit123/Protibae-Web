@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PROTIBAE | Shipping Address</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Hanken+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed": "#ffd9df",
+                    "on-background": "#e3e2e7",
+                    "primary-container": "#c41e5c",
+                    "on-error-container": "#ffdad6",
+                    "tertiary-fixed": "#e5e2e1",
+                    "surface-container-high": "#292a2e",
+                    "secondary": "#c6c6c7",
+                    "on-secondary-fixed-variant": "#454747",
+                    "secondary-container": "#454747",
+                    "background": "#121317",
+                    "outline": "#a8898e",
+                    "inverse-primary": "#b81154",
+                    "outline-variant": "#594045",
+                    "surface-variant": "#343539",
+                    "surface-container-low": "#1a1b1f",
+                    "surface-container-highest": "#343539",
+                    "primary": "#ffb1c1",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "on-primary-fixed": "#3f0017",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "surface-dim": "#121317",
+                    "on-surface-variant": "#e1bec3",
+                    "on-primary-container": "#ffdee3",
+                    "on-surface": "#e3e2e7",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "tertiary-container": "#676666",
+                    "surface-container-lowest": "#0d0e12",
+                    "on-secondary-container": "#b4b5b5",
+                    "on-tertiary-container": "#e7e5e4",
+                    "surface-tint": "#ffb1c1",
+                    "on-primary": "#66002a",
+                    "surface-bright": "#38393d",
+                    "primary-fixed-dim": "#ffb1c1",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "secondary-fixed": "#e2e2e2",
+                    "error-container": "#93000a",
+                    "surface": "#121317",
+                    "tertiary": "#c8c6c5",
+                    "on-secondary": "#2f3131",
+                    "on-error": "#690005",
+                    "surface-container": "#1e1f23",
+                    "inverse-surface": "#e3e2e7",
+                    "on-tertiary": "#313030",
+                    "error": "#ffb4ab",
+                    "inverse-on-surface": "#2f3034",
+                    "on-primary-fixed-variant": "#90003e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "section-desktop": "120px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "base": "8px",
+                    "section-mobile": "64px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Hanken Grotesk"],
+                    "label-bold": ["Hanken Grotesk"],
+                    "display-hero": ["Bebas Neue"],
+                    "headline-md": ["Bebas Neue"],
+                    "body-md": ["Hanken Grotesk"],
+                    "body-lg": ["Hanken Grotesk"],
+                    "headline-lg-mobile": ["Bebas Neue"],
+                    "headline-lg": ["Bebas Neue"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "label-bold": ["14px", {"lineHeight": "16px", "fontWeight": "700"}],
+                    "display-hero": ["96px", {"lineHeight": "90px", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "36px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["48px", {"lineHeight": "48px", "fontWeight": "400"}],
+                    "headline-lg": ["64px", {"lineHeight": "64px", "letterSpacing": "0.02em", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(18, 19, 23, 0.8);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(89, 64, 69, 0.3);
+        }
+        
+        .input-glow:focus {
+            box-shadow: 0 0 15px rgba(196, 30, 92, 0.2);
+            border-color: #c41e5c;
+        }
+
+        .crimson-glow {
+            box-shadow: 0 0 20px rgba(196, 30, 92, 0.4);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1a1b1f;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #594045;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md overflow-hidden">
+<!-- Background Decoration -->
+<div class="fixed inset-0 z-0 opacity-20 pointer-events-none">
+<div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-primary-container blur-[120px] rounded-full"></div>
+<div class="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-primary blur-[150px] rounded-full"></div>
+</div>
+<!-- Main Modal Overlay -->
+<main class="relative z-10 flex items-center justify-center min-h-screen p-gutter bg-background/60 backdrop-blur-sm">
+<!-- Modal Container -->
+<section class="w-full max-w-[720px] glass-panel rounded-lg shadow-2xl overflow-hidden flex flex-col max-h-[921px]">
+<!-- Modal Header -->
+<header class="p-8 border-b border-outline-variant/30 relative">
+<div class="flex justify-between items-start">
+<div>
+<h1 class="font-headline-md text-headline-md text-on-background tracking-wider mb-2">SHIPPING ADDRESS</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">Enter your delivery details below to ensure your fuel arrives safely.</p>
+</div>
+<button aria-label="Close modal" class="text-on-surface-variant hover:text-primary transition-colors p-2">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+</header>
+<!-- Modal Content - Scrollable -->
+<div class="flex-grow overflow-y-auto p-8 custom-scrollbar">
+<form class="space-y-8" id="addressForm">
+<!-- Form Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Full Name -->
+<div class="space-y-2 group">
+<label class="font-label-bold text-label-bold uppercase tracking-widest text-on-surface-variant group-focus-within:text-primary transition-colors">Full Name</label>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-DEFAULT px-4 py-3 outline-none transition-all input-glow text-on-surface focus:ring-0" placeholder="e.g. Alex Hunter" type="text"/>
+</div>
+<!-- Phone -->
+<div class="space-y-2 group">
+<label class="font-label-bold text-label-bold uppercase tracking-widest text-on-surface-variant group-focus-within:text-primary transition-colors">Phone Number</label>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-DEFAULT px-4 py-3 outline-none transition-all input-glow text-on-surface focus:ring-0" placeholder="+1 (555) 000-0000" type="tel"/>
+</div>
+<!-- PIN Code -->
+<div class="space-y-2 group">
+<label class="font-label-bold text-label-bold uppercase tracking-widest text-on-surface-variant group-focus-within:text-primary transition-colors">PIN / Zip Code</label>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-DEFAULT px-4 py-3 outline-none transition-all input-glow text-on-surface focus:ring-0" placeholder="000000" type="text"/>
+</div>
+<!-- Landmark -->
+<div class="space-y-2 group">
+<label class="font-label-bold text-label-bold uppercase tracking-widest text-on-surface-variant group-focus-within:text-primary transition-colors">Landmark</label>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-DEFAULT px-4 py-3 outline-none transition-all input-glow text-on-surface focus:ring-0" placeholder="Near Gym / Park" type="text"/>
+</div>
+</div>
+<!-- Full Width Inputs -->
+<div class="space-y-6">
+<!-- House/Flat -->
+<div class="space-y-2 group">
+<label class="font-label-bold text-label-bold uppercase tracking-widest text-on-surface-variant group-focus-within:text-primary transition-colors">House / Flat / Building No.</label>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-DEFAULT px-4 py-3 outline-none transition-all input-glow text-on-surface focus:ring-0" placeholder="Apt 4B, Iron Gym Residence" type="text"/>
+</div>
+<!-- Area/Street -->
+<div class="space-y-2 group">
+<label class="font-label-bold text-label-bold uppercase tracking-widest text-on-surface-variant group-focus-within:text-primary transition-colors">Area / Street / Sector</label>
+<textarea class="w-full bg-surface-container-low border border-outline-variant rounded-DEFAULT px-4 py-3 outline-none transition-all input-glow text-on-surface focus:ring-0 resize-none" placeholder="Muscle Beach Blvd, Sector 7" rows="2"></textarea>
+</div>
+</div>
+<!-- City & State Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- City -->
+<div class="space-y-2 group">
+<label class="font-label-bold text-label-bold uppercase tracking-widest text-on-surface-variant group-focus-within:text-primary transition-colors">City</label>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-DEFAULT px-4 py-3 outline-none transition-all input-glow text-on-surface focus:ring-0" placeholder="Metropolis" type="text"/>
+</div>
+<!-- State -->
+<div class="space-y-2 group">
+<label class="font-label-bold text-label-bold uppercase tracking-widest text-on-surface-variant group-focus-within:text-primary transition-colors">State</label>
+<div class="relative">
+<select class="w-full bg-surface-container-low border border-outline-variant rounded-DEFAULT px-4 py-3 outline-none transition-all input-glow text-on-surface appearance-none focus:ring-0">
+<option disabled="" selected="" value="">Select State</option>
+<option value="ca">California</option>
+<option value="ny">New York</option>
+<option value="tx">Texas</option>
+<option value="fl">Florida</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-outline" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Address Type Selection -->
+<div class="space-y-4">
+<label class="font-label-bold text-label-bold uppercase tracking-widest text-on-surface-variant">Address Type</label>
+<div class="flex gap-4">
+<label class="flex-1 cursor-pointer group">
+<input checked="" class="hidden peer" name="address_type" type="radio" value="home"/>
+<div class="flex items-center justify-center gap-3 py-4 border border-outline-variant rounded-DEFAULT peer-checked:border-primary peer-checked:bg-primary-container/10 transition-all hover:bg-surface-container-high">
+<span class="material-symbols-outlined peer-checked:text-primary" data-icon="home">home</span>
+<span class="font-label-bold text-label-bold uppercase tracking-widest">Home</span>
+</div>
+</label>
+<label class="flex-1 cursor-pointer group">
+<input class="hidden peer" name="address_type" type="radio" value="office"/>
+<div class="flex items-center justify-center gap-3 py-4 border border-outline-variant rounded-DEFAULT peer-checked:border-primary peer-checked:bg-primary-container/10 transition-all hover:bg-surface-container-high">
+<span class="material-symbols-outlined peer-checked:text-primary" data-icon="work">work</span>
+<span class="font-label-bold text-label-bold uppercase tracking-widest">Office</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Default Toggle -->
+<div class="flex items-center justify-between py-4 border-y border-outline-variant/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="verified_user">verified_user</span>
+<span class="font-label-bold text-label-bold uppercase tracking-widest">Set as default address</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</div>
+</form>
+</div>
+<!-- Modal Footer -->
+<footer class="p-8 border-t border-outline-variant/30 flex flex-col sm:flex-row gap-4">
+<button class="flex-1 bg-primary-container text-white py-4 rounded-DEFAULT font-label-bold text-label-bold uppercase tracking-widest crimson-glow hover:bg-inverse-primary transition-all active:scale-95 flex items-center justify-center gap-2" form="addressForm" type="submit">
+                    SAVE ADDRESS
+                </button>
+<button class="flex-1 border border-outline-variant text-on-surface py-4 rounded-DEFAULT font-label-bold text-label-bold uppercase tracking-widest hover:bg-surface-container-high transition-all active:scale-95" type="button">
+                    CANCEL
+                </button>
+</footer>
+</section>
+</main>
+<script>
+        // Simple Interaction: Toggle active state of radio boxes visually
+        document.querySelectorAll('input[name="address_type"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                // Tailwind Peer classes handle this mostly, but we can add JS for more complex animations if needed
+                console.log('Address type changed to:', radio.value);
+            });
+        });
+
+        // Form Submit Prevent Default for Demo
+        document.getElementById('addressForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin" data-icon="progress_activity">progress_activity</span> SAVING...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.innerHTML = '<span class="material-symbols-outlined" data-icon="check">check</span> SAVED';
+                btn.classList.replace('bg-primary-container', 'bg-emerald-600');
+                btn.classList.remove('crimson-glow');
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.replace('bg-emerald-600', 'bg-primary-container');
+                    btn.classList.add('crimson-glow');
+                    btn.disabled = false;
+                }, 2000);
+            }, 1500);
+        });
+    </script>
+</body></html>

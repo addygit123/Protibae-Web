@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Account Details | PROTIBAE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Hanken+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "primary-fixed": "#ffd9df",
+                "on-background": "#e3e2e7",
+                "primary-container": "#c41e5c",
+                "on-error-container": "#ffdad6",
+                "tertiary-fixed": "#e5e2e1",
+                "surface-container-high": "#292a2e",
+                "secondary": "#c6c6c7",
+                "on-secondary-fixed-variant": "#454747",
+                "secondary-container": "#454747",
+                "background": "#121317",
+                "outline": "#a8898e",
+                "inverse-primary": "#b81154",
+                "outline-variant": "#594045",
+                "surface-variant": "#343539",
+                "surface-container-low": "#1a1b1f",
+                "surface-container-highest": "#343539",
+                "primary": "#ffb1c1",
+                "on-tertiary-fixed-variant": "#474746",
+                "on-primary-fixed": "#3f0017",
+                "on-secondary-fixed": "#1a1c1c",
+                "surface-dim": "#121317",
+                "on-surface-variant": "#e1bec3",
+                "on-primary-container": "#ffdee3",
+                "on-surface": "#e3e2e7",
+                "tertiary-fixed-dim": "#c8c6c5",
+                "tertiary-container": "#676666",
+                "surface-container-lowest": "#0d0e12",
+                "on-secondary-container": "#b4b5b5",
+                "on-tertiary-container": "#e7e5e4",
+                "surface-tint": "#ffb1c1",
+                "on-primary": "#66002a",
+                "surface-bright": "#38393d",
+                "primary-fixed-dim": "#ffb1c1",
+                "on-tertiary-fixed": "#1c1b1b",
+                "secondary-fixed-dim": "#c6c6c7",
+                "secondary-fixed": "#e2e2e2",
+                "error-container": "#93000a",
+                "surface": "#121317",
+                "tertiary": "#c8c6c5",
+                "on-secondary": "#2f3131",
+                "on-error": "#690005",
+                "surface-container": "#1e1f23",
+                "inverse-surface": "#e3e2e7",
+                "on-tertiary": "#313030",
+                "error": "#ffb4ab",
+                "inverse-on-surface": "#2f3034",
+                "on-primary-fixed-variant": "#90003e"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "section-desktop": "120px",
+                "gutter": "24px",
+                "container-max": "1280px",
+                "base": "8px",
+                "section-mobile": "64px"
+            },
+            "fontFamily": {
+                "label-sm": ["Hanken Grotesk"],
+                "label-bold": ["Hanken Grotesk"],
+                "display-hero": ["Bebas Neue"],
+                "headline-md": ["Bebas Neue"],
+                "body-md": ["Hanken Grotesk"],
+                "body-lg": ["Hanken Grotesk"],
+                "headline-lg-mobile": ["Bebas Neue"],
+                "headline-lg": ["Bebas Neue"]
+            },
+            "fontSize": {
+                "label-sm": ["12px", {"lineHeight": "14px", "fontWeight": "500"}],
+                "label-bold": ["14px", {"lineHeight": "16px", "fontWeight": "700"}],
+                "display-hero": ["96px", {"lineHeight": "90px", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                "headline-md": ["32px", {"lineHeight": "36px", "fontWeight": "400"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "headline-lg-mobile": ["48px", {"lineHeight": "48px", "fontWeight": "400"}],
+                "headline-lg": ["64px", {"lineHeight": "64px", "letterSpacing": "0.02em", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #121317;
+            color: #e3e2e7;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-hover:hover {
+            filter: drop-shadow(0 0 15px rgba(196, 30, 92, 0.3));
+        }
+        .glass-nav {
+            background: rgba(18, 19, 23, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .nav-active {
+            color: #ffb1c1;
+            position: relative;
+        }
+        .nav-active::after {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 24px;
+            background-color: #c41e5c;
+            border-radius: 0 4px 4px 0;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<nav class="docked full-width top-0 sticky z-50 bg-background/90 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_20px_rgba(196,30,92,0.15)] h-20">
+<div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-full">
+<a class="font-display-hero text-headline-md text-on-background tracking-tighter italic" href="#">PROTIBAE</a>
+<div class="hidden md:flex gap-8">
+<a class="font-display-hero text-label-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">SHOP ALL</a>
+<a class="font-display-hero text-label-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">PROTEIN BARS</a>
+<a class="font-display-hero text-label-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">NUTS &amp; SEEDS</a>
+<a class="font-display-hero text-label-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">COMBOS</a>
+<a class="font-display-hero text-label-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">REWARDS</a>
+<a class="font-display-hero text-label-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">OUR STORY</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-primary hover:bg-surface-container-high p-2 rounded-full transition-all duration-200">person</button>
+<div class="relative group">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors duration-300">shopping_bag</button>
+<span class="absolute -top-1 -right-1 bg-primary-container text-on-primary-container text-[10px] font-bold px-1 rounded-full">2</span>
+</div>
+</div>
+</div>
+</nav>
+<main class="max-w-container-max mx-auto px-gutter py-12 flex flex-col md:flex-row gap-12">
+<!-- Sidebar Navigation -->
+<aside class="w-full md:w-64 flex-shrink-0 space-y-8">
+<div class="space-y-1">
+<h3 class="font-label-bold text-label-bold text-on-surface-variant uppercase tracking-widest px-4 mb-4">My Account</h3>
+<nav class="flex flex-col gap-1">
+<a class="nav-active flex items-center gap-3 px-4 py-3 font-label-bold text-label-bold uppercase tracking-wider transition-all" href="#">
+<span class="material-symbols-outlined text-sm">person</span>
+                        Account Details
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 font-label-bold text-label-bold uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined text-sm">shopping_cart</span>
+                        Order History
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 font-label-bold text-label-bold uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined text-sm">subscriptions</span>
+                        Subscriptions
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 font-label-bold text-label-bold uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined text-sm">payments</span>
+                        Payment Methods
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 font-label-bold text-label-bold uppercase tracking-wider text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined text-sm">star</span>
+                        Rewards &amp; Points
+                    </a>
+</nav>
+</div>
+<div class="pt-8 border-t border-outline-variant/30">
+<button class="flex items-center gap-3 px-4 py-3 font-label-bold text-label-bold uppercase tracking-wider text-error hover:bg-error-container/10 transition-all w-full text-left">
+<span class="material-symbols-outlined text-sm">logout</span>
+                    Sign Out
+                </button>
+</div>
+</aside>
+<!-- Content Area -->
+<section class="flex-grow space-y-12">
+<!-- Profile Header -->
+<header class="flex flex-col md:flex-row items-center gap-8 bg-surface-container-low p-8 rounded-xl border border-outline-variant/20 shadow-xl relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<div class="relative group">
+<div class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-primary-container overflow-hidden bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="A professional, high-end studio portrait of a fit individual with dramatic lighting, positioned against a dark textured background. The aesthetic is athletic and premium, reflecting the PROTIBAE brand identity with subtle highlights and deep shadows that emphasize strength and determination." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDA55GEaxz86sLmVGq04rBq8iCs8-V6NGPOPpMw4wVqwPPCmlUWYh8_kiQAB_hr7LP41xI2GCaOb46hGaAKee13C3F0NdDs2J5mH7sAaF-FloJJuzMyjOBYYJaO5DxW08JfPL5ACETSwYlUApfmvjS0AqwD2ur4-R5kNFi0Yk_WQuciMCifY6p0RPZCPRHnKWKh4rkHaEln2E22mpZY5MaDxCnAp2hI3uCLNF9WvbJw8IqzfbG57ZXfPINgfnoFswtFl5bCjg9s1_o"/>
+</div>
+<button class="absolute bottom-2 right-2 bg-primary text-on-primary p-2 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined text-base">edit</span>
+</button>
+</div>
+<div class="text-center md:text-left z-10">
+<h1 class="font-headline-lg text-headline-md md:text-headline-lg text-on-surface tracking-tighter">ALEXANDER RIVERA</h1>
+<p class="font-label-bold text-label-bold text-primary uppercase tracking-widest mt-1">PRO MEMBER • 4,250 POINTS</p>
+<p class="text-on-surface-variant mt-2 text-label-sm">Fueling ambition since March 2023</p>
+</div>
+</header>
+<!-- Account Profile Section -->
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-widest">ACCOUNT PROFILE</h2>
+<button class="font-label-bold text-label-bold text-primary uppercase tracking-widest hover:underline">Edit All</button>
+</div>
+<form class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-surface-container-low p-8 rounded-xl border border-outline-variant/20">
+<div class="space-y-2">
+<label class="font-label-bold text-label-sm text-on-surface-variant uppercase tracking-widest">First Name</label>
+<input class="w-full bg-surface-container-highest border border-outline-variant/50 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary text-on-surface transition-all" type="text" value="Alexander"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-bold text-label-sm text-on-surface-variant uppercase tracking-widest">Last Name</label>
+<input class="w-full bg-surface-container-highest border border-outline-variant/50 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary text-on-surface transition-all" type="text" value="Rivera"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-bold text-label-sm text-on-surface-variant uppercase tracking-widest">Email Address</label>
+<input class="w-full bg-surface-container-highest border border-outline-variant/50 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary text-on-surface transition-all" type="email" value="a.rivera@performance.com"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-bold text-label-sm text-on-surface-variant uppercase tracking-widest">Phone Number</label>
+<input class="w-full bg-surface-container-highest border border-outline-variant/50 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-primary text-on-surface transition-all" type="tel" value="+1 (555) 0123-4567"/>
+</div>
+<div class="md:col-span-2 pt-4 flex justify-end">
+<button class="bg-primary text-on-primary font-display-hero text-label-bold px-8 py-3 uppercase tracking-widest glow-hover transition-all duration-300" type="submit">SAVE CHANGES</button>
+</div>
+</form>
+</div>
+<!-- Security Section -->
+<div class="space-y-6">
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-widest">SECURITY</h2>
+<div class="bg-surface-container-low p-8 rounded-xl border border-outline-variant/20 flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex items-center gap-6">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">lock</span>
+</div>
+<div>
+<h3 class="font-label-bold text-label-bold uppercase text-on-surface tracking-wide">Account Password</h3>
+<p class="text-on-surface-variant text-label-sm mt-1">Last changed 3 months ago</p>
+</div>
+</div>
+<button class="w-full md:w-auto border-2 border-on-surface text-on-surface font-display-hero text-label-bold px-8 py-3 uppercase tracking-widest hover:bg-on-surface hover:text-background transition-all duration-300">CHANGE PASSWORD</button>
+</div>
+</div>
+<!-- Preference Micro-Interaction Section (Extra Polish) -->
+<div class="space-y-6">
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-widest">PREFERENCES</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-surface-container p-6 rounded-xl border border-outline-variant/10 hover:border-primary/30 transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-primary mb-3">notifications</span>
+<h4 class="font-label-bold text-label-bold uppercase tracking-wider text-on-surface mb-2">Notifications</h4>
+<p class="text-label-sm text-on-surface-variant">Stay updated on new product drops.</p>
+</div>
+<div class="bg-surface-container p-6 rounded-xl border border-outline-variant/10 hover:border-primary/30 transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-primary mb-3">auto_awesome</span>
+<h4 class="font-label-bold text-label-bold uppercase tracking-wider text-on-surface mb-2">Smart Reminders</h4>
+<p class="text-label-sm text-on-surface-variant">Get notified when your protein is low.</p>
+</div>
+<div class="bg-surface-container p-6 rounded-xl border border-outline-variant/10 hover:border-primary/30 transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-primary mb-3">shield_person</span>
+<h4 class="font-label-bold text-label-bold uppercase tracking-wider text-on-surface mb-2">Privacy Control</h4>
+<p class="text-label-sm text-on-surface-variant">Manage your data and social visibility.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="full-width bg-surface-container-lowest border-t border-outline-variant mt-section-desktop">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter w-full px-gutter py-section-desktop max-w-container-max mx-auto">
+<div class="md:col-span-2 space-y-6">
+<a class="font-display-hero text-headline-lg text-primary tracking-tighter" href="#">PROTIBAE</a>
+<p class="max-w-md text-on-surface-variant font-body-md">Engineered for those who demand excellence in every bite. Our protein snacks are designed to fuel your ambition without compromising on gourmet taste.</p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-base">share</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined text-base">bolt</span>
+</a>
+</div>
+</div>
+<div class="space-y-6">
+<h4 class="font-label-bold text-label-bold uppercase tracking-wider text-on-surface">EXPLORE</h4>
+<div class="flex flex-col gap-3">
+<a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 uppercase text-label-bold" href="#">SHOP ALL</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 uppercase text-label-bold" href="#">BEST SELLERS</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 uppercase text-label-bold" href="#">SUBSCRIPTION</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 uppercase text-label-bold" href="#">MY ACCOUNT</a>
+</div>
+</div>
+<div class="space-y-6">
+<h4 class="font-label-bold text-label-bold uppercase tracking-wider text-on-surface">SUPPORT</h4>
+<div class="flex flex-col gap-3">
+<a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 uppercase text-label-bold" href="#">ORDER TRACKING</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 uppercase text-label-bold" href="#">SHIPPING POLICY</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 uppercase text-label-bold" href="#">REFUND POLICY</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:translate-x-1 transition-transform duration-200 uppercase text-label-bold" href="#">FAQs</a>
+</div>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-gutter py-8 border-t border-outline-variant/10 text-center">
+<p class="font-label-bold text-label-sm uppercase tracking-widest text-outline">© 2024 PROTIBAE PERFORMANCE NUTRITION. FUEL YOUR AMBITION.</p>
+</div>
+</footer>
+<script>
+        // Simple form interaction
+        document.querySelector('form')?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerText;
+            btn.innerText = 'SAVING...';
+            btn.classList.add('opacity-70');
+            
+            setTimeout(() => {
+                btn.innerText = 'CHANGES SAVED';
+                btn.classList.replace('bg-primary', 'bg-green-600');
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.classList.replace('bg-green-600', 'bg-primary');
+                    btn.classList.remove('opacity-70');
+                }, 2000);
+            }, 1000);
+        });
+    </script>
+</body></html>

@@ -244,4 +244,10 @@
   .section-padding-mobile  { padding-top: 64px; padding-bottom: 64px; }
   .container-max           { max-width: 1280px; margin-left: auto; margin-right: auto; }
   .px-gutter               { padding-left: 24px; padding-right: 24px; }
+  
+  /* Additional utilities from Stitch Mobile */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  
+  .order-card-gradient { background: linear-gradient(135deg, #1e1f23 0%, #121317 100%); }
 }
