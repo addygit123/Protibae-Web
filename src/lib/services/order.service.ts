@@ -220,6 +220,27 @@ export const orderService = {
           orderUrl: `${getBaseUrl()}/account/orders/${orderData.id}`
         }
       );
+
+      // Send admin notification
+      try {
+        await emailService.sendAdminEmail(
+          `New Paid Order Placed - #${orderData.orderNumber}`,
+          {
+            title: 'New Paid Order',
+            message: `A new paid order has been placed by ${orderData.user.name || orderData.user.email}.`,
+            details: [
+              `Order Number: #${orderData.orderNumber}`,
+              `Total: ₹${orderData.total.toFixed(2)}`,
+              `Customer: ${orderData.user.name || 'N/A'} (${orderData.user.email})`,
+              `Items: ${orderData.items.map((i: any) => `${i.product.name} (Qty: ${i.quantity})`).join(', ')}`
+            ],
+            actionUrl: `${getBaseUrl()}/admin/orders/${orderData.id}`,
+            actionLabel: 'View Order in Admin'
+          }
+        );
+      } catch (adminEmailError) {
+        console.error('[OrderService] Failed to send admin notification email for paid order:', adminEmailError);
+      }
     }
 
     return orderData;
@@ -283,6 +304,27 @@ export const orderService = {
         orderUrl: `${getBaseUrl()}/account/orders/${orderData.id}`
       }
     );
+
+    // Send admin notification
+    try {
+      await emailService.sendAdminEmail(
+        `New COD Order Placed - #${orderData.orderNumber}`,
+        {
+          title: 'New COD Order',
+          message: `A new Cash on Delivery order has been placed by ${orderData.user.name || orderData.user.email}.`,
+          details: [
+            `Order Number: #${orderData.orderNumber}`,
+            `Total: ₹${orderData.total.toFixed(2)}`,
+            `Customer: ${orderData.user.name || 'N/A'} (${orderData.user.email})`,
+            `Items: ${orderData.items.map((i: any) => `${i.product.name} (Qty: ${i.quantity})`).join(', ')}`
+          ],
+          actionUrl: `${getBaseUrl()}/admin/orders/${orderData.id}`,
+          actionLabel: 'View Order in Admin'
+        }
+      );
+    } catch (adminEmailError) {
+      console.error('[OrderService] Failed to send admin notification email for COD order:', adminEmailError);
+    }
 
     return orderData;
   },

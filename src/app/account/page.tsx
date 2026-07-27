@@ -4,6 +4,8 @@ import { BentoStats } from '@/components/account/BentoStats';
 import { RecentOrders } from '@/components/account/RecentOrders';
 import { AccountDetails } from '@/components/account/AccountDetails';
 
+export const dynamic = 'force-dynamic';
+
 import { Truck, ShieldCheck, Undo2, Headset } from 'lucide-react';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';

@@ -4,6 +4,8 @@ import { authOptions } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import LoginClient from './LoginClient';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Sign In',
   description: 'Sign in to your PROTIBAE account to track orders, manage rewards, and access exclusive member benefits.',

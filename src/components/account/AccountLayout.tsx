@@ -15,6 +15,7 @@ import {
   Zap
 } from 'lucide-react';
 import { useSession, signOut } from 'next-auth/react';
+import { useCartStore } from '@/lib/store/cart';
 
 interface AccountLayoutProps {
   children: ReactNode;
@@ -94,7 +95,10 @@ export function AccountLayout({ children }: AccountLayoutProps) {
             <div className="pt-4 mt-4 border-t border-outline-variant/20">
               <button 
                 className="w-full flex items-center gap-3 p-3 rounded-lg text-error hover:bg-error-container/20 transition-all"
-                onClick={() => signOut({ callbackUrl: '/login' })}
+                onClick={() => {
+                  useCartStore.getState().clearCart();
+                  signOut({ callbackUrl: '/login' });
+                }}
               >
                 <LogOut className="w-5 h-5" />
                 <span className="font-label-bold uppercase">Logout</span>

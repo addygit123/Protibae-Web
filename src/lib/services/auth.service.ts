@@ -90,7 +90,7 @@ export class AuthService {
       throw new Error('Verification token has expired.');
     }
 
-    await prisma.user.update({
+    const user = await prisma.user.update({
       where: { email },
       data: { emailVerified: new Date() },
     });
@@ -100,6 +100,15 @@ export class AuthService {
         identifier_token: { identifier: email, token },
       },
     });
+
+    // Send Welcome Email asynchronously
+    try {
+      await emailService.sendWelcomeEmail(email, 'Welcome to PROTIBAE!', {
+        name: user.firstName || 'there',
+      });
+    } catch (emailError) {
+      console.error('[AuthService] Failed to send welcome email:', emailError);
+    }
 
     return true;
   }

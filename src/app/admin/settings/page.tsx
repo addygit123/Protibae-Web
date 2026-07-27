@@ -1,3 +1,5 @@
+import { AdminLogoutButton } from '@/components/admin/AdminLogoutButton';
+
 export default function AdminSettingsPage() {
   return (
     <>
@@ -112,12 +114,7 @@ export default function AdminSettingsPage() {
             <a className="font-body text-[12px] text-[#e1bec3] hover:text-[#ffb1c1] transition-colors" href="#">Terms of Service</a>
           </div>
         </div>
-        <form action="/api/auth/signout" method="POST">
-          <button type="submit" className="flex items-center gap-2 px-6 py-2.5 bg-red-500/10 border border-red-500/30 text-red-400 font-label-bold text-[14px] uppercase tracking-widest hover:bg-red-500/20 transition-all rounded">
-            <span className="material-symbols-outlined text-[20px]">logout</span>
-            Logout
-          </button>
-        </form>
+        <AdminLogoutButton />
       </footer>
     </>
   );

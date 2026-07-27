@@ -36,6 +36,7 @@ export function Navbar() {
   const handleSignOut = async () => {
     setAccountMenuOpen(false);
     setMobileOpen(false);
+    useCartStore.getState().clearCart();
     await signOut({ callbackUrl: '/login' });
   };
 
