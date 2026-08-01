@@ -62,7 +62,7 @@ export function AccountLayout({ children }: AccountLayoutProps) {
                 <Mail className="w-3 h-3" /> {session?.user?.email || 'Loading...'}
               </p>
               <p className="text-on-surface-variant text-sm flex items-center gap-2">
-                <Phone className="w-3 h-3" /> Add phone number
+                <Phone className="w-3 h-3" /> {session?.user?.phone || 'Add phone number'}
               </p>
             </div>
           </div>

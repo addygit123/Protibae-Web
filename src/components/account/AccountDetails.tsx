@@ -45,7 +45,7 @@ export function AccountDetails() {
             <p className="text-on-surface-variant font-label-bold text-[10px] tracking-widest uppercase">
               Phone Number
             </p>
-            <p className="font-medium">+91 98765 43210</p>
+            <p className="font-medium">{session?.user?.phone || 'Not added'}</p>
           </div>
         </div>
 

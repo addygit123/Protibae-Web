@@ -17,6 +17,7 @@ declare module 'next-auth' {
       email?: string | null;
       image?: string | null;
       role?: string;
+      phone?: string | null;
     }
   }
 }
@@ -26,6 +27,7 @@ declare module 'next-auth/jwt' {
     firstName?: string | null;
     lastName?: string | null;
     role?: string;
+    phone?: string | null;
   }
 }
 
@@ -34,11 +36,13 @@ function applyUserFields(token: JWT, user: {
   firstName?: string | null;
   lastName?: string | null;
   role?: string;
+  phone?: string | null;
 }) {
   token.sub = user.id;
   token.firstName = user.firstName ?? null;
   token.lastName = user.lastName ?? null;
   token.role = user.role;
+  token.phone = user.phone ?? null;
 }
 
 const providers: NextAuthOptions['providers'] = [
@@ -76,6 +80,7 @@ const providers: NextAuthOptions['providers'] = [
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
+        phone: user.phone,
       };
     }
   })
@@ -99,7 +104,8 @@ if (env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET) {
           firstName,
           lastName,
           role: 'CUSTOMER',
-        };
+          phone: null,
+        } as any;
       }
     })
   );
@@ -122,17 +128,19 @@ export const authOptions: NextAuthOptions = {
         session.user.firstName = token.firstName ?? null;
         session.user.lastName = token.lastName ?? null;
         session.user.role = token.role;
+        session.user.phone = token.phone ?? null;
       }
       return session;
     },
     async jwt({ token, user }) {
       if (user) {
-        const u = user as User & { firstName?: string | null; lastName?: string | null; role?: string };
+        const u = user as User & { firstName?: string | null; lastName?: string | null; role?: string; phone?: string | null };
         applyUserFields(token, {
           id: user.id,
           firstName: u.firstName,
           lastName: u.lastName,
           role: u.role,
+          phone: u.phone,
         });
       } else if (token.sub) {
         const dbUser = await prisma.user.findUnique({
@@ -142,6 +150,7 @@ export const authOptions: NextAuthOptions = {
             firstName: true,
             lastName: true,
             role: true,
+            phone: true,
           }
         });
 
@@ -151,6 +160,7 @@ export const authOptions: NextAuthOptions = {
             firstName: dbUser.firstName,
             lastName: dbUser.lastName,
             role: dbUser.role,
+            phone: dbUser.phone,
           });
         }
       }

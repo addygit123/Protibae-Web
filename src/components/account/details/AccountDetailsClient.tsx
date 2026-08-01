@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
 import { Loader2, CheckCircle, AlertCircle, X, Shield, Lock, Bell, Sparkles, EyeOff, Eye } from 'lucide-react';
 import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 
 interface AccountDetailsClientProps {
   user: User & {
@@ -21,6 +22,7 @@ interface Toast {
 
 export function AccountDetailsClient({ user }: AccountDetailsClientProps) {
   const router = useRouter();
+  const { update } = useSession();
 
   const [firstName, setFirstName] = useState(user.firstName || '');
   const [lastName, setLastName] = useState(user.lastName || '');
@@ -168,6 +170,7 @@ export function AccountDetailsClient({ user }: AccountDetailsClientProps) {
       }
 
       showToast('Profile updated successfully!', 'success');
+      await update();
       router.refresh();
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'An error occurred while saving.';
