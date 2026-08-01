@@ -4,6 +4,7 @@ import { getProductBySlug, getProducts } from '@/config/products';
 import { ProductGallery } from '@/components/product/ProductGallery';
 import { ProductInfo } from '@/components/product/ProductInfo';
 import { ProductIngredients } from '@/components/product/ProductIngredients';
+import { ProductLabTest } from '@/components/product/ProductLabTest';
 import { ProductReviews } from '@/components/product/ProductReviews';
 import { RelatedProducts } from '@/components/product/RelatedProducts';
 import { SectionReveal } from '@/components/sections/SectionReveal';
@@ -131,6 +132,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
       {/* Ingredients & Nutrition */}
       <ProductIngredients product={product} />
+
+      {/* Third-Party Lab Tested */}
+      <ProductLabTest product={product} />
 
       {/* Community Reviews */}
       <ProductReviews />

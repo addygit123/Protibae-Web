@@ -7,6 +7,12 @@ export interface ProductBadge {
   variant: 'primary' | 'secondary' | 'accent' | 'inverse';
 }
 
+export interface LabReportConfig {
+  enabled: boolean;
+  pdf: string;
+  laboratory: string;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -26,6 +32,7 @@ export interface Product {
   inventory: number;
   sku?: string | null;
   flavor?: string | null;
+  labReport?: LabReportConfig;
 }
 
 // Map Prisma product to Client Product UI model
@@ -55,6 +62,12 @@ function mapPrismaToClientProduct(p: PrismaProduct): Product {
     'Rosemary Extract'
   ];
 
+  const labReport = p.slug === 'choco-peanut' ? {
+    enabled: true,
+    pdf: "/reports/ChocoPeanut_EQNX_001_NL_25_10_04399.pdf",
+    laboratory: "Equinox Labs"
+  } : undefined;
+
   return {
     id: p.id,
     name: p.name,
@@ -73,6 +86,7 @@ function mapPrismaToClientProduct(p: PrismaProduct): Product {
     inventory: p.inventory,
     sku: p.sku ?? null,
     flavor: p.flavor ?? null,
+    labReport,
   };
 }
 
