@@ -26,6 +26,7 @@ const initOrderSchema = z.object({
     phone: z.string(),
     email: z.string().email(),
   }),
+  selectedShippingOptionId: z.string().optional(),
 });
 
 export async function POST(req: Request) {
@@ -50,8 +51,29 @@ export async function POST(req: Request) {
       );
     }
 
+    let shippingCharge: number | undefined;
+    if (result.data.selectedShippingOptionId) {
+      try {
+        const option = await import('@/lib/shipping').then((m) =>
+          m.validateShippingOption(
+            result.data.selectedShippingOptionId!,
+            process.env.SHIPPING_PICKUP_PINCODE || '110030', // Or read from env
+            result.data.shippingDetails.postalCode,
+            0.5,
+            false // Not COD for init
+          )
+        );
+        shippingCharge = option.rate;
+      } catch (e: any) {
+        return NextResponse.json(
+          { error: `Shipping validation failed: ${e.message}` },
+          { status: 400 }
+        );
+      }
+    }
+
     // Calculate exact total server-side
-    const { total } = await orderService.calculateOrderTotals(result.data.items);
+    const { total } = await orderService.calculateOrderTotals(result.data.items, shippingCharge);
 
     // If Razorpay is not configured (mock mode fallback)
     if (!env.NEXT_PUBLIC_RAZORPAY_KEY_ID || !env.RAZORPAY_KEY_SECRET) {

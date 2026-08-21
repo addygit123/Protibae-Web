@@ -185,6 +185,8 @@ model Order {
   tax         Float       @default(0)
   shipping    Float       @default(0)
   addressId   String
+  selectedShippingProvider String?
+  selectedShippingOption   String?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   address     Address     @relation(fields: [addressId], references: [id])
@@ -233,6 +235,10 @@ model Payment {
 model Shipment {
   id                String   @id @default(cuid())
   orderId           String   @unique
+  provider          String?
+  providerOrderId   String?
+  estimatedDelivery DateTime?
+  shippingCharge    Float?
   shiprocketId      String?  @unique
   awbNumber         String?  @unique
   courierName       String?

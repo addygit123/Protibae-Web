@@ -141,7 +141,7 @@ export default async function AdminOrderDetailsPage({
                   <div className="flex justify-between items-center pb-4 border-b border-[#343539]">
                     <div className="flex items-center gap-2 text-[#e3e2e7]">
                       <span className="material-symbols-outlined text-[#ffb1c1]">package</span>
-                      <span className="font-label-bold">Shiprocket Shipment</span>
+                      <span className="font-label-bold">Shipment ({order.shipment.provider || 'shiprocket'})</span>
                     </div>
                     <span className="px-2 py-1 bg-[#292a2e] text-[#ffb1c1] font-mono text-[12px] rounded uppercase border border-[#343539]">
                       {order.shipment.status}
@@ -149,18 +149,18 @@ export default async function AdminOrderDetailsPage({
                   </div>
                   <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                     <div>
-                      <p className="text-[#e1bec3] text-[11px] uppercase font-label-bold tracking-widest mb-1">Shiprocket Order ID</p>
-                      <p className="text-[#e3e2e7] font-mono">{order.shipment.shiprocketOrderId || 'N/A'}</p>
+                      <p className="text-[#e1bec3] text-[11px] uppercase font-label-bold tracking-widest mb-1">Provider Order ID</p>
+                      <p className="text-[#e3e2e7] font-mono">{order.shipment.providerOrderId || order.shipment.shiprocketOrderId || 'N/A'}</p>
                     </div>
                     <div>
-                      <p className="text-[#e1bec3] text-[11px] uppercase font-label-bold tracking-widest mb-1">Shipment ID</p>
+                      <p className="text-[#e1bec3] text-[11px] uppercase font-label-bold tracking-widest mb-1">Provider Shipment ID</p>
                       <p className="text-[#e3e2e7] font-mono">{order.shipment.shiprocketId || 'N/A'}</p>
                     </div>
                     <div>
                       <p className="text-[#e1bec3] text-[11px] uppercase font-label-bold tracking-widest mb-1">AWB Number</p>
                       {order.shipment.status === 'ORDER_CREATED' && !order.shipment.awbNumber ? (
                         <p className="text-yellow-400 font-label-bold text-[12px] italic">
-                          Awaiting AWB assignment (Shiprocket wallet recharge required)
+                          Awaiting AWB assignment
                         </p>
                       ) : (
                         <p className="text-[#e3e2e7] font-mono">{order.shipment.awbNumber || 'N/A'}</p>
@@ -172,6 +172,14 @@ export default async function AdminOrderDetailsPage({
                         {order.shipment.courierName || 'N/A'}
                         {order.shipment.courierCompanyId ? ` (ID: ${order.shipment.courierCompanyId})` : ''}
                       </p>
+                    </div>
+                    <div>
+                      <p className="text-[#e1bec3] text-[11px] uppercase font-label-bold tracking-widest mb-1">Estimated Delivery</p>
+                      <p className="text-[#e3e2e7] font-mono">{order.shipment.estimatedDelivery ? new Date(order.shipment.estimatedDelivery).toLocaleDateString() : 'N/A'}</p>
+                    </div>
+                    <div>
+                      <p className="text-[#e1bec3] text-[11px] uppercase font-label-bold tracking-widest mb-1">Shipping Charge</p>
+                      <p className="text-[#e3e2e7] font-mono">{order.shipment.shippingCharge !== null ? `₹${order.shipment.shippingCharge}` : 'N/A'}</p>
                     </div>
                     <div>
                       <p className="text-[#e1bec3] text-[11px] uppercase font-label-bold tracking-widest mb-1">Pickup Status</p>
@@ -220,7 +228,16 @@ export default async function AdminOrderDetailsPage({
                     </div>
                     {(order.shipment.status === 'ORDER_CREATED' || order.shipment.status === 'AWB_ASSIGNED') && (
                       <div className="pt-2 border-t border-[#343539]/50 mt-2">
-                        <CreateShipmentButton orderId={order.id} label="Retry Shipment Assignment" />
+                        <CreateShipmentButton 
+                          orderId={order.id} 
+                          label="Retry Shipment Assignment" 
+                          enabledProviders={{
+                            shiprocket: env.SHIPPING_PROVIDER_SHIPROCKET_ENABLED,
+                            indiapost: env.SHIPPING_PROVIDER_INDIAPOST_ENABLED,
+                            porter: env.SHIPPING_PROVIDER_PORTER_ENABLED,
+                            nimbuspost: env.SHIPPING_PROVIDER_NIMBUSPOST_ENABLED
+                          }}
+                        />
                       </div>
                     )}
                   </div>
@@ -231,7 +248,15 @@ export default async function AdminOrderDetailsPage({
                   <p className="text-[#e1bec3] text-[14px] mb-4">No shipment created yet.</p>
                   {order.status !== 'PENDING' || order.payment?.provider === 'cod' ? (
                     <div className="w-full max-w-[250px]">
-                      <CreateShipmentButton orderId={order.id} />
+                      <CreateShipmentButton 
+                        orderId={order.id} 
+                        enabledProviders={{
+                          shiprocket: env.SHIPPING_PROVIDER_SHIPROCKET_ENABLED,
+                          indiapost: env.SHIPPING_PROVIDER_INDIAPOST_ENABLED,
+                          porter: env.SHIPPING_PROVIDER_PORTER_ENABLED,
+                          nimbuspost: env.SHIPPING_PROVIDER_NIMBUSPOST_ENABLED
+                        }}
+                      />
                     </div>
                   ) : (
                     <p className="text-[#e1bec3] text-[12px] italic">Order must be paid before creating a shipment.</p>

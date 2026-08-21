@@ -13,9 +13,12 @@ export function FreeShippingProgress() {
   if (!isMounted || items.length === 0) return null;
 
   const total = getCartTotal();
+  const { calculateShippingCost } = require('@/lib/shipping/calculator');
+  const shippingResult = calculateShippingCost({ subtotal: total, items: items.map(i => ({ packSize: i.packSize, quantity: i.quantity })) });
+  
+  const isFree = shippingResult.isFree;
   const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - total);
-  const percentage = Math.min(100, (total / FREE_SHIPPING_THRESHOLD) * 100);
-  const isFree = percentage === 100;
+  const percentage = isFree ? 100 : Math.min(100, (total / FREE_SHIPPING_THRESHOLD) * 100);
 
   return (
     <div className="mt-20 p-10 bg-[#1a1b1f] rounded-lg border-2 border-[#c41e5c]/20 relative overflow-hidden group">

@@ -24,6 +24,7 @@ const createOrderSchema = z.object({
     phone: z.string(),
     email: z.string().email(),
   }),
+  selectedShippingOptionId: z.string().optional(),
 });
 
 export async function POST(req: Request) {
@@ -48,10 +49,38 @@ export async function POST(req: Request) {
       );
     }
 
+    let shippingOptionInfo: { providerId: string; optionId: string; charge: number } | undefined;
+    
+    if (result.data.selectedShippingOptionId) {
+      try {
+        const option = await import('@/lib/shipping').then((m) =>
+          m.validateShippingOption(
+            result.data.selectedShippingOptionId!,
+            process.env.SHIPPING_PICKUP_PINCODE || '110030',
+            result.data.shippingDetails.postalCode,
+            0.5,
+            false // not cod here by default, or depends on payment options
+          )
+        );
+        shippingOptionInfo = {
+          providerId: option.providerId,
+          optionId: option.id,
+          charge: option.rate,
+        };
+      } catch (e: any) {
+        return NextResponse.json(
+          { error: `Shipping validation failed: ${e.message}` },
+          { status: 400 }
+        );
+      }
+    }
+
     const order = await orderService.createOrder(
       session.user.id,
       result.data.items,
-      result.data.shippingDetails
+      result.data.shippingDetails,
+      undefined,
+      shippingOptionInfo
     );
 
     return NextResponse.json({ orderId: order.id }, { status: 201 });

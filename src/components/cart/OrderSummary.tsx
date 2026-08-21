@@ -18,9 +18,11 @@ export function OrderSummary() {
   // Example logic: discount of 20% applied automatically or mock
   const originalSubtotal = Math.round(subtotal * 1.2);
   const discount = originalSubtotal - subtotal;
-  const isFreeShipping = subtotal > 499;
-  const shipping = isFreeShipping ? 0 : 250;
-  const total = subtotal + shipping;
+  const { calculateShippingCost } = require('@/lib/shipping/calculator');
+  const items = useCartStore.getState().items;
+  const shippingResult = calculateShippingCost({ subtotal, items: items.map(i => ({ packSize: i.packSize, quantity: i.quantity })) });
+  const isFreeShipping = shippingResult.isFree;
+  const total = subtotal; // we don't display a shipping fallback here if it's not free, it's calculated at checkout
 
   if (!isMounted || itemCount === 0) return null;
 
@@ -49,7 +51,7 @@ export function OrderSummary() {
                 FREE
               </span>
             ) : (
-              <span className="font-bold text-[#e3e2e7]">₹{shipping}</span>
+              <span className="font-bold text-[#e3e2e7]">Calculated at checkout</span>
             )}
           </div>
         </div>

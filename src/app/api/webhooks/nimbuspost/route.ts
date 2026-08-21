@@ -1,21 +1,24 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { emailService } from '@/lib/services/email.service';
-import { normalizeShiprocketStatus } from '@/lib/shipping/status';
+import { normalizeNimbusPostStatus } from '@/lib/shipping/status';
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    // Shiprocket sends 'awb', 'current_status', 'shipment_status', etc.
-    const { awb, current_status } = body;
+    const awb = body.awb;
+    const status = body.status;
 
-    if (!awb || !current_status) {
+    if (!awb || !status) {
       return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
     }
 
-    const shipment = await prisma.shipment.findUnique({
-      where: { awbNumber: awb },
+    const shipment = await prisma.shipment.findFirst({
+      where: { 
+        awbNumber: awb,
+        provider: 'nimbuspost'
+      },
       include: {
         order: {
           include: {
@@ -30,15 +33,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Shipment not found' }, { status: 404 });
     }
 
-    const normalizedStatus = normalizeShiprocketStatus(current_status);
+    const normalizedStatus = normalizeNimbusPostStatus(status);
 
-    // Update shipment status in database
     await prisma.shipment.update({
       where: { id: shipment.id },
       data: { status: normalizedStatus },
     });
 
-    // Update the main order status according to the shipment status
     if (normalizedStatus === 'DELIVERED') {
       await prisma.order.update({
         where: { id: shipment.orderId },
@@ -49,11 +50,8 @@ export async function POST(req: Request) {
         where: { id: shipment.orderId },
         data: { status: 'SHIPPED' },
       });
-    } else if (normalizedStatus === 'RTO' || normalizedStatus === 'CANCELLED' || normalizedStatus === 'FAILED') {
-      // Could mark as cancelled or failed depending on business logic
     }
 
-    // Send relevant emails based on status, handled safely without throwing
     const notifyStatuses = ['IN_TRANSIT', 'OUT_FOR_DELIVERY', 'DELIVERED'];
     if (notifyStatuses.includes(normalizedStatus)) {
       let title = '';
@@ -78,7 +76,7 @@ export async function POST(req: Request) {
             title: title,
             message: message,
             orderNumber: shipment.order.orderNumber,
-            courier: shipment.courierName || 'Standard Delivery',
+            courier: shipment.courierName || 'NimbusPost',
             awbNumber: shipment.awbNumber || '',
             trackingUrl: shipment.trackingUrl || ''
           }
@@ -90,7 +88,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('[POST /api/webhooks/shiprocket]', error);
+    console.error('[POST /api/webhooks/nimbuspost]', error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Internal Server Error' },
       { status: 500 }

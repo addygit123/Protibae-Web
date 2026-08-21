@@ -13,6 +13,7 @@ import { useCartStore } from '@/lib/store/cart';
 import { useRouter } from 'next/navigation';
 import { trackBeginCheckout, trackPurchase } from '@/lib/analytics/events';
 import { useEffect } from 'react';
+import type { ShippingOption } from '@/lib/shipping/types';
 
 const loadRazorpayScript = () => {
   return new Promise((resolve) => {
@@ -27,9 +28,12 @@ const loadRazorpayScript = () => {
 export function CheckoutForm() {
   const router = useRouter();
   const { getCartTotal, clearCart } = useCartStore();
-  const [activeStep, setActiveStep] = useState<1 | 2 | 3>(1);
+  const [activeStep, setActiveStep] = useState<1 | 2 | 3 | 4>(1);
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);
+  const [shippingOptions, setShippingOptions] = useState<ShippingOption[]>([]);
+  const [isFetchingOptions, setIsFetchingOptions] = useState(false);
+  const [selectedShippingOptionId, setSelectedShippingOptionId] = useState<string | null>(null);
 
   useEffect(() => {
     const items = useCartStore.getState().items.map((i) => ({
@@ -50,6 +54,7 @@ export function CheckoutForm() {
     register,
     handleSubmit,
     trigger,
+    getValues,
     formState: { errors },
   } = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
@@ -59,7 +64,7 @@ export function CheckoutForm() {
     },
   });
 
-  const handleNextStep = async (step: 1 | 2 | 3) => {
+  const handleNextStep = async (step: 1 | 2 | 3 | 4) => {
     let fieldsToValidate: (keyof CheckoutFormData)[] = [];
     if (step === 1) fieldsToValidate = ['email', 'phone'];
     if (step === 2)
@@ -73,8 +78,31 @@ export function CheckoutForm() {
 
     const isValid = await trigger(fieldsToValidate);
     if (isValid) {
-      setActiveStep((step + 1) as 1 | 2 | 3);
-      // scroll to top of the next step could go here
+      if (step === 2) {
+        // Fetch shipping options
+        setIsFetchingOptions(true);
+        setActiveStep(3);
+        try {
+          const values = getValues();
+          const cod = values.paymentMethod === 'cod';
+          const weightKg = useCartStore.getState().items.reduce((acc, item) => acc + (0.5 * item.quantity), 0);
+          
+          const res = await fetch(`/api/shipping/options?pickupPostcode=110030&deliveryPostcode=${values.postalCode}&weightKg=${weightKg}&cod=${cod}`);
+          if (res.ok) {
+            const data = await res.json();
+            setShippingOptions(data.options || []);
+            if (data.options?.length > 0) {
+              setSelectedShippingOptionId(data.options[0].id);
+            }
+          }
+        } catch (error) {
+          console.error("Failed to fetch shipping options", error);
+        } finally {
+          setIsFetchingOptions(false);
+        }
+      } else {
+        setActiveStep((step + 1) as 1 | 2 | 3 | 4);
+      }
     }
   };
 
@@ -96,6 +124,7 @@ export function CheckoutForm() {
           body: JSON.stringify({
             items,
             shippingDetails: data,
+            selectedShippingOptionId,
           }),
         });
 
@@ -130,6 +159,7 @@ export function CheckoutForm() {
         body: JSON.stringify({
           items,
           shippingDetails: data,
+          selectedShippingOptionId,
         }),
       });
 
@@ -445,13 +475,13 @@ export function CheckoutForm() {
               onClick={() => handleNextStep(2)}
               className="font-display text-label-bold rounded bg-[#c41e5c] px-8 py-4 tracking-widest text-white shadow-[0_0_15px_rgba(196,30,92,0.3)] transition-all hover:scale-105"
             >
-              GO TO PAYMENT
+              VIEW DELIVERY OPTIONS
             </button>
           </div>
         </div>
       </div>
 
-      {/* Step 3: Payment */}
+      {/* Step 3: Delivery Options */}
       <div
         className={cn(
           'overflow-hidden rounded-lg border bg-[#0d0e12] transition-all duration-300',
@@ -482,7 +512,7 @@ export function CheckoutForm() {
               3
             </span>
             <span className="font-display text-headline-md tracking-wider text-[#e3e2e7] uppercase">
-              Payment Method
+              Delivery Options
             </span>
           </div>
           {activeStep === 3 ? (
@@ -496,6 +526,103 @@ export function CheckoutForm() {
           className={cn(
             'overflow-hidden transition-all duration-300',
             activeStep === 3
+              ? 'max-h-[1000px] opacity-100'
+              : 'max-h-0 opacity-0'
+          )}
+        >
+          <div className="space-y-6 p-8">
+            {isFetchingOptions ? (
+              <div className="flex items-center justify-center py-8 text-[#e3e2e7]">
+                <div className="h-6 w-6 animate-spin rounded-full border-2 border-[#c41e5c]/30 border-t-[#c41e5c]" />
+                <span className="ml-3">Finding the best delivery options...</span>
+              </div>
+            ) : shippingOptions.length === 0 ? (
+              <div className="rounded border border-[#93000a] bg-[#93000a]/20 p-4 text-center text-sm text-[#ffb4ab]">
+                No delivery options available for this pincode. Please try a different address.
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {shippingOptions.length > 0 && (
+                  <div className="flex items-start justify-between rounded border border-[#c41e5c] bg-[#1a1b1f] p-4 shadow-[0_0_10px_rgba(196,30,92,0.1)]">
+                    <div className="flex items-start gap-4">
+                      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#c41e5c] text-white">
+                        <ShieldCheck size={12} />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="flex items-center gap-2 font-bold text-[#e3e2e7]">
+                          Free Delivery
+                          {shippingOptions[0].isFast && <span className="text-yellow-500">⚡</span>}
+                        </span>
+                        <span className="text-sm font-medium text-green-400">
+                          Estimated arrival: {shippingOptions[0].etaLabel}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="font-bold text-[#e3e2e7]">
+                      FREE
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+            
+            <button
+              type="button"
+              onClick={() => handleNextStep(3)}
+              disabled={isFetchingOptions || shippingOptions.length === 0 || !selectedShippingOptionId}
+              className="font-display text-label-bold rounded bg-[#c41e5c] px-8 py-4 tracking-widest text-white shadow-[0_0_15px_rgba(196,30,92,0.3)] transition-all hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
+            >
+              GO TO PAYMENT
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Step 4: Payment */}
+      <div
+        className={cn(
+          'overflow-hidden rounded-lg border bg-[#0d0e12] transition-all duration-300',
+          activeStep === 4 ? 'border-[#c41e5c]' : 'border-[#594045]/20'
+        )}
+      >
+        <button
+          type="button"
+          onClick={() => {
+            if (activeStep > 3) setActiveStep(4);
+          }}
+          disabled={activeStep < 4}
+          className={cn(
+            'flex w-full items-center justify-between bg-[#1a1b1f]/50 p-6 transition-opacity',
+            activeStep !== 4 && 'opacity-50 hover:opacity-100',
+            activeStep < 4 && 'cursor-not-allowed'
+          )}
+        >
+          <div className="flex items-center gap-4">
+            <span
+              className={cn(
+                'flex h-8 w-8 items-center justify-center rounded-full border-2 text-sm font-bold',
+                activeStep === 4
+                  ? 'border-[#c41e5c] text-[#c41e5c]'
+                  : 'border-[#a8898e] text-[#a8898e]'
+              )}
+            >
+              4
+            </span>
+            <span className="font-display text-headline-md tracking-wider text-[#e3e2e7] uppercase">
+              Payment Method
+            </span>
+          </div>
+          {activeStep === 4 ? (
+            <ChevronDown className="text-[#c41e5c]" />
+          ) : (
+            <Lock size={20} className="text-[#a8898e]" />
+          )}
+        </button>
+
+        <div
+          className={cn(
+            'overflow-hidden transition-all duration-300',
+            activeStep === 4
               ? 'max-h-[1000px] opacity-100'
               : 'max-h-0 opacity-0'
           )}

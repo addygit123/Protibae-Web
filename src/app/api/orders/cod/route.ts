@@ -25,6 +25,7 @@ const codOrderSchema = z.object({
     phone: z.string(),
     email: z.string().email(),
   }),
+  selectedShippingOptionId: z.string().optional(),
 });
 
 export async function POST(req: Request) {
@@ -49,6 +50,32 @@ export async function POST(req: Request) {
       );
     }
 
+    let shippingOptionInfo: { providerId: string; optionId: string; charge: number } | undefined;
+    
+    if (result.data.selectedShippingOptionId) {
+      try {
+        const option = await import('@/lib/shipping').then((m) =>
+          m.validateShippingOption(
+            result.data.selectedShippingOptionId!,
+            process.env.SHIPPING_PICKUP_PINCODE || '110030',
+            result.data.shippingDetails.postalCode,
+            0.5,
+            true // COD is true
+          )
+        );
+        shippingOptionInfo = {
+          providerId: option.providerId,
+          optionId: option.id,
+          charge: option.rate,
+        };
+      } catch (e: any) {
+        return NextResponse.json(
+          { error: `Shipping validation failed: ${e.message}` },
+          { status: 400 }
+        );
+      }
+    }
+
     // Create Prisma Order (PENDING status) with COD Provider
     const order = await orderService.createOrder(
       session.user.id,
@@ -57,7 +84,8 @@ export async function POST(req: Request) {
       {
         provider: 'cod',
         status: PaymentStatus.PENDING,
-      }
+      },
+      shippingOptionInfo
     );
 
     await orderService.finalizeCodOrder(order.id);

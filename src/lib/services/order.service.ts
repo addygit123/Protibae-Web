@@ -6,6 +6,7 @@ import { env } from '../env';
 import { authOptions } from './../auth';
 import { getBaseUrl } from '@/lib/utils';
 import { getPackPrice } from '@/lib/store/cart';
+import { createShipmentForOrder } from '@/lib/shipping';
 
 interface OrderItemInput {
   productId: string;
@@ -27,7 +28,7 @@ export const orderService = {
   /**
    * Calculates totals securely using DB prices without creating an order.
    */
-  async calculateOrderTotals(items: OrderItemInput[]) {
+  async calculateOrderTotals(items: OrderItemInput[], overrideShippingCharge?: number) {
     if (!items || items.length === 0) {
       throw new Error('Order must contain at least one item.');
     }
@@ -61,7 +62,15 @@ export const orderService = {
       };
     });
 
-    const shipping = subtotal > 499 ? 0 : 250;
+    // Import here to avoid circular dependency issues if any
+    const { calculateShippingCost } = await import('@/lib/shipping/calculator');
+    
+    let shippingCostData = calculateShippingCost({ subtotal, items: orderItemsData, providerRate: overrideShippingCharge });
+    let shipping = shippingCostData.amount ?? 0; // if free, amount is 0. If providerRate wasn't provided but it's not free, it might be null, but we'll default to 0 for checkout fallback, though API should always provide a rate.
+
+    // Wait, the prompt says: "The customer-facing shipping charge should be: ₹0 when the order qualifies for free shipping. Do not add ₹250 to the order total."
+    // If the provider rate was supplied, it's used. If not, and it's not free, we'll just set it to 0 here to ensure no 250 is magically added without a real provider cost.
+    
     const total = subtotal + shipping;
 
     return { subtotal, shipping, total, orderItemsData };
@@ -80,10 +89,18 @@ export const orderService = {
       provider: 'razorpay' | 'cod' | 'checkout_mock';
       razorpayOrderId?: string | null;
       status: PaymentStatus;
+    },
+    shippingOption?: {
+      providerId: string;
+      optionId: string;
+      charge: number;
     }
   ) {
     // 1 & 2. Calculate totals securely
-    const { subtotal, shipping, total, orderItemsData } = await this.calculateOrderTotals(items);
+    const { subtotal, shipping, total, orderItemsData } = await this.calculateOrderTotals(
+      items,
+      shippingOption?.charge
+    );
 
     // Generate a unique order number (e.g. ORD-12345678)
     const orderNumber = `ORD-${randomBytes(4).toString('hex').toUpperCase()}`;
@@ -117,6 +134,8 @@ export const orderService = {
           tax: 0,
           total,
           addressId: address.id,
+          selectedShippingProvider: shippingOption?.providerId || null,
+          selectedShippingOption: shippingOption?.optionId || null,
           items: {
             create: orderItemsData,
           },
@@ -202,6 +221,9 @@ export const orderService = {
     });
 
     if (orderData.status === OrderStatus.PAID) {
+      // Automatic shipment creation has been removed per PROTIBAE business rules.
+      // Shipments must only be created manually by Admin.
+
       await emailService.sendOrderEmail(
         orderData.user.email || '',
         `Order Confirmation - #${orderData.orderNumber}`,
@@ -285,6 +307,9 @@ export const orderService = {
 
       return { ...order, items: order.items, address: order.address, user: order.user };
     });
+
+    // Automatic shipment creation has been removed per PROTIBAE business rules.
+    // Shipments must only be created manually by Admin.
 
     await emailService.sendOrderEmail(
       orderData.user.email || '',

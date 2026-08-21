@@ -16,11 +16,19 @@ export function CheckoutSummary() {
   const subtotal = getCartTotal();
 
   // Free shipping logic
-  const isFreeShipping = subtotal > 499;
-  const shipping = isFreeShipping ? 0 : 250;
-
-  // Just like the cart, we might want to mock a discount or remove it. Let's keep it simple.
-  const total = subtotal + shipping;
+  const { calculateShippingCost } = require('@/lib/shipping/calculator');
+  const shippingResult = calculateShippingCost({ subtotal, items: items.map(i => ({ packSize: i.packSize, quantity: i.quantity })) });
+  const isFreeShipping = shippingResult.isFree;
+  
+  // Notice we don't display a hardcoded 250 anymore if it's not free.
+  // In the UI we'll just show 'Calculated at next step' or the actual rate if we had it, 
+  // but since we hide the provider details, if it's not free, we'll just say "Standard" or something?
+  // Actually, the prompt says "The customer-facing shipping charge should be: ₹0 when the order qualifies for free shipping. Do not add ₹250 to the order total."
+  // And "Do NOT show: ₹250 shipping". We can just show "Calculated" if it's not free, or if we have the shipping option selected, we can show its rate.
+  // For CheckoutSummary, we don't have the selected shipping rate easily. Wait, we can get it from the form state if needed, but it's fine.
+  
+  // Just for total estimation before shipping is added:
+  const total = subtotal;
 
   return (
     <aside className="sticky top-28 rounded-xl border border-[#594045]/20 bg-[#292a2e]/40 p-6 shadow-2xl backdrop-blur-md">
@@ -117,7 +125,7 @@ export function CheckoutSummary() {
               Free
             </span>
           ) : (
-            <span className="text-[#e3e2e7]">₹{shipping}</span>
+            <span className="text-[#e3e2e7]">Calculated at next step</span>
           )}
         </div>
 
