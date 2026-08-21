@@ -77,7 +77,7 @@ export function ComparisonSection() {
               style={{ filter: 'drop-shadow(0 0 15px rgba(196, 30, 92, 0.4))' }}
             >
               <Image
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUjlUrBsTC7y1d-DcZhYChpVItvy1zTL6a1nrHptkpmsGeqmJrC2IEnGT3_S60MlG-cXMU2ulePRBj4VlNq7G2Euj83N3NZv1bCItHK0eRZWvBWCy7WaMv0sVtoWtulsRCNfnM-yamjCMbMH2wXc9zMOqnz_QmzafweANLDaXVxDuysDOZA1vsyNREYIgl3g4LZSaFf5f86Pl2Vk0fysz2fraiBCoaLxk7toIEOBzvtUzvqdQkSXbGenh4plW3J7WKmyGXLlfiBjo"
+                src="/protibae-cross-section.png"
                 alt="PROTIBAE protein bar cross-section showing almond chunks, peanut butter layers and chocolate coating"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"

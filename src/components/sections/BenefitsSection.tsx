@@ -51,11 +51,11 @@ export function BenefitsSection() {
               </div>
               <div className="mt-8 relative w-full h-64 overflow-hidden">
                 <Image
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmQ6ZgAs5aVYM8UoGsfRxqfPNkBkK0gW-CypByHIe7-IQEF2hnmyhXcQ7TTaMRHi9_ddt1hL4gCcyhS64GgA1gOHCaEqtWTgYQbU1bp50R_nspBKhj4xufXrjw42iDZMZ_YnpeNh_8LUbwyWzr-BNoII-oTkMmHzkiJ5pHyTZMEfw1tbcpn6AIFHKJC1urAK5n8SGCg174e1234PJZ_6sOXZMspg_SBlaryzZ8Zs4gukLpM-QtLUM6EiNWPff3885q1UjqmSGcve0"
+                  src="/protibae-broken-bar.png"
                   alt="PROTIBAE protein bar broken in half showing dense texture and protein crisps"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover"
+                  className="object-cover rounded-xl"
                 />
               </div>
             </div>

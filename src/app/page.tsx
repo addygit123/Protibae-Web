@@ -3,6 +3,7 @@ import { HeroSection } from '@/components/sections/HeroSection';
 import { BenefitsSection } from '@/components/sections/BenefitsSection';
 import { ComparisonSection } from '@/components/sections/ComparisonSection';
 import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
+import { SocialInstagramSection } from '@/components/sections/SocialInstagramSection';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { generateBreadcrumbJsonLd, generateWebPageJsonLd } from '@/lib/jsonld';
 import { siteConfig } from '@/config/site';
@@ -67,6 +68,7 @@ export default function HomePage() {
       <BenefitsSection />
       <ComparisonSection />
       <TestimonialsSection />
+      <SocialInstagramSection />
       {/* Newsletter & Footer — next milestone */}
     </>
   );

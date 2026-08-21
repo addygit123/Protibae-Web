@@ -1,5 +1,3 @@
-
-
 interface CalculateShippingInput {
   subtotal: number;
   items: Array<{ packSize: '1' | '6'; quantity?: number }>;
@@ -7,15 +5,25 @@ interface CalculateShippingInput {
 }
 
 export function calculateShippingCost(input: CalculateShippingInput) {
-  // Free shipping rule: subtotal > 499 OR cart contains a pack of 6
-  // But per business rules: "Customer pays: ₹0 shipping. The actual courier cost is an internal business expense."
-  // So customer shipping is ALWAYS 0.
-  const isFree = true; // For the customer, it is always free/0 charge right now.
-  
+  // Free shipping rule: Only when the cart contains a Pack of 6
+  const hasPackOf6 = input.items.some(item => item.packSize === '6');
+
+  if (hasPackOf6) {
+    return {
+      amount: 0,
+      isFree: true,
+      message: 'Free delivery (Pack of 6 included)'
+    };
+  }
+
+  // Otherwise, use real provider rate if available, or default to an average estimate (₹55)
+  const amount = input.providerRate !== undefined && input.providerRate !== null
+    ? input.providerRate
+    : 55; // average estimated shipping cost for single bars
+
   return {
-    amount: 0, // Customer pays 0
-    isFree
+    amount,
+    isFree: false,
+    message: '₹' + amount + ' shipping applied'
   };
 }
-
-

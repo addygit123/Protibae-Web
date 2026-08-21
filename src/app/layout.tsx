@@ -3,6 +3,7 @@ import { Bebas_Neue, Hanken_Grotesk } from 'next/font/google';
 import './globals.css';
 import { AnnouncementBar } from '@/components/layout/AnnouncementBar';
 import { Navbar } from '@/components/layout/Navbar';
+import { MobileBottomNav } from '@/components/layout/MobileBottomNav';
 import { siteConfig } from '@/config/site';
 import { AuthProvider } from '@/components/providers/AuthProvider';
 import { JsonLd } from '@/components/seo/JsonLd';
@@ -181,9 +182,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <Navbar />
 
           {/* Page Content — skip-to-content anchor for accessibility & SEO */}
-          <main id="main-content">
+          <main id="main-content" className="pb-20 md:pb-0">
             {children}
           </main>
+          
+          {/* Mobile Bottom Navigation Bar */}
+          <MobileBottomNav />
           
           <AnalyticsProviders />
           <CookieConsent />

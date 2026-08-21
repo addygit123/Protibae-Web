@@ -17,8 +17,7 @@ export function FreeShippingProgress() {
   const shippingResult = calculateShippingCost({ subtotal: total, items: items.map(i => ({ packSize: i.packSize, quantity: i.quantity })) });
   
   const isFree = shippingResult.isFree;
-  const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - total);
-  const percentage = isFree ? 100 : Math.min(100, (total / FREE_SHIPPING_THRESHOLD) * 100);
+  const percentage = isFree ? 100 : 0;
 
   return (
     <div className="mt-20 p-10 bg-[#1a1b1f] rounded-lg border-2 border-[#c41e5c]/20 relative overflow-hidden group">
@@ -34,13 +33,13 @@ export function FreeShippingProgress() {
               <>
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#e1bec3] mb-1">CONGRATULATIONS!</p>
                 <h3 className="font-display-hero text-4xl uppercase italic text-[#ffb1c1]">YOU&apos;VE UNLOCKED FREE SHIPPING!</h3>
-                <p className="text-xs text-[#e1bec3] mt-2">Your premium fuel is on its way at no extra cost.</p>
+                <p className="text-xs text-[#e1bec3] mt-2">Your premium Pack of 6 includes free delivery.</p>
               </>
             ) : (
               <>
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#e1bec3] mb-1">YOU&apos;RE ONLY ₹{remaining} AWAY FROM</p>
-                <h3 className="font-display-hero text-4xl uppercase italic text-[#ffb1c1]">FREE SHIPPING!</h3>
-                <p className="text-xs text-[#e1bec3] mt-2">Add more to your cart and save on delivery costs.</p>
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#e1bec3] mb-1">EXCLUSTIVE OFFER</p>
+                <h3 className="font-display-hero text-4xl uppercase italic text-[#ffb1c1]">FREE DELIVERY WITH PACK OF 6!</h3>
+                <p className="text-xs text-[#e1bec3] mt-2">Add a Pack of 6 for only ₹399 to get free shipping.</p>
               </>
             )}
           </div>
@@ -53,7 +52,6 @@ export function FreeShippingProgress() {
               className="absolute top-0 left-0 h-full bg-[#c41e5c] shadow-[0_0_15px_rgba(196,30,92,0.5)] transition-all duration-1000 ease-out" 
               style={{ width: `${percentage}%` }}
             >
-              {/* animated shine could go here */}
             </div>
             <div 
               className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 bg-white rounded-full border-4 border-[#c41e5c] shadow-lg flex items-center justify-center transition-all duration-1000 ease-out"
@@ -63,15 +61,15 @@ export function FreeShippingProgress() {
             </div>
           </div>
           <div className="flex justify-between text-[10px] font-bold text-[#e1bec3] uppercase tracking-widest">
-            <span>₹0</span>
-            <span className="text-[#ffb1c1]">₹{total}</span>
-            <span>₹{FREE_SHIPPING_THRESHOLD}</span>
+            <span>Cart</span>
+            <span className="text-[#ffb1c1]">{isFree ? 'Pack of 6 Added' : 'No Pack of 6'}</span>
+            <span>Free Shipping</span>
           </div>
         </div>
 
         <div className="text-right hidden md:block">
           <span className="text-[10px] font-bold text-[#ffb1c1] uppercase tracking-[0.3em]">
-            FREE SHIPPING UNLOCKS AT ₹{FREE_SHIPPING_THRESHOLD}
+            FREE SHIPPING ON PACK OF 6
           </span>
         </div>
       </div>

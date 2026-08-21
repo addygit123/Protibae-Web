@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 import { usePathname } from 'next/navigation';
 
-const MESSAGE = '🚀 FREE SHIPPING ON ORDERS ABOVE ₹499 · USE CODE PROTIBAE10 FOR 10% OFF YOUR FIRST ORDER · NEW FLAVOR DROPPING SOON';
+const MESSAGE = '🎁 GET FREE DELIVERY WITH A PACK OF 6 FOR ₹399 · USE CODE PROTIBAE10 FOR 10% OFF YOUR FIRST ORDER · REAL INGREDIENTS · NO CRAP';
 
 /**
  * AnnouncementBar

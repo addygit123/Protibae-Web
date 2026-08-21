@@ -106,7 +106,7 @@ export class NimbusPostProvider implements ShippingProvider {
         city: order.address.city,
         state: order.address.state,
         country: order.address.country,
-        phone: parseInt(order.address.phone.replace(/[^0-9]/g, '')) || 9999999999
+        phone: parseInt((order.address.phone || '').replace(/[^0-9]/g, '')) || 9999999999
       },
       items: order.items.map(item => ({
         name: item.name,
@@ -138,15 +138,15 @@ export class NimbusPostProvider implements ShippingProvider {
     const booking = json.data.booking;
 
     return {
-      awb: booking.awb,
+      providerId: this.id,
+      providerOrderId: booking.order_id?.toString() || order.orderId,
+      providerShipmentId: booking.shipment_id?.toString() || booking.id?.toString(),
+      awbNumber: booking.awb,
       courierName: booking.courier_name,
-      labelUrl: booking.label_url,
       trackingUrl: booking.tracking_url,
-      provider: this.id,
-      routingCode: booking.routing_key,
-      status: 'MANIFESTED',
-      cost: booking.price?.total || 0,
-      rawResponse: json
+      status: 'AWB_ASSIGNED',
+      shippingCharge: booking.price?.total || selectedOption.rate,
+      estimatedDelivery: selectedOption.estimatedDelivery ? new Date(selectedOption.estimatedDelivery) : undefined,
     };
   }
 }

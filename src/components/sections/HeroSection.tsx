@@ -28,8 +28,13 @@ export function HeroSection() {
       <div className="container-max w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
         {/* ─── LEFT: Copy Column ─── */}
         <HeroAnimations>
+          {/* Promo offer badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#c41e5c]/15 border border-[#c41e5c]/40 text-[#ffb1c1] text-xs font-bold uppercase tracking-wider rounded-full mb-6 max-w-max shadow-[0_0_15px_rgba(196,30,92,0.15)] animate-pulse">
+            🎁 FREE DELIVERY WITH PACK OF 6 FOR ₹399
+          </div>
+
           {/* Overline */}
-          <span className="text-[#c41e5c] text-label-bold tracking-[0.2em] uppercase">
+          <span className="block text-[#c41e5c] text-label-bold tracking-[0.2em] uppercase">
             PEANUTS. PROTEIN. PURPOSE.
           </span>
 
@@ -44,10 +49,11 @@ export function HeroSection() {
           </h1>
 
           {/* Body */}
-          <p className="text-body-lg text-[#e1bec3] max-w-lg">
+          <p className="text-body-lg text-[#e1bec3] max-w-lg mt-4">
             PROTIBAE wasn&apos;t just another protein bar idea. It was born out
             of a simple frustration—snacks were either tasty but unhealthy, or
-            healthy but tasted like compromise. We knew you deserved better.
+            healthy but tasted like compromise. We knew you deserved better. Get our
+            signature Choco Peanut pack of 6 for just ₹399 with free nationwide delivery.
           </p>
 
           {/* CTA */}
@@ -108,12 +114,12 @@ export function HeroSection() {
           </div>
 
           <Image
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBynzH45MCPPfg-cw4FHw56sh-n4z-aYExAV_huFoVfgQ3OtgOlgugSjdKP8DNPcMQwX4ElyUjVOLANhmURwYpykZrgX232umKpb_BRmX64QRfe5C5sBQ55Puk92TG7aSpPC8m6uCBZu8FmIe-Oda7xpuhvnWRnNtlzcWevoyZNc1SKpFaUA8yOuz6lcLZz-FVGR5Rr6xrtaMF4fMHAqeFfWXQCyuW2lKRdJWn_SE3NCLUSGCARdNJFH-tgeUnvb12euP10IfgKgi0"
+            src="/protibae-choco-peanut.png"
             alt="PROTIBAE Choco Peanut Protein Bar — premium high-protein snack"
             width={600}
             height={600}
             priority
-            className="w-full max-w-[600px] h-auto object-contain relative z-20 animate-floating drop-shadow-[0_20px_50px_rgba(196,30,92,0.3)]"
+            className="w-full max-w-[600px] h-auto object-contain relative z-20 animate-floating drop-shadow-[0_20px_50px_rgba(196,30,92,0.35)] rounded-2xl"
             style={{ width: '100%', height: 'auto' }}
           />
         </div>

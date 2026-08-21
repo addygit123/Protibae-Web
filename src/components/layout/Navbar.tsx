@@ -166,15 +166,7 @@ export function Navbar() {
               )}
             </Link>
 
-            {/* Mobile Hamburger */}
-            <button
-              className="md:hidden text-[#e3e2e7] hover:text-[#ffb1c1] transition-colors"
-              onClick={() => setMobileOpen(true)}
-              aria-label="Open navigation menu"
-              aria-expanded={mobileOpen}
-            >
-              <Menu size={24} strokeWidth={1.5} />
-            </button>
+            {/* Mobile Hamburger - Hidden in favor of MobileBottomNav */}
           </div>
         </div>
       </header>
