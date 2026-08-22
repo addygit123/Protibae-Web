@@ -44,7 +44,12 @@ function mapPrismaToClientProduct(p: PrismaProduct): Product {
     { label: 'Low Sugar', variant: 'accent' },
   ];
   
-  const mainImage = p.images.length > 0 ? p.images[0] : 'https://lh3.googleusercontent.com/aida-public/AB6AXuAfgwOPLhAXvuKJxnVl0xtDu81Y0QsvAKvyCSLZdztbE3-a8akPsmSd-fadjDGMj7HNsnO1ddA9PpDDOe-DbI-akM_4T7nsCA8RP_ifvNQwvwZmpzk3s3rTaXIrnPv-e1oAzutxavkaru7D2iSd6i126CrYiGjSRnd-bsK8AzNH7YsWU9aDcXd9K1JEHfgtH6dDz63hjJpeuALFt3VProMgVHZH5ztimgqR7SVrqb64J_53qfkYdG3XI5CFNWZUnPew611TmYMV-Z8';
+  const isChocoPeanut = p.slug === 'choco-peanut';
+  
+  // Use correct wrapper image for choco-peanut, otherwise fallback
+  const mainImage = isChocoPeanut 
+    ? '/protibae-wrapper.png' 
+    : (p.images.length > 0 ? p.images[0] : 'https://lh3.googleusercontent.com/aida-public/AB6AXuAfgwOPLhAXvuKJxnVl0xtDu81Y0QsvAKvyCSLZdztbE3-a8akPsmSd-fadjDGMj7HNsnO1ddA9PpDDOe-DbI-akM_4T7nsCA8RP_ifvNQwvwZmpzk3s3rTaXIrnPv-e1oAzutxavkaru7D2iSd6i126CrYiGjSRnd-bsK8AzNH7YsWU9aDcXd9K1JEHfgtH6dDz63hjJpeuALFt3VProMgVHZH5ztimgqR7SVrqb64J_53qfkYdG3XI5CFNWZUnPew611TmYMV-Z8');
 
   const gallery = p.images.length > 0 ? p.images.map(src => ({ src, alt: p.name })) : [
     { src: mainImage, alt: `${p.name} wrapper` },
@@ -62,17 +67,22 @@ function mapPrismaToClientProduct(p: PrismaProduct): Product {
     'Rosemary Extract'
   ];
 
-  const labReport = p.slug === 'choco-peanut' ? {
+  const labReport = isChocoPeanut ? {
     enabled: true,
     pdf: "/reports/ChocoPeanut_EQNX_001_NL_25_10_04399.pdf",
     laboratory: "Equinox Labs"
   } : undefined;
 
+  // Fix price for choco-peanut if db is unset/0
+  const basePrice = (isChocoPeanut && (!p.price || p.price === 0)) ? 79 : p.price;
+  const price6 = isChocoPeanut ? 399 : basePrice * 6;
+
   return {
     id: p.id,
     name: p.name,
     slug: p.slug,
-    price: p.price,
+    price: basePrice,
+    price6: price6,
     packInfo: 'Pack of 6/12/24',
     description: p.description,
     category: p.category ? p.category.toLowerCase().replace(' ', '-') as any : 'protein-bars',
