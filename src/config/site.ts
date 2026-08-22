@@ -61,7 +61,7 @@ export const siteConfig = {
 
   // Social links (placeholders — update when accounts are created)
   social: {
-    instagram: 'https://instagram.com/protibae',
+    instagram: 'https://instagram.com/protibaeofficial',
     twitter: 'https://twitter.com/protibae',
     facebook: 'https://facebook.com/protibae',
     youtube: 'https://youtube.com/@protibae',

@@ -542,27 +542,51 @@ export function CheckoutForm() {
               </div>
             ) : (
               <div className="space-y-4">
-                {shippingOptions.length > 0 && (
-                  <div className="flex items-start justify-between rounded border border-[#c41e5c] bg-[#1a1b1f] p-4 shadow-[0_0_10px_rgba(196,30,92,0.1)]">
-                    <div className="flex items-start gap-4">
-                      <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#c41e5c] text-white">
-                        <ShieldCheck size={12} />
+                {shippingOptions.map((option) => {
+                  const isSelected = selectedShippingOptionId === option.id;
+                  const hasPackOf6 = useCartStore.getState().items.some(i => i.packSize === '6');
+                  const displayRate = hasPackOf6 ? 'FREE' : `₹${option.rate}`;
+
+                  return (
+                    <button
+                      key={option.id}
+                      type="button"
+                      onClick={() => setSelectedShippingOptionId(option.id)}
+                      className={cn(
+                        "w-full flex items-start justify-between rounded-xl border p-5 text-left transition-all duration-300",
+                        isSelected
+                          ? "border-[#c41e5c] bg-[#c41e5c]/10 shadow-[0_0_15px_rgba(196,30,92,0.2)]"
+                          : "border-[#594045]/30 bg-[#1a1b1f] hover:border-[#ffb1c1]/30"
+                      )}
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className={cn(
+                          "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors mt-0.5",
+                          isSelected
+                            ? "border-[#c41e5c] bg-[#c41e5c] text-white"
+                            : "border-[#e1bec3]/40"
+                        )}>
+                          {isSelected && <div className="h-2 w-2 rounded-full bg-white" />}
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="flex items-center gap-2 font-bold text-[#e3e2e7] uppercase tracking-wide">
+                            {option.providerName}
+                            {option.isFast && <span className="text-yellow-500">⚡</span>}
+                          </span>
+                          <span className="text-xs text-[#e1bec3] mt-1">
+                            Courier: {option.courierName}
+                          </span>
+                          <span className="text-sm font-semibold text-green-400 mt-2">
+                            Estimated arrival: {option.etaLabel}
+                          </span>
+                        </div>
                       </div>
-                      <div className="flex flex-col">
-                        <span className="flex items-center gap-2 font-bold text-[#e3e2e7]">
-                          Free Delivery
-                          {shippingOptions[0].isFast && <span className="text-yellow-500">⚡</span>}
-                        </span>
-                        <span className="text-sm font-medium text-green-400">
-                          Estimated arrival: {shippingOptions[0].etaLabel}
-                        </span>
+                      <div className="font-bold text-headline-sm text-[#e3e2e7]">
+                        {displayRate}
                       </div>
-                    </div>
-                    <div className="font-bold text-[#e3e2e7]">
-                      FREE
-                    </div>
-                  </div>
-                )}
+                    </button>
+                  );
+                })}
               </div>
             )}
             

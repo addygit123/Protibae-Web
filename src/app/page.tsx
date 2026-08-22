@@ -66,9 +66,9 @@ export default function HomePage() {
 
       <HeroSection />
       <BenefitsSection />
+      <SocialInstagramSection />
       <ComparisonSection />
       <TestimonialsSection />
-      <SocialInstagramSection />
       {/* Newsletter & Footer — next milestone */}
     </>
   );

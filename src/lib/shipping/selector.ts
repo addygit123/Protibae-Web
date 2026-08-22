@@ -1,56 +1,62 @@
 import { env } from '@/lib/env';
 import type { ShippingOption } from './types';
 
-export function getBestShippingOption(
+export function getAvailableShippingOptions(
   options: ShippingOption[],
   deliveryPostcode: string
-): ShippingOption | null {
-  if (!options || options.length === 0) return null;
+): ShippingOption[] {
+  if (!options || options.length === 0) return [];
 
-  // Filter only enabled providers (this might be handled in registry, but double check)
+  // Filter only enabled providers
   const enabledProviders = options.filter(opt => {
     switch (opt.providerId) {
       case 'shiprocket': return env.SHIPPING_PROVIDER_SHIPROCKET_ENABLED;
       case 'indiapost': return env.SHIPPING_PROVIDER_INDIAPOST_ENABLED;
-      case 'porter': return env.SHIPPING_PROVIDER_PORTER_ENABLED;
+      case 'porter': return true; // Always enable Porter local checks
       case 'nimbuspost': return env.SHIPPING_PROVIDER_NIMBUSPOST_ENABLED;
       default: return false;
     }
   });
 
-  if (enabledProviders.length === 0) return null;
+  if (enabledProviders.length === 0) return [];
 
-  // Sort options: Fast delivery first, then lowest price
-  const sortedOptions = enabledProviders.sort((a, b) => {
-    if (a.isFast && !b.isFast) return -1;
-    if (!a.isFast && b.isFast) return 1;
-    return a.rate - b.rate;
-  });
+  // Separate standard options and Porter same-day options
+  const porterOption = enabledProviders.find(opt => opt.providerId === 'porter');
+  
+  // Standard option is the cheapest of non-porter options
+  const standardOptions = enabledProviders.filter(opt => opt.providerId !== 'porter');
+  const sortedStandard = standardOptions.sort((a, b) => a.rate - b.rate);
+  const bestStandard = sortedStandard[0] ? { ...sortedStandard[0] } : null;
 
-  const bestOption = { ...sortedOptions[0] };
+  const result: ShippingOption[] = [];
 
-  // Check Jabalpur fast delivery rule
-  if (env.FAST_DELIVERY_ENABLED) {
-    let fastDeliveryPincodes: string[] = [];
-    try {
-      if (env.FAST_DELIVERY_PINCODES) {
-        fastDeliveryPincodes = JSON.parse(env.FAST_DELIVERY_PINCODES);
-      }
-    } catch (e) {
-      console.error('Failed to parse FAST_DELIVERY_PINCODES');
-    }
-
-    if (fastDeliveryPincodes.includes(deliveryPostcode)) {
-      bestOption.etaLabel = 'Same Day Delivery';
-      bestOption.isFast = true;
-    }
+  if (bestStandard) {
+    bestStandard.providerName = 'Standard Delivery';
+    bestStandard.courierName = 'Standard Courier';
+    result.push(bestStandard);
   }
 
-  // Anonymize the option for the frontend
-  // We keep the ID so the backend knows which option was selected, but we hide the providerName
-  bestOption.providerName = 'Standard Delivery';
-  bestOption.courierName = 'Standard Courier';
-  bestOption.rate = 0; // Completely hide internal provider cost from frontend
+  if (porterOption) {
+    const matchedPorter = { ...porterOption };
+    matchedPorter.providerName = 'Same Day Delivery';
+    matchedPorter.courierName = 'Porter Bike';
+    result.push(matchedPorter);
+  }
 
-  return bestOption;
+  // Fallback if result is empty
+  if (result.length === 0 && enabledProviders.length > 0) {
+    const fallback = { ...enabledProviders[0] };
+    fallback.providerName = 'Standard Delivery';
+    result.push(fallback);
+  }
+
+  return result;
+}
+
+export function getBestShippingOption(
+  options: ShippingOption[],
+  deliveryPostcode: string
+): ShippingOption | null {
+  const available = getAvailableShippingOptions(options, deliveryPostcode);
+  return available.length > 0 ? available[0] : null;
 }

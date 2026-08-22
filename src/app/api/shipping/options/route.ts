@@ -48,10 +48,10 @@ export async function GET(req: Request) {
       result.data.cod
     );
 
-    const { getBestShippingOption } = await import('@/lib/shipping/selector');
-    const bestOption = getBestShippingOption(allOptions, result.data.deliveryPostcode);
+    const { getAvailableShippingOptions } = await import('@/lib/shipping/selector');
+    const availableOptions = getAvailableShippingOptions(allOptions, result.data.deliveryPostcode);
 
-    return NextResponse.json({ options: bestOption ? [bestOption] : [] });
+    return NextResponse.json({ options: availableOptions });
   } catch (error) {
     console.error('[GET /api/shipping/options] Error fetching options:', error);
     return NextResponse.json(

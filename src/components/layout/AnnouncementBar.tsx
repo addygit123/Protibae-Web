@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 import { usePathname } from 'next/navigation';
 
-const MESSAGE = '🎁 GET FREE DELIVERY WITH A PACK OF 6 FOR ₹399 · USE CODE PROTIBAE10 FOR 10% OFF YOUR FIRST ORDER · REAL INGREDIENTS · NO CRAP';
+const MESSAGE = '🎁 GET FREE DELIVERY WITH A PACK OF 6 FOR ₹399 · PURE PERFORMANCE NUTRITION · FUEL YOUR AMBITION · REAL INGREDIENTS · NO CRAP';
 
 /**
  * AnnouncementBar
