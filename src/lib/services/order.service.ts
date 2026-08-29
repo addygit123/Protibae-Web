@@ -254,6 +254,7 @@ export const orderService = {
               `Order Number: #${orderData.orderNumber}`,
               `Total: ₹${orderData.total.toFixed(2)}`,
               `Customer: ${orderData.user.name || 'N/A'} (${orderData.user.email})`,
+              `Shipping Method: ${orderData.selectedShippingProvider === 'porter' ? 'PORTER SAME DAY (MANUAL PLACEMENT REQUIRED)' : (orderData.selectedShippingProvider || 'Standard')}`,
               `Items: ${orderData.items.map((i: any) => `${i.product.name} (Qty: ${i.quantity})`).join(', ')}`
             ],
             actionUrl: `${getBaseUrl()}/admin/orders/${orderData.id}`,
@@ -341,6 +342,7 @@ export const orderService = {
             `Order Number: #${orderData.orderNumber}`,
             `Total: ₹${orderData.total.toFixed(2)}`,
             `Customer: ${orderData.user.name || 'N/A'} (${orderData.user.email})`,
+            `Shipping Method: ${orderData.selectedShippingProvider === 'porter' ? 'PORTER SAME DAY (MANUAL PLACEMENT REQUIRED)' : (orderData.selectedShippingProvider || 'Standard')}`,
             `Items: ${orderData.items.map((i: any) => `${i.product.name} (Qty: ${i.quantity})`).join(', ')}`
           ],
           actionUrl: `${getBaseUrl()}/admin/orders/${orderData.id}`,

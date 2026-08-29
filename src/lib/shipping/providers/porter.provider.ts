@@ -50,11 +50,8 @@ export class PorterProvider implements ShippingProvider {
     return {
       providerId: this.id,
       providerOrderId: `PORTER-${order.orderId}`,
-      providerShipmentId: `PRT-${Math.floor(Math.random() * 1000000)}`,
-      awbNumber: `PRT${Math.floor(Math.random() * 1000000000)}`,
-      courierName: 'Porter Bike',
-      trackingUrl: 'https://porter.in/track',
-      status: 'AWB_ASSIGNED',
+      courierName: 'Porter Bike (Manual)',
+      status: 'ORDER_CREATED',
       shippingCharge: selectedOption.rate,
     };
   }

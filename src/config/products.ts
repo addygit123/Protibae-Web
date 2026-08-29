@@ -46,10 +46,12 @@ function mapPrismaToClientProduct(p: PrismaProduct): Product {
   
   const isChocoPeanut = p.slug === 'choco-peanut';
   
-  // Use correct wrapper image for choco-peanut, otherwise fallback
-  const mainImage = isChocoPeanut 
-    ? '/protibae-wrapper.png' 
-    : (p.images.length > 0 ? p.images[0] : 'https://lh3.googleusercontent.com/aida-public/AB6AXuAfgwOPLhAXvuKJxnVl0xtDu81Y0QsvAKvyCSLZdztbE3-a8akPsmSd-fadjDGMj7HNsnO1ddA9PpDDOe-DbI-akM_4T7nsCA8RP_ifvNQwvwZmpzk3s3rTaXIrnPv-e1oAzutxavkaru7D2iSd6i126CrYiGjSRnd-bsK8AzNH7YsWU9aDcXd9K1JEHfgtH6dDz63hjJpeuALFt3VProMgVHZH5ztimgqR7SVrqb64J_53qfkYdG3XI5CFNWZUnPew611TmYMV-Z8');
+  // Use database image (Cloudinary) if available, otherwise fallback to local/placeholder
+  const mainImage = p.images.length > 0
+    ? p.images[0]
+    : isChocoPeanut
+      ? '/protibae-choco-peanut.png'
+      : 'https://lh3.googleusercontent.com/aida-public/AB6AXuAfgwOPLhAXvuKJxnVl0xtDu81Y0QsvAKvyCSLZdztbE3-a8akPsmSd-fadjDGMj7HNsnO1ddA9PpDDOe-DbI-akM_4T7nsCA8RP_ifvNQwvwZmpzk3s3rTaXIrnPv-e1oAzutxavkaru7D2iSd6i126CrYiGjSRnd-bsK8AzNH7YsWU9aDcXd9K1JEHfgtH6dDz63hjJpeuALFt3VProMgVHZH5ztimgqR7SVrqb64J_53qfkYdG3XI5CFNWZUnPew611TmYMV-Z8';
 
   const gallery = p.images.length > 0 ? p.images.map(src => ({ src, alt: p.name })) : [
     { src: mainImage, alt: `${p.name} wrapper` },
