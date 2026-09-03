@@ -7,14 +7,14 @@ import type { Product } from '@/config/products';
 import { useCartStore, getPackPrice } from '@/lib/store/cart';
 import { trackProductView, trackAddToCart } from '@/lib/analytics/events';
 import { useEffect } from 'react';
-import { isStoreLive } from '@/lib/store-config';
 import { ComingSoonBanner } from '@/components/store-mode/ComingSoonBanner';
 
 interface ProductInfoProps {
   product: Product;
+  isStoreLive?: boolean;
 }
 
-export function ProductInfo({ product }: ProductInfoProps) {
+export function ProductInfo({ product, isStoreLive = false }: ProductInfoProps) {
   const [quantity, setQuantity] = useState(1);
   const [selectedPack, setSelectedPack] = useState<'1' | '6'>('1');
   const addItem = useCartStore((state) => state.addItem);

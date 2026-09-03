@@ -3,6 +3,7 @@ import { CartList } from '@/components/cart/CartList';
 import { OrderSummary } from '@/components/cart/OrderSummary';
 import { FreeShippingProgress } from '@/components/cart/FreeShippingProgress';
 import { SectionReveal } from '@/components/sections/SectionReveal';
+import { isStoreLive } from '@/lib/store-config';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -50,7 +51,7 @@ export default function CartPage() {
         <SectionReveal delay={0.1}>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
             <CartList />
-            <OrderSummary />
+            <OrderSummary isStoreLive={isStoreLive} />
           </div>
         </SectionReveal>
 

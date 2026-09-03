@@ -4,10 +4,13 @@ import { useHydration } from '@/hooks/useHydration';
 import { Lock } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cart';
 import { useRouter } from 'next/navigation';
-import { isStoreLive } from '@/lib/store-config';
 import { CheckoutBlockedBanner } from '@/components/store-mode/CheckoutBlockedBanner';
 
-export function OrderSummary() {
+interface OrderSummaryProps {
+  isStoreLive?: boolean;
+}
+
+export function OrderSummary({ isStoreLive = false }: OrderSummaryProps) {
   const isMounted = useHydration();
   const { getCartTotal, getCartItemCount } = useCartStore();
   const router = useRouter();

@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { getProductBySlug, getProducts } from '@/config/products';
 import { ProductGallery } from '@/components/product/ProductGallery';
 import { ProductInfo } from '@/components/product/ProductInfo';
+import { isStoreLive } from '@/lib/store-config';
 import { ProductIngredients } from '@/components/product/ProductIngredients';
 import { ProductLabTest } from '@/components/product/ProductLabTest';
 import { ProductReviews } from '@/components/product/ProductReviews';
@@ -123,7 +124,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
             {/* Product Info & Actions (Right Side) */}
             <div className="lg:col-span-5">
-              <ProductInfo product={product} />
+              <ProductInfo product={product} isStoreLive={isStoreLive} />
             </div>
             
           </div>
