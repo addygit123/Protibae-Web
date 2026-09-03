@@ -68,10 +68,10 @@ export default function AdminLoginForm() {
         <div className="space-y-2">
           <label className="font-label-bold text-label-bold uppercase tracking-widest text-[#e1bec3] ml-1">Admin Email</label>
           <div className="relative">
-            <input 
+            <input
               {...register('email')}
-              className="w-full bg-[#0d0e12] border border-[#594045] rounded-none px-4 py-4 text-white placeholder:text-[#594045] focus:outline-none focus:border-[#c41e5c] focus:shadow-[0_0_15px_rgba(196,30,92,0.2)] transition-all" 
-              placeholder="admin@protibae.com" 
+              className="w-full bg-[#0d0e12] border border-[#594045] rounded-none px-4 py-4 text-white placeholder:text-[#594045] focus:outline-none focus:border-[#c41e5c] focus:shadow-[0_0_15px_rgba(196,30,92,0.2)] transition-all"
+              placeholder="enter admin email"
               type="email"
               disabled={isLoading}
             />
@@ -82,10 +82,10 @@ export default function AdminLoginForm() {
         <div className="space-y-2">
           <label className="font-label-bold text-label-bold uppercase tracking-widest text-[#e1bec3] ml-1">Password</label>
           <div className="relative">
-            <input 
+            <input
               {...register('password')}
-              className="w-full bg-[#0d0e12] border border-[#594045] rounded-none px-4 py-4 text-white placeholder:text-[#594045] focus:outline-none focus:border-[#c41e5c] focus:shadow-[0_0_15px_rgba(196,30,92,0.2)] transition-all" 
-              placeholder="••••••••" 
+              className="w-full bg-[#0d0e12] border border-[#594045] rounded-none px-4 py-4 text-white placeholder:text-[#594045] focus:outline-none focus:border-[#c41e5c] focus:shadow-[0_0_15px_rgba(196,30,92,0.2)] transition-all"
+              placeholder="••••••••"
               type="password"
               disabled={isLoading}
             />
@@ -94,7 +94,7 @@ export default function AdminLoginForm() {
         </div>
 
         <div className="pt-4">
-          <button 
+          <button
             type="submit"
             disabled={isLoading}
             className="w-full bg-[#c41e5c] text-white font-display-hero text-headline-md py-4 tracking-wider hover:shadow-[0_0_20px_rgba(196,30,92,0.4)] transition-all flex items-center justify-center gap-3 active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed uppercase"

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { getToken } from 'next-auth/jwt';
 
 /**
  * ─── Store Mode Middleware ─────────────────────────────────────────────────────
@@ -28,9 +29,19 @@ function isAlwaysAllowed(pathname: string): boolean {
   return ALWAYS_ALLOWED.some((prefix) => pathname.startsWith(prefix));
 }
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const storeMode = process.env.STORE_MODE?.trim().toLowerCase() ?? 'coming-soon';
   const { pathname } = req.nextUrl;
+
+  // Protect Admin Routes at the edge
+  if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login')) {
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    if (!token || token.role !== 'ADMIN') {
+      const loginUrl = req.nextUrl.clone();
+      loginUrl.pathname = '/admin/login';
+      return NextResponse.redirect(loginUrl);
+    }
+  }
 
   // Admin and system routes always pass through
   if (isAlwaysAllowed(pathname)) {

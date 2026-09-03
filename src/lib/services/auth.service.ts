@@ -27,6 +27,10 @@ export class AuthService {
       throw new Error('Password is required');
     }
     
+    if (password.length < 12) {
+      throw new Error('Password must be at least 12 characters long');
+    }
+    
     const existingUser = await userRepository.findByEmail(email);
     if (existingUser) {
       throw new Error('User already exists with this email.');
@@ -166,6 +170,10 @@ export class AuthService {
         where: { identifier_token: { identifier, token } },
       });
       throw new Error('Password reset token has expired.');
+    }
+
+    if (newPassword.length < 12) {
+      throw new Error('Password must be at least 12 characters long');
     }
 
     const saltRounds = 10;

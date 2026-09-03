@@ -1,4 +1,5 @@
 import { AdminLogoutButton } from '@/components/admin/AdminLogoutButton';
+import ChangePasswordForm from '@/components/admin/ChangePasswordForm';
 
 export default function AdminSettingsPage() {
   return (
@@ -94,6 +95,22 @@ export default function AdminSettingsPage() {
                 <label className="block font-label-bold text-[14px] text-[#e3e2e7] mb-2">SEO Description</label>
                 <textarea className="w-full bg-[#1a1b1f] border border-[#594045] p-3 font-body text-[16px] text-[#e3e2e7] focus:ring-1 focus:ring-[#ffb1c1] focus:border-[#ffb1c1] rounded" rows={3} defaultValue="The world's most advanced high-protein fuel for elite athletes and urban explorers. No fillers, no excuses. Just pure performance."></textarea>
               </div>
+            </div>
+          </section>
+
+          <hr className="border-[#343539]" />
+
+          {/* Section: Admin Account Security */}
+          <section>
+            <h4 className="font-label-bold text-[14px] text-[#ffb1c1] uppercase tracking-widest mb-6 flex items-center gap-2">
+              <span className="w-2 h-2 bg-[#ffb1c1]"></span>
+              Admin Account Security
+            </h4>
+            <div className="max-w-xl">
+              <p className="font-body text-[14px] text-[#e1bec3] mb-6">
+                Update your administrator password. You will remain logged in after changing your password.
+              </p>
+              <ChangePasswordForm />
             </div>
           </section>
 

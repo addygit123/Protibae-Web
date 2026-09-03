@@ -1,7 +1,6 @@
 'use client';
 
-import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import type { Session } from 'next-auth';
 
 import Sidebar from './Sidebar';
@@ -14,45 +13,10 @@ interface AdminGuardProps {
 
 export default function AdminGuard({ session, children }: AdminGuardProps) {
   const pathname = usePathname();
-  const router = useRouter();
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isMounted) return;
-    
-    if (pathname === '/admin/login') {
-      if (session?.user?.role === 'ADMIN') {
-        router.replace('/admin');
-      }
-      return;
-    }
-
-    if (!session) {
-      router.replace('/admin/login');
-      return;
-    }
-
-    if (session.user.role !== 'ADMIN') {
-      router.replace('/');
-      return;
-    }
-  }, [pathname, session, router, isMounted]);
-
-  if (!isMounted) return null;
 
   // Render just the page if it's the login or invoice route
-  if (pathname === '/admin/login' || pathname.endsWith('/invoice')) {
+  if (pathname === '/admin/login' || pathname?.endsWith('/invoice')) {
     return <>{children}</>;
-  }
-
-  // If we're on an admin route and not admin, don't flash content before redirect
-  if (!session || session.user.role !== 'ADMIN') {
-    return null; 
   }
 
   return (
