@@ -83,7 +83,7 @@ export async function POST(req: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const result = (await uploadToCloudinary(buffer, folder)) as any;
+    const result = (await uploadToCloudinary(buffer, folder)) as { secure_url?: string; public_id?: string; width?: number; height?: number };
 
     if (!result || !result.secure_url) {
       throw new Error('Cloudinary upload returned an empty response.');
@@ -97,10 +97,10 @@ export async function POST(req: Request) {
       width: result.width,
       height: result.height,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Cloudinary Upload API Error:', error);
     return NextResponse.json(
-      { error: error.message || 'Internal server error during upload.' },
+      { error: error instanceof Error ? error.message : 'Internal server error during upload.' },
       { status: 500 }
     );
   }
@@ -138,10 +138,10 @@ export async function DELETE(req: Request) {
       success: true,
       result,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Cloudinary Delete API Error:', error);
     return NextResponse.json(
-      { error: error.message || 'Internal server error during deletion.' },
+      { error: error instanceof Error ? error.message : 'Internal server error during deletion.' },
       { status: 500 }
     );
   }

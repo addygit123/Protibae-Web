@@ -65,7 +65,7 @@ export class NimbusPostProvider implements ShippingProvider {
       }
 
       const available = json.data.available || [];
-      return available.map((opt: any) => ({
+      return available.map((opt: { courierId: string | number; courierName: string; result?: { totalPaise?: number }; tatDays?: number }) => ({
         id: `nimbuspost:${opt.courierId}`,
         providerId: this.id,
         providerName: this.displayName,

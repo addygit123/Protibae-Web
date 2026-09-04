@@ -249,6 +249,7 @@ export default function HelpPage() {
       {/* Dynamic Brand Element */}
       <section className="h-[400px] relative w-full overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 z-0 overflow-hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
             className="w-full h-full object-cover grayscale contrast-125 opacity-50" 
             alt="A powerful, cinematic high-contrast close-up of a premium chocolate protein bar" 

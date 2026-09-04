@@ -6,7 +6,7 @@ import { useCartStore } from '@/lib/store/cart';
 import { FreeShippingProgress } from '@/components/cart/FreeShippingProgress';
 import { useHydration } from '@/hooks/useHydration';
 import { getPackPrice } from '@/lib/store/cart';
-
+import { calculateShippingCost } from '@/lib/shipping/calculator';
 export function CheckoutSummary() {
   const { items, getCartTotal } = useCartStore();
   const isMounted = useHydration();
@@ -16,7 +16,6 @@ export function CheckoutSummary() {
   const subtotal = getCartTotal();
 
   // Free shipping logic
-  const { calculateShippingCost } = require('@/lib/shipping/calculator');
   const shippingResult = calculateShippingCost({ subtotal, items: items.map(i => ({ packSize: i.packSize, quantity: i.quantity })) });
   const isFreeShipping = shippingResult.isFree;
   

@@ -8,7 +8,7 @@ import { ProductIngredients } from '@/components/product/ProductIngredients';
 import { ProductLabTest } from '@/components/product/ProductLabTest';
 import { ProductReviews } from '@/components/product/ProductReviews';
 import { RelatedProducts } from '@/components/product/RelatedProducts';
-import { SectionReveal } from '@/components/sections/SectionReveal';
+
 import { JsonLd } from '@/components/seo/JsonLd';
 import {
   generateProductJsonLd,
@@ -52,8 +52,13 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 // ─── Static Params for SSG ─────────────────────────────────────────────────────
 
 export async function generateStaticParams() {
-  const products = await getProducts();
-  return products.map((p) => ({ slug: p.slug }));
+  try {
+    const products = await getProducts();
+    return products.map((p) => ({ slug: p.slug }));
+  } catch (error) {
+    console.warn('Skipping static params generation due to DB error:', error);
+    return [];
+  }
 }
 
 // ─── Page ──────────────────────────────────────────────────────────────────────

@@ -6,6 +6,9 @@ import { prisma } from '@/lib/prisma';
 import { AccountLayout } from '@/components/account/AccountLayout';
 import { AccountDetailsClient } from '@/components/account/details/AccountDetailsClient';
 
+export const dynamic = 'force-dynamic';
+
+
 export const metadata: Metadata = {
   title: 'Account Details | PROTIBAE',
   description: 'Manage your PROTIBAE profile and secure your password settings.',

@@ -9,6 +9,9 @@ import { emailService } from '@/lib/services/email.service';
 import { getBaseUrl } from '@/lib/utils';
 import { env } from '@/lib/env';
 
+export const dynamic = 'force-dynamic';
+
+
 export default async function AdminOrderDetailsPage({
   params,
 }: {

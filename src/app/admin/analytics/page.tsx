@@ -1,6 +1,9 @@
 import { prisma } from '@/lib/prisma';
 import { format, subDays, startOfDay } from 'date-fns';
 
+export const dynamic = 'force-dynamic';
+
+
 export default async function AdminAnalyticsPage() {
   const thirtyDaysAgo = startOfDay(subDays(new Date(), 30));
 

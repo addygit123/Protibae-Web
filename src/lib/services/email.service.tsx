@@ -57,7 +57,7 @@ export const emailService = {
     }
   },
 
-  async sendOrderEmail(to: string, subject: string, props: any) {
+  async sendOrderEmail(to: string, subject: string, props: React.ComponentProps<typeof OrderEmail>) {
     return this.sendEmail({
       to,
       subject,
@@ -65,7 +65,7 @@ export const emailService = {
     });
   },
 
-  async sendShipmentEmail(to: string, subject: string, props: any) {
+  async sendShipmentEmail(to: string, subject: string, props: React.ComponentProps<typeof ShipmentEmail>) {
     return this.sendEmail({
       to,
       subject,
@@ -73,7 +73,7 @@ export const emailService = {
     });
   },
 
-  async sendSupportEmail(to: string, subject: string, props: any) {
+  async sendSupportEmail(to: string, subject: string, props: React.ComponentProps<typeof SupportEmail>) {
     return this.sendEmail({
       to,
       subject,
@@ -81,7 +81,7 @@ export const emailService = {
     });
   },
 
-  async sendPasswordResetEmail(to: string, subject: string, props: any) {
+  async sendPasswordResetEmail(to: string, subject: string, props: React.ComponentProps<typeof PasswordResetEmail>) {
     return this.sendEmail({
       to,
       subject,
@@ -89,7 +89,7 @@ export const emailService = {
     });
   },
 
-  async sendVerificationEmail(to: string, subject: string, props: any) {
+  async sendVerificationEmail(to: string, subject: string, props: React.ComponentProps<typeof VerificationEmail>) {
     return this.sendEmail({
       to,
       subject,

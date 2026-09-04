@@ -6,6 +6,9 @@ import { prisma } from '@/lib/prisma';
 import { AccountLayout } from '@/components/account/AccountLayout';
 import { OrdersClient } from '@/components/account/orders/OrdersClient';
 
+export const dynamic = 'force-dynamic';
+
+
 export const metadata: Metadata = {
   title: 'My Orders | PROTIBAE',
   description: 'Manage your PROTIBAE orders and track your performance gains.',

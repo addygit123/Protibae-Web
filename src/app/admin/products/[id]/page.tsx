@@ -2,6 +2,9 @@ import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { ProductEditForm } from '@/components/admin/ProductEditForm';
 
+export const dynamic = 'force-dynamic';
+
+
 export default async function AdminProductEditPage({
   params,
 }: {

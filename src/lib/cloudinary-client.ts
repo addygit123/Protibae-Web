@@ -39,7 +39,7 @@ export function getOptimizedCloudinaryUrl(
     if (options.crop) params.push(`c_${options.crop}`);
     
     return `${parts[0]}/upload/${params.join(',')}/${parts[1]}`;
-  } catch (e) {
+  } catch {
     return url;
   }
 }

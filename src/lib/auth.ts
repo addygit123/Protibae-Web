@@ -105,7 +105,7 @@ if (env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET) {
           lastName,
           role: 'CUSTOMER',
           phone: null,
-        } as any;
+        } as User;
       }
     })
   );

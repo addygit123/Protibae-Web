@@ -6,7 +6,6 @@ import {
   Star, 
   Gift, 
   Clock, 
-  ChevronRight, 
   Copy, 
   CheckCircle2, 
   ArrowRight,
@@ -14,9 +13,27 @@ import {
   ArrowUpRight,
   ArrowDownLeft
 } from 'lucide-react';
+
+interface Transaction {
+  id: string;
+  points: number;
+  description: string;
+  createdAt: string | Date;
+}
+
+interface RewardsData {
+  tier: string;
+  currentPoints: number;
+  lifetimePoints: number;
+  referralCode: string;
+  progressToNext: number;
+  nextTier?: { name: string; min: number } | null;
+  tierConfig: { benefits: string[] };
+  transactions: Transaction[];
+}
 import { useRouter } from 'next/navigation';
 
-export function RewardsDashboard({ data }: { data: any }) {
+export function RewardsDashboard({ data }: { data: RewardsData }) {
   const [activeTab, setActiveTab] = useState<'overview' | 'history' | 'redeem'>('overview');
   const [copied, setCopied] = useState(false);
   const [redeeming, setRedeeming] = useState(false);
@@ -45,8 +62,12 @@ export function RewardsDashboard({ data }: { data: any }) {
       }
       router.refresh();
       setActiveTab('history');
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        setError('An unexpected error occurred');
+      }
     } finally {
       setRedeeming(false);
     }
@@ -99,7 +120,7 @@ export function RewardsDashboard({ data }: { data: any }) {
         {['overview', 'history', 'redeem'].map((tab) => (
           <button
             key={tab}
-            onClick={() => setActiveTab(tab as any)}
+            onClick={() => setActiveTab(tab as 'overview' | 'history' | 'redeem')}
             className={`px-5 py-2.5 rounded-lg text-sm font-medium capitalize transition-all ${
               activeTab === tab 
                 ? 'bg-surface shadow-sm text-on-surface' 
@@ -179,7 +200,7 @@ export function RewardsDashboard({ data }: { data: any }) {
               </div>
             ) : (
               <div className="space-y-4">
-                {data.transactions.map((t: any) => (
+                {data.transactions.map((t: Transaction) => (
                   <div key={t.id} className="flex items-center justify-between p-4 rounded-2xl hover:bg-surface-variant/30 transition-colors">
                     <div className="flex items-center gap-4">
                       <div className={`p-3 rounded-full ${t.points > 0 ? 'bg-green-500/10 text-green-600' : 'bg-red-500/10 text-red-600'}`}>

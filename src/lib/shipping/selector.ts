@@ -3,7 +3,7 @@ import type { ShippingOption } from './types';
 
 export function getAvailableShippingOptions(
   options: ShippingOption[],
-  deliveryPostcode: string
+  _deliveryPostcode: string
 ): ShippingOption[] {
   if (!options || options.length === 0) return [];
 

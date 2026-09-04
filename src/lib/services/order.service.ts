@@ -1,12 +1,16 @@
 import { prisma } from '@/lib/prisma';
-import { OrderStatus, PaymentStatus, AddressType, Prisma } from '@prisma/client';
+import { OrderStatus, PaymentStatus, AddressType } from '@prisma/client';
 import { randomBytes } from 'crypto';
 import { emailService } from './email.service';
-import { env } from '../env';
-import { authOptions } from './../auth';
 import { getBaseUrl } from '@/lib/utils';
 import { getPackPrice } from '@/lib/store/cart';
-import { createShipmentForOrder } from '@/lib/shipping';
+
+interface OrderItemDetailed {
+  quantity: number;
+  price: number;
+  packSize: string | null;
+  product: { name: string };
+}
 
 interface OrderItemInput {
   productId: string;
@@ -65,8 +69,8 @@ export const orderService = {
     // Import here to avoid circular dependency issues if any
     const { calculateShippingCost } = await import('@/lib/shipping/calculator');
     
-    let shippingCostData = calculateShippingCost({ subtotal, items: orderItemsData, providerRate: overrideShippingCharge });
-    let shipping = shippingCostData.amount ?? 0; // if free, amount is 0. If providerRate wasn't provided but it's not free, it might be null, but we'll default to 0 for checkout fallback, though API should always provide a rate.
+    const shippingCostData = calculateShippingCost({ subtotal, items: orderItemsData, providerRate: overrideShippingCharge });
+    const shipping = shippingCostData.amount ?? 0; // if free, amount is 0. If providerRate wasn't provided but it's not free, it might be null, but we'll default to 0 for checkout fallback, though API should always provide a rate.
 
     // Wait, the prompt says: "The customer-facing shipping charge should be: ₹0 when the order qualifies for free shipping. Do not add ₹250 to the order total."
     // If the provider rate was supplied, it's used. If not, and it's not free, we'll just set it to 0 here to ensure no 250 is magically added without a real provider cost.
@@ -231,7 +235,7 @@ export const orderService = {
           title: "Order Confirmed",
           message: `Thank you for your order! We're preparing it for shipment.`,
           orderNumber: orderData.orderNumber,
-          items: orderData.items.map((i: any) => ({
+          items: orderData.items.map((i: OrderItemDetailed) => ({
             name: i.product.name + (i.packSize ? ` (Pack of ${i.packSize})` : ''),
             quantity: i.quantity,
             price: i.price,
@@ -255,7 +259,7 @@ export const orderService = {
               `Total: ₹${orderData.total.toFixed(2)}`,
               `Customer: ${orderData.user.name || 'N/A'} (${orderData.user.email})`,
               `Shipping Method: ${orderData.selectedShippingProvider === 'porter' ? 'PORTER SAME DAY (MANUAL PLACEMENT REQUIRED)' : (orderData.selectedShippingProvider || 'Standard')}`,
-              `Items: ${orderData.items.map((i: any) => `${i.product.name} (Qty: ${i.quantity})`).join(', ')}`
+              `Items: ${orderData.items.map((i: OrderItemDetailed) => `${i.product.name} (Qty: ${i.quantity})`).join(', ')}`
             ],
             actionUrl: `${getBaseUrl()}/admin/orders/${orderData.id}`,
             actionLabel: 'View Order in Admin'
@@ -319,7 +323,7 @@ export const orderService = {
         title: "Order Confirmed (Cash on Delivery)",
         message: `Thank you for your order! We're preparing it for shipment. You can pay with cash upon delivery.`,
         orderNumber: orderData.orderNumber,
-        items: orderData.items.map((i: any) => ({
+        items: orderData.items.map((i: OrderItemDetailed) => ({
           name: i.product.name + (i.packSize ? ` (Pack of ${i.packSize})` : ''),
           quantity: i.quantity,
           price: i.price,
@@ -343,7 +347,7 @@ export const orderService = {
             `Total: ₹${orderData.total.toFixed(2)}`,
             `Customer: ${orderData.user.name || 'N/A'} (${orderData.user.email})`,
             `Shipping Method: ${orderData.selectedShippingProvider === 'porter' ? 'PORTER SAME DAY (MANUAL PLACEMENT REQUIRED)' : (orderData.selectedShippingProvider || 'Standard')}`,
-            `Items: ${orderData.items.map((i: any) => `${i.product.name} (Qty: ${i.quantity})`).join(', ')}`
+            `Items: ${orderData.items.map((i: OrderItemDetailed) => `${i.product.name} (Qty: ${i.quantity})`).join(', ')}`
           ],
           actionUrl: `${getBaseUrl()}/admin/orders/${orderData.id}`,
           actionLabel: 'View Order in Admin'
@@ -399,7 +403,7 @@ export const orderService = {
           title: "Order Cancelled",
           message: `Your order #${orderData.orderNumber} has been cancelled due to payment failure.`,
           orderNumber: orderData.orderNumber,
-          items: orderData.items.map((i: any) => ({
+          items: orderData.items.map((i: OrderItemDetailed) => ({
             name: i.product.name + (i.packSize ? ` (Pack of ${i.packSize})` : ''),
             quantity: i.quantity,
             price: i.price,

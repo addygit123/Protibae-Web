@@ -6,6 +6,9 @@ import { prisma } from '@/lib/prisma';
 import { AccountLayout } from '@/components/account/AccountLayout';
 import { AddressesClient } from '@/components/account/addresses/AddressesClient';
 
+export const dynamic = 'force-dynamic';
+
+
 export const metadata: Metadata = {
   title: 'My Addresses | PROTIBAE',
   description: 'Manage your PROTIBAE shipping and billing addresses.',

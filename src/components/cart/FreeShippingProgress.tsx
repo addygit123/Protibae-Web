@@ -4,7 +4,7 @@ import { Truck, Zap } from 'lucide-react';
 import { useHydration } from '@/hooks/useHydration';
 import { useCartStore } from '@/lib/store/cart';
 
-const FREE_SHIPPING_THRESHOLD = 499;
+import { calculateShippingCost } from '@/lib/shipping/calculator';
 
 export function FreeShippingProgress() {
   const isMounted = useHydration();
@@ -13,7 +13,6 @@ export function FreeShippingProgress() {
   if (!isMounted || items.length === 0) return null;
 
   const total = getCartTotal();
-  const { calculateShippingCost } = require('@/lib/shipping/calculator');
   const shippingResult = calculateShippingCost({ subtotal: total, items: items.map(i => ({ packSize: i.packSize, quantity: i.quantity })) });
   
   const isFree = shippingResult.isFree;

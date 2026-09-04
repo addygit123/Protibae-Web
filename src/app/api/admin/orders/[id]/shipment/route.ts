@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { emailService } from '@/lib/services/email.service';
 import { env } from '@/lib/env';
 import { createShipmentForOrder, getProvider } from '@/lib/shipping';
 import type { ShippingProviderId } from '@/lib/shipping/types';
@@ -28,7 +27,7 @@ export async function POST(
     let body: { provider?: ShippingProviderId; selectedOptionId?: string } = {};
     try {
       body = await req.json();
-    } catch (e) {
+    } catch (_e) {
       // Body is optional
     }
 
@@ -117,7 +116,7 @@ export async function POST(
         phone: order.address.phone || '9999999999',
         email: order.user.email || 'customer@protibae.com',
       },
-      items: order.items.map((i: any) => ({
+      items: order.items.map((i: { product: { name: string, slug: string | null }, productId: string, quantity: number, price: number }) => ({
         name: i.product.name,
         sku: i.product.slug || i.productId,
         quantity: i.quantity,
@@ -126,7 +125,7 @@ export async function POST(
       subtotal: order.subtotal,
       shipping: order.shipping,
       total: order.total,
-      weightKg: order.items.reduce((acc: number, i: any) => acc + (0.5 * i.quantity), 0),
+      weightKg: order.items.reduce((acc: number, i: { quantity: number }) => acc + (0.5 * i.quantity), 0),
     };
 
     if (!env.SHIPPING_BOOKING_ENABLED) {
@@ -143,12 +142,12 @@ export async function POST(
     let shipmentResult;
     try {
         shipmentResult = await createShipmentForOrder(shipmentInput, selectedOptionId);
-    } catch (e: any) {
+    } catch (e: unknown) {
         return NextResponse.json({
           success: false,
           stage: 'create',
-          error: e.message || 'Failed to create shipment',
-          message: e.message || 'Failed to create shipment',
+          error: e instanceof Error ? e.message : 'Failed to create shipment',
+          message: e instanceof Error ? e.message : 'Failed to create shipment',
           shipmentCreated: false,
           canRetry: true
         }, { status: 400 });

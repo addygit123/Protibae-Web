@@ -199,7 +199,7 @@ export function CheckoutForm() {
         theme: {
           color: '#c41e5c',
         },
-        handler: async function (response: any) {
+        handler: async function (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) {
           try {
             const verifyRes = await fetch('/api/payments/verify', {
               method: 'POST',
@@ -233,8 +233,8 @@ export function CheckoutForm() {
             });
             clearCart();
             router.push(`/checkout/success?orderId=${verifyData.orderId}`);
-          } catch (err: any) {
-            setPaymentError(err.message || 'Payment verification failed. Contact support.');
+          } catch (err: unknown) {
+            setPaymentError(err instanceof Error ? err.message : 'Payment verification failed. Contact support.');
             setIsProcessing(false);
           }
         },
@@ -246,8 +246,9 @@ export function CheckoutForm() {
         },
       };
 
-      const rzp1 = new (window as any).Razorpay(options);
-      rzp1.on('payment.failed', function (response: any) {
+      const RazorpayConstructor = (window as unknown as { Razorpay: new (opts: unknown) => { on: (event: string, cb: (res: { error: { description?: string } }) => void) => void; open: () => void } }).Razorpay;
+      const rzp1 = new RazorpayConstructor(options);
+      rzp1.on('payment.failed', function (response: { error: { description?: string } }) {
         setPaymentError(response.error.description || 'Payment failed.');
         setIsProcessing(false);
       });

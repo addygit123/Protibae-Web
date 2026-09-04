@@ -157,11 +157,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
       data-scroll-behavior="smooth"
     >
       <head>
-        {/* Google Fonts — Material Symbols */}
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
-        />
 
         {/* Global Organization + WebSite JSON-LD — present on every page */}
         <JsonLd

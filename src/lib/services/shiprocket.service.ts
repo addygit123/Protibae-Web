@@ -1,4 +1,12 @@
-import { env } from '@/lib/env';
+import { env } from '../env';
+
+interface ShiprocketCourier {
+  freight_charge?: string | number;
+  rate?: string | number;
+  rating?: string | number;
+  delivery_performance?: string | number;
+  [key: string]: unknown;
+}
 
 const SHIPROCKET_API_URL = 'https://apiv2.shiprocket.in/v1/external';
 
@@ -53,7 +61,7 @@ export const shiprocketService = {
     deliveryPostcode: string,
     weight: number,
     cod: boolean
-  ): Promise<any[]> {
+  ): Promise<ShiprocketCourier[]> {
     const token = await this.authenticate();
     const codParam = cod ? 1 : 0;
     const url = `${SHIPROCKET_API_URL}/courier/serviceability?pickup_postcode=${pickupPostcode}&delivery_postcode=${deliveryPostcode}&weight=${weight}&cod=${codParam}`;
@@ -81,14 +89,14 @@ export const shiprocketService = {
     // Sort couriers:
     // 1. Lowest shipping cost (freight_charge or rate) ascending.
     // 2. Best rated (rating or delivery_performance) descending.
-    couriers.sort((a: any, b: any) => {
-      const costA = parseFloat(a.freight_charge || a.rate || 0);
-      const costB = parseFloat(b.freight_charge || b.rate || 0);
+    couriers.sort((a: ShiprocketCourier, b: ShiprocketCourier) => {
+      const costA = parseFloat(a.freight_charge?.toString() || a.rate?.toString() || '0');
+      const costB = parseFloat(b.freight_charge?.toString() || b.rate?.toString() || '0');
       if (costA !== costB) {
         return costA - costB;
       }
-      const ratingA = parseFloat(a.rating || a.delivery_performance || 0);
-      const ratingB = parseFloat(b.rating || b.delivery_performance || 0);
+      const ratingA = parseFloat(a.rating?.toString() || a.delivery_performance?.toString() || '0');
+      const ratingB = parseFloat(b.rating?.toString() || b.delivery_performance?.toString() || '0');
       return ratingB - ratingA;
     });
 
@@ -98,7 +106,7 @@ export const shiprocketService = {
   /**
    * Creates an adhoc order in Shiprocket.
    */
-  async createOrder(orderPayload: any): Promise<{ order_id: number; shipment_id: number; status: string }> {
+  async createOrder(orderPayload: Record<string, unknown>): Promise<{ order_id: number; shipment_id: number; status: string }> {
     const token = await this.authenticate();
 
     const res = await fetch(`${SHIPROCKET_API_URL}/orders/create/adhoc`, {
@@ -137,7 +145,7 @@ export const shiprocketService = {
   ): Promise<{ awb_code: string; courier_name: string; courier_company_id: string; tracking_url: string }> {
     const token = await this.authenticate();
 
-    const payload: any = {
+    const payload: Record<string, unknown> = {
       shipment_id: shipmentId,
     };
     if (courierCompanyId !== undefined) {
@@ -281,7 +289,7 @@ export const shiprocketService = {
   /**
    * Tracks a shipment by its AWB code.
    */
-  async trackShipment(awbNumber: string): Promise<any> {
+  async trackShipment(awbNumber: string): Promise<unknown> {
     const token = await this.authenticate();
 
     const res = await fetch(`${SHIPROCKET_API_URL}/courier/track/awb/${awbNumber}`, {

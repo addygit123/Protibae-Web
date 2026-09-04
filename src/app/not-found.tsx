@@ -57,6 +57,7 @@ export default function NotFoundPage() {
               <div className="absolute inset-0 glass-blur-404 rounded-xl border border-outline-variant/30 transform -rotate-6"></div>
               {/* Primary Product Image */}
               <div className="absolute inset-4 z-20 flex items-center justify-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
                   className="w-full h-auto drop-shadow-[0_20px_50px_rgba(196,30,92,0.4)]" 
                   alt="A hyper-realistic 3D rendering of a premium dark chocolate protein bar" 

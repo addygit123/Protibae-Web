@@ -59,7 +59,7 @@ export function ProductEditForm({ product }: { product?: Product }) {
 
       setUploadingFiles(prev => prev.map(f => f.name === file.name ? { ...f, progress: 30 } : f));
 
-      const uploadPromise = new Promise<{ success: boolean; url?: string; error?: string } | any>((resolve, reject) => {
+      const uploadPromise = new Promise<{ success: boolean; url?: string; error?: string }>((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', '/api/admin/upload');
 
@@ -95,14 +95,14 @@ export function ProductEditForm({ product }: { product?: Product }) {
       const res = await uploadPromise;
 
       if (res.success && res.url) {
-        setImages(prev => [...prev, res.url]);
+        setImages(prev => [...prev, res.url!]);
         showToast(`Image "${file.name}" uploaded successfully.`, 'success');
       } else {
         throw new Error(res.error || 'Upload failed');
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      showToast(err.message || 'Failed to upload image.', 'error');
+      showToast(err instanceof Error ? err.message : 'Failed to upload image.', 'error');
     } finally {
       setUploadingFiles(prev => prev.filter(f => f.name !== file.name));
     }
@@ -148,9 +148,9 @@ export function ProductEditForm({ product }: { product?: Product }) {
 
       setImages(prev => prev.filter(url => url !== urlToDelete));
       showToast('Image deleted from database & Cloudinary.', 'success');
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      showToast(err.message || 'Failed to delete image from Cloudinary.', 'error');
+      showToast(err instanceof Error ? err.message : 'Failed to delete image from Cloudinary.', 'error');
       // Still remove from local state so UI remains correct
       setImages(prev => prev.filter(url => url !== urlToDelete));
     } finally {
@@ -197,9 +197,9 @@ export function ProductEditForm({ product }: { product?: Product }) {
 
       setImages(prev => prev.map(url => url === oldUrl ? res.url : url));
       showToast('Image replaced successfully.', 'success');
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      showToast(err.message || 'Failed to replace image.', 'error');
+      showToast(err instanceof Error ? err.message : 'Failed to replace image.', 'error');
     } finally {
       setIsDeleting(null);
     }
@@ -263,9 +263,9 @@ export function ProductEditForm({ product }: { product?: Product }) {
         } else {
           showToast(res.error || 'Failed to delete product.', 'error');
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error(err);
-        showToast(err.message || 'Failed to delete product.', 'error');
+        showToast(err instanceof Error ? err.message : 'Failed to delete product.', 'error');
       }
     });
   };

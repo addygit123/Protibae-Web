@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-export function AdminRewardsClient({ initialConfig, initialAccounts }: { initialConfig: any, initialAccounts: any[] }) {
+export function AdminRewardsClient({ initialConfig, initialAccounts }: { initialConfig: { earningRatio: number, redemptionRatio: number }, initialAccounts: { id: string, user: { name: string | null, email: string | null }, currentPoints: number, lifetimePoints: number, tier: string }[] }) {
   const [config, setConfig] = useState(initialConfig);
   const [saving, setSaving] = useState(false);
 

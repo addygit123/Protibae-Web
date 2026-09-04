@@ -1,13 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useConsentStore } from '@/lib/analytics/store';
+import { useHydration } from '@/hooks/useHydration';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldCheck, X } from 'lucide-react';
 
 export function CookieConsent() {
   const { hasConsented, acceptAll, rejectNonEssential, consent, setConsent } = useConsentStore();
-  const [mounted, setMounted] = useState(false);
+  const mounted = useHydration();
   const [showPreferences, setShowPreferences] = useState(false);
   
   // Local state for preferences modal
@@ -15,10 +16,6 @@ export function CookieConsent() {
     analytics: consent.analytics,
     marketing: consent.marketing,
   });
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   if (!mounted) return null;
   if (hasConsented && !showPreferences) return null;
@@ -49,8 +46,7 @@ export function CookieConsent() {
                   <h3 className="font-display text-lg tracking-wider">WE VALUE YOUR PRIVACY</h3>
                 </div>
                 <p className="mt-2 text-sm text-gray-400">
-                  We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. 
-                  By clicking "Accept All", you consent to our use of cookies.
+                  We use cookies to enhance your experience. By clicking &quot;Accept All&quot;, you agree to our use of cookies.
                 </p>
               </div>
               <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">

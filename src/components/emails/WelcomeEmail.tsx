@@ -14,7 +14,7 @@ export function WelcomeEmail({ name }: WelcomeEmailProps) {
     <BaseTemplate previewText="Welcome to PROTIBAE!">
       <Text className="text-[24px] font-bold text-[#E3E2E7] mb-2">Welcome to the Team!</Text>
       <Text className="text-[#E1BEC3] text-[16px] mb-6">
-        Hi {name}, we're thrilled to have you here at PROTIBAE.
+        Hi {name}, we&apos;re thrilled to have you here at PROTIBAE.
       </Text>
 
       <Text className="text-[#E3E2E7] text-[16px] mb-4">
@@ -22,7 +22,7 @@ export function WelcomeEmail({ name }: WelcomeEmailProps) {
       </Text>
 
       <Section className="bg-[#1A1B1F] p-6 rounded border border-[#343539] mb-8">
-        <Text className="text-[14px] uppercase tracking-widest text-[#E1BEC3] font-bold mb-2">What's Next?</Text>
+        <Text className="text-[14px] uppercase tracking-widest text-[#E1BEC3] font-bold mb-2">What&apos;s Next?</Text>
         <Text className="text-[14px] mb-2">
           • <strong>Shop the Store:</strong> Discover our range of premium protein bars.
         </Text>
@@ -44,7 +44,7 @@ export function WelcomeEmail({ name }: WelcomeEmailProps) {
       </Section>
 
       <Text className="text-[#8B8D98] text-[14px]">
-        If you have any questions or feedback, we're here to help! Simply reply to this email or reach out to us at hello@protibae.com.
+        If you have any questions or feedback, we&apos;re here to help! Simply reply to this email or reach out to us at hello@protibae.com.
       </Text>
     </BaseTemplate>
   );

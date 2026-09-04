@@ -1,5 +1,5 @@
 import { Leaf, Dumbbell, Activity, Sprout, Heart, ArrowRight, Zap, Star, Trophy } from 'lucide-react';
-import Image from 'next/image';
+
 import type { Metadata } from 'next';
 import { generatePageMetadata } from '@/lib/seo';
 import { JsonLd } from '@/components/seo/JsonLd';
@@ -33,6 +33,7 @@ export default function OurStoryPage() {
       <section className="relative min-h-[921px] flex flex-col justify-center overflow-hidden pt-20">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent z-10"></div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
             className="w-full h-full object-cover" 
             alt="A moody, high-contrast professional studio photograph of a muscular athlete training" 
@@ -58,6 +59,7 @@ export default function OurStoryPage() {
           </div>
           <div className="hidden md:flex justify-center relative">
             <div className="absolute inset-0 bg-[#ffb1c1]/10 blur-[120px] rounded-full animate-pulse"></div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               className="relative z-10 w-4/5 animate-floating" 
               alt="A premium 3D render of a PROTIBAE Choco Peanut protein bar floating in mid-air" 
@@ -127,6 +129,7 @@ export default function OurStoryPage() {
       {/* Mission Manifesto Section */}
       <section className="relative h-[800px] flex items-center overflow-hidden">
         <div className="absolute inset-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
             className="w-full h-full object-cover grayscale opacity-60" 
             alt="A wide-angle landscape shot of a rugged mountain range at dawn." 
@@ -158,6 +161,7 @@ export default function OurStoryPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-12 md:grid-rows-2 gap-4 h-auto md:h-[600px]">
             <div className="md:col-span-8 md:row-span-1 bg-surface-container rounded-xl overflow-hidden relative group">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img 
                 className="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-700" 
                 alt="A top-down macro shot of raw, ancient bajra grains mixed with premium dark chocolate chunks" 

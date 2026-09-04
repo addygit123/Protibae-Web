@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useHydration } from '@/hooks/useHydration';
-import { ShoppingBag, User, Menu, X, LogOut, LayoutDashboard } from 'lucide-react';
+import { ShoppingBag, User, X, LogOut, LayoutDashboard } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { navLinks, siteConfig } from '@/config/site';

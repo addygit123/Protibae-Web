@@ -29,7 +29,7 @@ function isAlwaysAllowed(pathname: string): boolean {
   return ALWAYS_ALLOWED.some((prefix) => pathname.startsWith(prefix));
 }
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const storeMode = process.env.STORE_MODE?.trim().toLowerCase() ?? 'coming-soon';
   const { pathname } = req.nextUrl;
 

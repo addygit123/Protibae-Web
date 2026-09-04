@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Address } from '@prisma/client';
 import { Loader2, CheckCircle, AlertCircle, X } from 'lucide-react';
@@ -28,6 +28,7 @@ export function AddressForm({ initialAddress }: AddressFormProps) {
   const [state, setState] = useState('');
   const [addressType, setAddressType] = useState<'home' | 'office'>('home');
   const [isDefault, setIsDefault] = useState(false);
+  const [prevInitialAddress, setPrevInitialAddress] = useState(initialAddress);
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
@@ -41,7 +42,8 @@ export function AddressForm({ initialAddress }: AddressFormProps) {
     }, 4000);
   };
 
-  useEffect(() => {
+  if (initialAddress !== prevInitialAddress) {
+    setPrevInitialAddress(initialAddress);
     if (initialAddress) {
       setFullName(`${initialAddress.firstName} ${initialAddress.lastName === '.' ? '' : initialAddress.lastName}`.trim());
       setPhone(initialAddress.phone || '');
@@ -71,7 +73,7 @@ export function AddressForm({ initialAddress }: AddressFormProps) {
       setAddressType(initialAddress.type === 'BILLING' ? 'office' : 'home');
       setIsDefault(initialAddress.isDefault);
     }
-  }, [initialAddress]);
+  }
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -140,8 +142,8 @@ export function AddressForm({ initialAddress }: AddressFormProps) {
         router.refresh();
       }, 1000);
 
-    } catch (err: any) {
-      showToast(err.message || 'An error occurred while saving.', 'error');
+    } catch (err: unknown) {
+      showToast(err instanceof Error ? err.message : 'An error occurred while saving.', 'error');
     } finally {
       setIsSubmitting(false);
     }

@@ -11,7 +11,7 @@ interface AdminGuardProps {
   children: React.ReactNode;
 }
 
-export default function AdminGuard({ session, children }: AdminGuardProps) {
+export default function AdminGuard({ session: _session, children }: AdminGuardProps) {
   const pathname = usePathname();
 
   // Render just the page if it's the login or invoice route

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { getOptimizedCloudinaryUrl } from '@/lib/cloudinary-client';
 import { cn } from '@/lib/utils';
@@ -30,13 +30,14 @@ export function ProductImage({
   priority = false,
   crop = 'fill',
 }: ProductImageProps) {
-  const [imgSrc, setImgSrc] = useState<string>(src || FALLBACK_IMAGE);
-  const [isError, setIsError] = useState(false);
+  const [errorState, setErrorState] = useState<{ failedSrc?: string | null }>({});
 
-  useEffect(() => {
-    setImgSrc(src || FALLBACK_IMAGE);
-    setIsError(false);
-  }, [src]);
+  if (errorState.failedSrc !== undefined && errorState.failedSrc !== src) {
+    setErrorState({});
+  }
+
+  const isError = errorState.failedSrc === src;
+  const imgSrc = (isError || !src) ? FALLBACK_IMAGE : src;
 
   // Generate blur placeholder URL if it's a Cloudinary URL
   let blurDataURL = undefined;
@@ -72,8 +73,7 @@ export function ProductImage({
       placeholder="blur"
       blurDataURL={blurDataURL}
       onError={() => {
-        setIsError(true);
-        setImgSrc(FALLBACK_IMAGE);
+        setErrorState({ failedSrc: src });
       }}
     />
   );

@@ -22,8 +22,8 @@ export async function POST(request: Request) {
     await authService.resetPassword(email, token, password);
 
     return NextResponse.json({ success: true, message: 'Password has been reset successfully.' });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error in reset-password:', error);
-    return NextResponse.json({ error: error.message || 'Failed to reset password' }, { status: 400 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Failed to reset password' }, { status: 400 });
   }
 }

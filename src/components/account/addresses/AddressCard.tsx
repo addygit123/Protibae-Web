@@ -1,7 +1,7 @@
 'use client';
 
 import { Address } from '@prisma/client';
-import { Edit2, Trash2, Check, Star } from 'lucide-react';
+import { Edit2, Trash2, Star } from 'lucide-react';
 import { useState } from 'react';
 
 interface AddressCardProps {

@@ -1,9 +1,15 @@
+overrides:
+  mysql2: 3.23.1
+  deepmerge-ts: 8.0.0
+
 allowBuilds:
   '@prisma/engines': true
   esbuild: true
+  msgpackr-extract: set this to true or false
   prisma: true
   sharp: true
   unrs-resolver: true
+  workerd: set this to true or false
 ignoredBuiltDependencies:
   - sharp
   - unrs-resolver
