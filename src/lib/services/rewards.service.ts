@@ -84,7 +84,7 @@ export const rewardService = {
     return { updatedAccount, transaction };
   },
 
-  calculateRedemptionLimit(currentPoints: number, subtotal: number, config: any) {
+  calculateRedemptionLimit(currentPoints: number, subtotal: number, config: { redemptionRatio: number }) {
     // Max 20% discount
     const maxDiscountAllowed = subtotal * 0.2;
     // Max 500 points redeemed

@@ -10,6 +10,7 @@ import { JsonLd } from '@/components/seo/JsonLd';
 import { generateOrganizationJsonLd, generateWebSiteJsonLd } from '@/lib/jsonld';
 import { AnalyticsProviders } from '@/components/analytics/AnalyticsProviders';
 import { CookieConsent } from '@/components/analytics/CookieConsent';
+import { getProductBySlug } from '@/config/products';
 
 // ─── Fonts ─────────────────────────────────────────────────────────────────────
 
@@ -149,7 +150,10 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default async function RootLayout({ children }: RootLayoutProps) {
+  const chocoPeanut = await getProductBySlug('choco-peanut');
+  const heroPrice6 = chocoPeanut?.price6 ?? 399;
+
   return (
     <html
       lang="en"
@@ -158,9 +162,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
     >
       <head>
         {/* Google Fonts — Material Symbols */}
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=optional"
         />
 
         {/* Global Organization + WebSite JSON-LD — present on every page */}
@@ -176,7 +181,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body className="bg-[#121317] text-[#e3e2e7] antialiased">
         <AuthProvider>
           {/* Announcement Bar — above everything */}
-          <AnnouncementBar />
+          <AnnouncementBar price6={heroPrice6} />
 
           {/* Sticky Navbar */}
           <Navbar />

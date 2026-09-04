@@ -92,9 +92,10 @@ export async function deleteProduct(id: string) {
     revalidatePath('/shop');
 
     return { success: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : 'Failed to delete product';
     console.error('Failed to delete product:', error);
-    return { success: false, error: error.message || 'Failed to delete product' };
+    return { success: false, error: msg };
   }
 }
 
@@ -175,8 +176,9 @@ export async function createProduct(formData: FormData) {
     revalidatePath('/shop');
 
     return { success: true, product };
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : 'Failed to create product';
     console.error('Failed to create product:', error);
-    return { success: false, error: error.message || 'Failed to create product' };
+    return { success: false, error: msg };
   }
 }

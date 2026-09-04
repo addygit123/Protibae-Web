@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Order, OrderItem, Product, OrderStatus } from '@prisma/client';
+import { Order, OrderItem, Product } from '@prisma/client';
 import { OrderCard } from './OrderCard';
 import { Search, ChevronDown, ChevronLeft, ChevronRight, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
@@ -69,7 +69,7 @@ export function OrdersClient({ initialOrders }: OrdersClientProps) {
           <div className="relative w-48">
             <select 
               value={filter}
-              onChange={(e) => setFilter(e.target.value as any)}
+              onChange={(e) => setFilter(e.target.value as 'ALL' | 'ACTIVE' | 'DELIVERED' | 'PROCESSING' | 'IN_TRANSIT' | 'CANCELLED')}
               className="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg px-4 py-2 text-on-surface appearance-none focus:outline-none focus:border-primary transition-all font-label-bold text-label-bold uppercase"
             >
               <option value="ALL">ALL ORDERS</option>

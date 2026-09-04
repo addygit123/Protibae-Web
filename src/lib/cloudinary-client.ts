@@ -14,8 +14,8 @@ export function getPublicIdFromUrl(url: string): string | null {
     const lastDotIndex = pathAfterUpload.lastIndexOf('.');
     if (lastDotIndex === -1) return pathAfterUpload;
     return pathAfterUpload.substring(0, lastDotIndex);
-  } catch (e) {
-    console.error('Error parsing Cloudinary URL:', e);
+  } catch (_e) {
+    console.error('Error parsing Cloudinary URL:', _e);
     return null;
   }
 }
@@ -39,7 +39,7 @@ export function getOptimizedCloudinaryUrl(
     if (options.crop) params.push(`c_${options.crop}`);
     
     return `${parts[0]}/upload/${params.join(',')}/${parts[1]}`;
-  } catch (e) {
+  } catch {
     return url;
   }
 }

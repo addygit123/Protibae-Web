@@ -1,5 +1,5 @@
 import React from 'react';
-import { Html, Head, Body, Container, Section, Text, Img, Link, Tailwind, Hr } from '@react-email/components';
+import { Html, Head, Body, Container, Section, Text, Link, Tailwind, Hr } from '@react-email/components';
 import { getBaseUrl } from '@/lib/utils';
 
 export function BaseTemplate({

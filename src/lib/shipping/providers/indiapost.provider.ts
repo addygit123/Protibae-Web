@@ -6,7 +6,7 @@ import type {
   ShipmentResult, 
   NormalizedShipmentStatus 
 } from '../types';
-import { normalizeIndiaPostStatus, etaLabel, isFastDelivery } from '../status';
+import { normalizeIndiaPostStatus, etaLabel } from '../status';
 import { env } from '@/lib/env';
 
 export class IndiaPostProvider implements ShippingProvider {
@@ -22,10 +22,10 @@ export class IndiaPostProvider implements ShippingProvider {
   }
 
   async getServiceability(
-    pickupPostcode: string,
+    _pickupPostcode: string,
     deliveryPostcode: string,
-    weightKg: number,
-    cod: boolean
+    _weightKg: number,
+    _cod: boolean
   ): Promise<ShippingOption[]> {
     // India Post doesn't have a live serviceability API.
     // We provide a fallback option with a static estimate.

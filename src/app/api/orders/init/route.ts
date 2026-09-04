@@ -64,9 +64,10 @@ export async function POST(req: Request) {
           )
         );
         shippingCharge = option.rate;
-      } catch (e: any) {
+      } catch (e: unknown) {
+        const msg = e instanceof Error ? e.message : 'Unknown error';
         return NextResponse.json(
-          { error: `Shipping validation failed: ${e.message}` },
+          { error: `Shipping validation failed: ${msg}` },
           { status: 400 }
         );
       }

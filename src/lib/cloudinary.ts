@@ -49,7 +49,7 @@ export async function uploadToCloudinary(
 /**
  * Deletes an asset from Cloudinary using its public ID
  */
-export async function deleteFromCloudinary(publicId: string): Promise<any> {
+export async function deleteFromCloudinary(publicId: string): Promise<{ result: string }> {
   return new Promise((resolve, reject) => {
     cloudinary.uploader.destroy(publicId, (error, result) => {
       if (error) return reject(error);
@@ -61,7 +61,7 @@ export async function deleteFromCloudinary(publicId: string): Promise<any> {
 /**
  * Renames/moves an asset in Cloudinary
  */
-export async function renameCloudinaryAsset(fromPublicId: string, toPublicId: string): Promise<any> {
+export async function renameCloudinaryAsset(fromPublicId: string, toPublicId: string): Promise<{ secure_url: string; public_id: string }> {
   return new Promise((resolve, reject) => {
     cloudinary.uploader.rename(fromPublicId, toPublicId, { overwrite: true }, (error, result) => {
       if (error) return reject(error);
@@ -94,7 +94,7 @@ export async function organizeProductImages(
         try {
           console.log(`Moving images:\ntemp\n→\nprotibae/products/${productSlug}/`);
           // Rename asset in Cloudinary to move to slug folder
-          const result = await renameCloudinaryAsset(oldPublicId, newPublicId) as any;
+          const result = await renameCloudinaryAsset(oldPublicId, newPublicId) as { secure_url: string; public_id: string };
           if (result && result.secure_url) {
             organizedImages.push(result.secure_url);
             continue;
@@ -119,7 +119,7 @@ export async function deleteProductFolder(productSlug: string): Promise<void> {
   try {
     // 1. Delete all resources with the prefix (images inside the folder)
     await new Promise((resolve, reject) => {
-      cloudinary.api.delete_resources_by_prefix(`${folderPath}/`, (error: any, result: any) => {
+      cloudinary.api.delete_resources_by_prefix(`${folderPath}/`, (error: Error | null, result: Record<string, unknown>) => {
         if (error) return reject(error);
         resolve(result);
       });
@@ -127,7 +127,7 @@ export async function deleteProductFolder(productSlug: string): Promise<void> {
 
     // 2. Delete the empty folder in Cloudinary
     await new Promise((resolve, reject) => {
-      cloudinary.api.delete_folder(folderPath, (error: any, result: any) => {
+      cloudinary.api.delete_folder(folderPath, (error: (Error & { http_code?: number }) | null, result: Record<string, unknown>) => {
         // Ignore folder not found error (if it was already empty or not created yet)
         if (error && error.http_code !== 404) return reject(error);
         resolve(result);
@@ -144,12 +144,12 @@ export async function deleteProductFolder(productSlug: string): Promise<void> {
 export async function cleanTempFolder(): Promise<void> {
   try {
     await new Promise((resolve) => {
-      cloudinary.api.delete_folder('protibae/products/temp', (error: any, result: any) => {
+      cloudinary.api.delete_folder('protibae/products/temp', (error: Error | null, result: Record<string, unknown>) => {
         // Ignore any errors (e.g. folder not empty, folder not found)
         resolve(result);
       });
     });
-  } catch (error) {
+  } catch {
     // Ignore error
   }
 }

@@ -45,12 +45,12 @@ export class ShiprocketProvider implements ShippingProvider {
       // The original code already sorted them by best cost/rating.
       const bestCourier = couriers[0];
       
-      const rate = parseFloat(bestCourier.freight_charge || bestCourier.rate || 0);
+      const rate = Number(bestCourier.freight_charge || bestCourier.rate || 0);
       let estDeliveryDate: Date | null = null;
       
       if (bestCourier.etd) {
         // Shiprocket etd is usually a string like "2023-11-20" or similar
-        const parsedDate = new Date(bestCourier.etd);
+        const parsedDate = new Date(String(bestCourier.etd));
         if (!isNaN(parsedDate.getTime())) {
           estDeliveryDate = parsedDate;
         }
@@ -65,7 +65,7 @@ export class ShiprocketProvider implements ShippingProvider {
         etaLabel: etaLabel(estDeliveryDate),
         isFast: isFastDelivery(estDeliveryDate),
         isCodAvailable: cod, // Shiprocket API returned it based on cod parameter
-        courierName: bestCourier.courier_name,
+        courierName: String(bestCourier.courier_name || 'Shiprocket'),
         courierId: bestCourier.courier_company_id?.toString(),
       }];
 
@@ -120,7 +120,7 @@ export class ShiprocketProvider implements ShippingProvider {
         orderResult.shipment_id,
         selectedOption.courierId ? parseInt(selectedOption.courierId) : undefined
       );
-    } catch (e: any) {
+    } catch (e: unknown) {
       // If wallet is low, awb assigning might fail. Return ORDER_CREATED.
       console.error('[ShiprocketProvider] AWB assignment failed:', e);
       return {
@@ -135,10 +135,8 @@ export class ShiprocketProvider implements ShippingProvider {
     }
 
     // Attempt pickup generation
-    let pickupStatus = 'scheduled';
     try {
-      const pickupResult = await shiprocketService.generatePickup(orderResult.shipment_id);
-      pickupStatus = pickupResult.pickup_status;
+      await shiprocketService.generatePickup(orderResult.shipment_id);
     } catch (e) {
        console.error('[ShiprocketProvider] Pickup scheduling failed:', e);
     }

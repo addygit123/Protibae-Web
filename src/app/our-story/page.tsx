@@ -1,6 +1,5 @@
 import { Leaf, Dumbbell, Activity, Sprout, Heart, ArrowRight, Zap, Star, Trophy } from 'lucide-react';
-import Image from 'next/image';
-import type { Metadata } from 'next';
+import NextImage from 'next/image';import type { Metadata } from 'next';
 import { generatePageMetadata } from '@/lib/seo';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { generateBreadcrumbJsonLd, generateWebPageJsonLd } from '@/lib/jsonld';
@@ -33,10 +32,12 @@ export default function OurStoryPage() {
       <section className="relative min-h-[921px] flex flex-col justify-center overflow-hidden pt-20">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent z-10"></div>
-          <img 
-            className="w-full h-full object-cover" 
-            alt="A moody, high-contrast professional studio photograph of a muscular athlete training" 
+          <NextImage
+            className="w-full h-full object-cover"
+            alt="A moody, high-contrast professional studio photograph of a muscular athlete training"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0dloCQf02wrYlxI39QNVD69lw6ZZznKZupBYdSkSf6tr3eJkgxUbghoFh-7cszdvcATsrkn5Au-VXHlVmrolsJjkDcz87rKDlBIssGTKKeqATjhG559S_nmx_lvQ9467hTjqn_ojbBNOwkZ9TpjDXfS-wYD82267LV87KWpIGOhLPE9lcAbjjZOD9nxn8cAMM5ZaiCetNtenakp1DV61ZZVrDDnRyXbeHobIH7Oda9K_WIGyGjbm21JUjIhptrh5qO-cVC0hDTW0"
+            fill
+            unoptimized
           />
         </div>
         <div className="relative z-20 max-w-container-max mx-auto px-gutter w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -58,10 +59,13 @@ export default function OurStoryPage() {
           </div>
           <div className="hidden md:flex justify-center relative">
             <div className="absolute inset-0 bg-[#ffb1c1]/10 blur-[120px] rounded-full animate-pulse"></div>
-            <img 
-              className="relative z-10 w-4/5 animate-floating" 
-              alt="A premium 3D render of a PROTIBAE Choco Peanut protein bar floating in mid-air" 
+            <NextImage
+              className="relative z-10 w-4/5 animate-floating"
+              alt="A premium 3D render of a PROTIBAE Choco Peanut protein bar floating in mid-air"
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBYmgGqJxHP2I-qDn9pGKWCHVfWMK-hYclw0-uAAWyUGL3_6naH-BKedyf_LnOef69iiCTRqaB4z91cwUDY0qj5jpoiwRO2NtFQ5-vcxFwYTCl12L8HkFmeMzh3CMP5W4hdBGi1vDgPkfosA8TrDag1v9T95yuJhEebzqBQ07EZb15HB15p773Fm6ajZPiebS1GcA9IBYTaW1g6b8AX5z6jdT2GdfOVq7O4tiJ-33trbtg-VQp3h4JZvrWr7UAOoQdGQ_ttl7i98I"
+              width={600}
+              height={400}
+              unoptimized
             />
           </div>
         </div>
@@ -127,10 +131,12 @@ export default function OurStoryPage() {
       {/* Mission Manifesto Section */}
       <section className="relative h-[800px] flex items-center overflow-hidden">
         <div className="absolute inset-0">
-          <img 
-            className="w-full h-full object-cover grayscale opacity-60" 
-            alt="A wide-angle landscape shot of a rugged mountain range at dawn." 
+          <NextImage
+            className="w-full h-full object-cover grayscale opacity-60"
+            alt="A wide-angle landscape shot of a rugged mountain range at dawn."
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4jztYl914wYD-xZ0bNC1KZslwc0i3ZIXKHjUiYGq31GyUSUrw5WwYL3j99xHoAocEsNaki2CIaMlEAZdOudTQQu_IOxgVnYwc9VqYk6gdZ8xG6GJgzu7NXfc-Teaj6CU3D5PJ-yvsEMzu_51ikYK-PziG5WmUOda8b5nJYgcy4pTpjiccqFzuSlRg1tLHdhmN1zjvPoH8fHphuRCwnkWS0zx_2dBEOjXPSY8ma94ultazCGGh6wwlqeyzK41ocLb8hGHNb0dTT7U"
+            fill
+            unoptimized
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background"></div>
         </div>
@@ -158,10 +164,12 @@ export default function OurStoryPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-12 md:grid-rows-2 gap-4 h-auto md:h-[600px]">
             <div className="md:col-span-8 md:row-span-1 bg-surface-container rounded-xl overflow-hidden relative group">
-              <img 
-                className="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-700" 
-                alt="A top-down macro shot of raw, ancient bajra grains mixed with premium dark chocolate chunks" 
+              <NextImage
+                className="w-full h-full object-cover opacity-70 group-hover:scale-105 transition-transform duration-700"
+                alt="A top-down macro shot of raw, ancient bajra grains mixed with premium dark chocolate chunks"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjBppK8X2BUse2l2N6uRfPD77BFxqQ1x5qQtuWYeKFuQjBJsErGnO_nHSEoUupGoV-l4ggM9OY-hKj2weRzFd-ufrpc1ZVOxjj41c9z-X-b67S6RnY-XdPcRw6GkgKXKjNzGHGGNOc1Nwjl4Qrzz5BS2v_RQRRi6WWPRG76l0hZLMkjkagzSUT_ck9hwhg4qkNaDY-Fqjwdy2eGZKr11zFpwFl8AwDDP7orCU8Rewc55dLwZlr2q2FW-gU22qUXPd7Tz4C0lXC1ns"
+                fill
+                unoptimized
               />
               <div className="absolute inset-0 p-8 flex flex-col justify-end bg-gradient-to-t from-black/80 to-transparent">
                 <h4 className="font-display text-headline-md text-[#ffb1c1]">ANCIENT GRAINS</h4>

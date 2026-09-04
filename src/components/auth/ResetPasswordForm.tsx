@@ -50,9 +50,9 @@ export function ResetPasswordForm() {
       setTimeout(() => {
         router.push('/login');
       }, 2000);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setStatus('error');
-      setMessage(err.message);
+      setMessage(err instanceof Error ? err.message : 'An error occurred');
     }
   };
 

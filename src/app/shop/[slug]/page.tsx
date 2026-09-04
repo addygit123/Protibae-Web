@@ -8,7 +8,7 @@ import { ProductIngredients } from '@/components/product/ProductIngredients';
 import { ProductLabTest } from '@/components/product/ProductLabTest';
 import { ProductReviews } from '@/components/product/ProductReviews';
 import { RelatedProducts } from '@/components/product/RelatedProducts';
-import { SectionReveal } from '@/components/sections/SectionReveal';
+
 import { JsonLd } from '@/components/seo/JsonLd';
 import {
   generateProductJsonLd,

@@ -25,7 +25,7 @@ export function VerificationEmail({ name, verificationLink }: VerificationEmailP
       </Section>
 
       <Text className="text-[#8B8D98] text-[14px] mb-2">
-        If you didn't create an account, you can safely ignore this email.
+        If you didn&apos;t create an account, you can safely ignore this email.
       </Text>
     </BaseTemplate>
   );

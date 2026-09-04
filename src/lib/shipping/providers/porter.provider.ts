@@ -7,7 +7,6 @@ import type {
   NormalizedShipmentStatus 
 } from '../types';
 import { normalizePorterStatus } from '../status';
-import { env } from '@/lib/env';
 
 export class PorterProvider implements ShippingProvider {
   id: ShippingProviderId = 'porter';
@@ -22,10 +21,10 @@ export class PorterProvider implements ShippingProvider {
   }
 
   async getServiceability(
-    pickupPostcode: string,
+    _pickupPostcode: string,
     deliveryPostcode: string,
-    weightKg: number,
-    cod: boolean
+    _weightKg: number,
+    _cod: boolean
   ): Promise<ShippingOption[]> {
     // If the delivery address is in Jabalpur (pincode starts with 482)
     if (deliveryPostcode.startsWith('482')) {

@@ -5,6 +5,7 @@ import { Lock } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cart';
 import { useRouter } from 'next/navigation';
 import { CheckoutBlockedBanner } from '@/components/store-mode/CheckoutBlockedBanner';
+import { calculateShippingCost } from '@/lib/shipping/calculator';
 
 interface OrderSummaryProps {
   isStoreLive?: boolean;
@@ -21,7 +22,6 @@ export function OrderSummary({ isStoreLive = false }: OrderSummaryProps) {
   // Example logic: discount of 20% applied automatically or mock
   const originalSubtotal = Math.round(subtotal * 1.2);
   const discount = originalSubtotal - subtotal;
-  const { calculateShippingCost } = require('@/lib/shipping/calculator');
   const items = useCartStore.getState().items;
   const shippingResult = calculateShippingCost({ subtotal, items: items.map(i => ({ packSize: i.packSize, quantity: i.quantity })) });
   const isFreeShipping = shippingResult.isFree;

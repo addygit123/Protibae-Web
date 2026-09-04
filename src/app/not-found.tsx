@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import NextImage from 'next/image';
 import { Zap } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -57,10 +58,13 @@ export default function NotFoundPage() {
               <div className="absolute inset-0 glass-blur-404 rounded-xl border border-outline-variant/30 transform -rotate-6"></div>
               {/* Primary Product Image */}
               <div className="absolute inset-4 z-20 flex items-center justify-center">
-                <img 
-                  className="w-full h-auto drop-shadow-[0_20px_50px_rgba(196,30,92,0.4)]" 
-                  alt="A hyper-realistic 3D rendering of a premium dark chocolate protein bar" 
+                <NextImage
+                  className="w-full h-auto drop-shadow-[0_20px_50px_rgba(196,30,92,0.4)]"
+                  alt="A hyper-realistic 3D rendering of a premium dark chocolate protein bar"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeAWHQKIyWLPjKkUkW1cwQVRTwJC2fS63AjoJcOe-lEs5cmMC84Ulf75Y5h_LvHy2FJOr2xDZMMZp_szEgetOM2v0sU4NgDhkltLzD4GXBDPP5eLCer59Ii9rvcqI6gAwpZXy-a7idTH6RheSVqn1g4gMsyFz0eLVQBvxTGUcQ4oR7LhjqQafvhafgLG8BViV6tDcoU4NeGMThqodfRAJH2Crg7ido5AFZvPGBSZFnImFMyTLk_X1nBRmJ7vMeTbBsvdLx3KYPVys"
+                  width={600}
+                  height={400}
+                  unoptimized
                 />
               </div>
               {/* Decorative Lightning/Energy Elements */}

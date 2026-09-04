@@ -4,19 +4,14 @@ import { motion } from 'framer-motion';
 
 import { usePathname } from 'next/navigation';
 
-const MESSAGE = '🎁 GET FREE DELIVERY WITH A PACK OF 6 FOR ₹399 · PURE PERFORMANCE NUTRITION · FUEL YOUR AMBITION · REAL INGREDIENTS · NO CRAP';
-
-/**
- * AnnouncementBar
- * Full-width, sticky top banner with a looping marquee.
- * Matches Stitch design: primary-container bg, white uppercase text.
- */
-export function AnnouncementBar() {
+export function AnnouncementBar({ price6 = 399 }: { price6?: number }) {
   const pathname = usePathname();
   
   if (pathname.startsWith('/admin')) {
     return null;
   }
+
+  const MESSAGE = `🎁 GET FREE DELIVERY WITH A PACK OF 6 FOR ₹${price6} · PURE PERFORMANCE NUTRITION · FUEL YOUR AMBITION · REAL INGREDIENTS · NO CRAP`;
 
   // Duplicate the message so the marquee loops seamlessly
   const repeated = `${MESSAGE} · ${MESSAGE} · `;

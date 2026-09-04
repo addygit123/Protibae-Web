@@ -57,43 +57,43 @@ export const emailService = {
     }
   },
 
-  async sendOrderEmail(to: string, subject: string, props: any) {
+  async sendOrderEmail(to: string, subject: string, props: Record<string, unknown>) {
     return this.sendEmail({
       to,
       subject,
-      react: <OrderEmail {...props} />
+      react: <OrderEmail {...((props as unknown) as Parameters<typeof OrderEmail>[0])} />
     });
   },
 
-  async sendShipmentEmail(to: string, subject: string, props: any) {
+  async sendShipmentEmail(to: string, subject: string, props: Record<string, unknown>) {
     return this.sendEmail({
       to,
       subject,
-      react: <ShipmentEmail {...props} />
+      react: <ShipmentEmail {...((props as unknown) as Parameters<typeof ShipmentEmail>[0])} />
     });
   },
 
-  async sendSupportEmail(to: string, subject: string, props: any) {
+  async sendSupportEmail(to: string, subject: string, props: Record<string, unknown>) {
     return this.sendEmail({
       to,
       subject,
-      react: <SupportEmail {...props} />
+      react: <SupportEmail {...((props as unknown) as Parameters<typeof SupportEmail>[0])} />
     });
   },
 
-  async sendPasswordResetEmail(to: string, subject: string, props: any) {
+  async sendPasswordResetEmail(to: string, subject: string, props: Record<string, unknown>) {
     return this.sendEmail({
       to,
       subject,
-      react: <PasswordResetEmail {...props} />
+      react: <PasswordResetEmail {...((props as unknown) as Parameters<typeof PasswordResetEmail>[0])} />
     });
   },
 
-  async sendVerificationEmail(to: string, subject: string, props: any) {
+  async sendVerificationEmail(to: string, subject: string, props: Record<string, unknown>) {
     return this.sendEmail({
       to,
       subject,
-      react: <VerificationEmail {...props} />
+      react: <VerificationEmail {...((props as unknown) as Parameters<typeof VerificationEmail>[0])} />
     });
   },
 

@@ -6,8 +6,9 @@ import { useCartStore } from '@/lib/store/cart';
 import { FreeShippingProgress } from '@/components/cart/FreeShippingProgress';
 import { useHydration } from '@/hooks/useHydration';
 import { getPackPrice } from '@/lib/store/cart';
+import { calculateShippingCost } from '@/lib/shipping/calculator';
 
-export function CheckoutSummary() {
+export function CheckoutSummary({ price6 = 399 }: { price6?: number }) {
   const { items, getCartTotal } = useCartStore();
   const isMounted = useHydration();
   if (!isMounted) {
@@ -16,7 +17,6 @@ export function CheckoutSummary() {
   const subtotal = getCartTotal();
 
   // Free shipping logic
-  const { calculateShippingCost } = require('@/lib/shipping/calculator');
   const shippingResult = calculateShippingCost({ subtotal, items: items.map(i => ({ packSize: i.packSize, quantity: i.quantity })) });
   const isFreeShipping = shippingResult.isFree;
   
@@ -136,7 +136,7 @@ export function CheckoutSummary() {
       </div>
 
       <div className="mt-8">
-        <FreeShippingProgress />
+        <FreeShippingProgress price6={price6} />
       </div>
 
       {/* Trust Badges */}

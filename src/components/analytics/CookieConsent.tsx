@@ -17,7 +17,9 @@ export function CookieConsent() {
   });
 
   useEffect(() => {
-    setMounted(true);
+    // Triggers re-render on client after hydration to show the consent banner
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
   }, []);
 
   if (!mounted) return null;
@@ -50,7 +52,7 @@ export function CookieConsent() {
                 </div>
                 <p className="mt-2 text-sm text-gray-400">
                   We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. 
-                  By clicking "Accept All", you consent to our use of cookies.
+                  By clicking &ldquo;Accept All&rdquo;, you consent to our use of cookies.
                 </p>
               </div>
               <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">

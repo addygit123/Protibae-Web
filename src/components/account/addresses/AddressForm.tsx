@@ -43,33 +43,36 @@ export function AddressForm({ initialAddress }: AddressFormProps) {
 
   useEffect(() => {
     if (initialAddress) {
-      setFullName(`${initialAddress.firstName} ${initialAddress.lastName === '.' ? '' : initialAddress.lastName}`.trim());
-      setPhone(initialAddress.phone || '');
-      setZip(initialAddress.zip);
-      
-      const parts = initialAddress.street.split('\n');
-      setHouseBuilding(parts[0] || '');
-      
-      let secondPart = parts[1] || '';
-      let parsedLandmark = '';
-      const landmarkIndex = initialAddress.street.indexOf('\nLandmark: ');
-      if (landmarkIndex !== -1) {
-        parsedLandmark = initialAddress.street.slice(landmarkIndex + 11);
-        secondPart = parts.slice(1).join('\n');
-        const endOfStreetAreaIndex = secondPart.indexOf('\nLandmark: ');
-        if (endOfStreetAreaIndex !== -1) {
-          secondPart = secondPart.slice(0, endOfStreetAreaIndex);
-        } else if (secondPart.startsWith('Landmark: ')) {
-          secondPart = '';
+      const timer = setTimeout(() => {
+        setFullName(`${initialAddress.firstName} ${initialAddress.lastName === '.' ? '' : initialAddress.lastName}`.trim());
+        setPhone(initialAddress.phone || '');
+        setZip(initialAddress.zip);
+        
+        const parts = initialAddress.street.split('\n');
+        setHouseBuilding(parts[0] || '');
+        
+        let secondPart = parts[1] || '';
+        let parsedLandmark = '';
+        const landmarkIndex = initialAddress.street.indexOf('\nLandmark: ');
+        if (landmarkIndex !== -1) {
+          parsedLandmark = initialAddress.street.slice(landmarkIndex + 11);
+          secondPart = parts.slice(1).join('\n');
+          const endOfStreetAreaIndex = secondPart.indexOf('\nLandmark: ');
+          if (endOfStreetAreaIndex !== -1) {
+            secondPart = secondPart.slice(0, endOfStreetAreaIndex);
+          } else if (secondPart.startsWith('Landmark: ')) {
+            secondPart = '';
+          }
         }
-      }
-      setStreetArea(secondPart);
-      setLandmark(parsedLandmark);
-      
-      setCity(initialAddress.city);
-      setState(initialAddress.state);
-      setAddressType(initialAddress.type === 'BILLING' ? 'office' : 'home');
-      setIsDefault(initialAddress.isDefault);
+        setStreetArea(secondPart);
+        setLandmark(parsedLandmark);
+        
+        setCity(initialAddress.city);
+        setState(initialAddress.state);
+        setAddressType(initialAddress.type === 'BILLING' ? 'office' : 'home');
+        setIsDefault(initialAddress.isDefault);
+      }, 0);
+      return () => clearTimeout(timer);
     }
   }, [initialAddress]);
 
@@ -140,8 +143,9 @@ export function AddressForm({ initialAddress }: AddressFormProps) {
         router.refresh();
       }, 1000);
 
-    } catch (err: any) {
-      showToast(err.message || 'An error occurred while saving.', 'error');
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : 'An error occurred while saving.';
+      showToast(msg, 'error');
     } finally {
       setIsSubmitting(false);
     }

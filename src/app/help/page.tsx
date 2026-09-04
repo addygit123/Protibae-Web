@@ -1,6 +1,7 @@
 "use client";
 
 import { Search, Truck, RefreshCw, ShieldCheck, ArrowRight, ChevronDown, Zap, Mail, Phone } from 'lucide-react';
+import NextImage from 'next/image';
 import { useState } from 'react';
 import { submitSupportTicket } from './actions';
 
@@ -249,10 +250,12 @@ export default function HelpPage() {
       {/* Dynamic Brand Element */}
       <section className="h-[400px] relative w-full overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 z-0 overflow-hidden">
-          <img 
-            className="w-full h-full object-cover grayscale contrast-125 opacity-50" 
-            alt="A powerful, cinematic high-contrast close-up of a premium chocolate protein bar" 
+          <NextImage
+            className="w-full h-full object-cover grayscale contrast-125 opacity-50"
+            alt="A powerful, cinematic high-contrast close-up of a premium chocolate protein bar"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDknGbGH7GYoHdBkwuPOHq8Bv2T8pjJHHkUumybez6IFKfEpTT8xhOxfnHtxFDt9t3BIJHqk0sPZrobDsG7JT2nT7llnvkReePkyWQcF4ln2Y46eaOtDq8ej7hITKErBBwrU6qHDRMIz9isbrXwkiAPDI8UdJNDfipQwpiC-rwhzj2b-DXxpqxkJNbReEDxWBZBnkkoV_Dgh59jy-xcSfLcgAEsXQvXvEOE-uXOZ8st3pZ1PLNR6yA5SzdbY1JyvwwDydR1zwHsiPo"
+            fill
+            unoptimized
           />
         </div>
         <div className="relative z-10 text-center">

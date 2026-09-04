@@ -53,7 +53,7 @@ export const shiprocketService = {
     deliveryPostcode: string,
     weight: number,
     cod: boolean
-  ): Promise<any[]> {
+  ): Promise<Record<string, unknown>[]> {
     const token = await this.authenticate();
     const codParam = cod ? 1 : 0;
     const url = `${SHIPROCKET_API_URL}/courier/serviceability?pickup_postcode=${pickupPostcode}&delivery_postcode=${deliveryPostcode}&weight=${weight}&cod=${codParam}`;
@@ -81,14 +81,14 @@ export const shiprocketService = {
     // Sort couriers:
     // 1. Lowest shipping cost (freight_charge or rate) ascending.
     // 2. Best rated (rating or delivery_performance) descending.
-    couriers.sort((a: any, b: any) => {
-      const costA = parseFloat(a.freight_charge || a.rate || 0);
-      const costB = parseFloat(b.freight_charge || b.rate || 0);
+    couriers.sort((a: Record<string, unknown>, b: Record<string, unknown>) => {
+      const costA = parseFloat((a.freight_charge as string) || (a.rate as string) || '0');
+      const costB = parseFloat((b.freight_charge as string) || (b.rate as string) || '0');
       if (costA !== costB) {
         return costA - costB;
       }
-      const ratingA = parseFloat(a.rating || a.delivery_performance || 0);
-      const ratingB = parseFloat(b.rating || b.delivery_performance || 0);
+      const ratingA = parseFloat((a.rating as string) || (a.delivery_performance as string) || '0');
+      const ratingB = parseFloat((b.rating as string) || (b.delivery_performance as string) || '0');
       return ratingB - ratingA;
     });
 
@@ -98,7 +98,7 @@ export const shiprocketService = {
   /**
    * Creates an adhoc order in Shiprocket.
    */
-  async createOrder(orderPayload: any): Promise<{ order_id: number; shipment_id: number; status: string }> {
+  async createOrder(orderPayload: Record<string, unknown>): Promise<{ order_id: number; shipment_id: number; status: string }> {
     const token = await this.authenticate();
 
     const res = await fetch(`${SHIPROCKET_API_URL}/orders/create/adhoc`, {
@@ -137,7 +137,7 @@ export const shiprocketService = {
   ): Promise<{ awb_code: string; courier_name: string; courier_company_id: string; tracking_url: string }> {
     const token = await this.authenticate();
 
-    const payload: any = {
+    const payload: { shipment_id: number; courier_id?: number } = {
       shipment_id: shipmentId,
     };
     if (courierCompanyId !== undefined) {
@@ -281,7 +281,7 @@ export const shiprocketService = {
   /**
    * Tracks a shipment by its AWB code.
    */
-  async trackShipment(awbNumber: string): Promise<any> {
+  async trackShipment(awbNumber: string): Promise<Record<string, unknown>> {
     const token = await this.authenticate();
 
     const res = await fetch(`${SHIPROCKET_API_URL}/courier/track/awb/${awbNumber}`, {

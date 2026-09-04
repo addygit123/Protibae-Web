@@ -75,9 +75,9 @@ function mapPrismaToClientProduct(p: PrismaProduct): Product {
     laboratory: "Equinox Labs"
   } : undefined;
 
-  // Fix price for choco-peanut if db is unset/0
-  const basePrice = (isChocoPeanut && (!p.price || p.price === 0)) ? 79 : p.price;
-  const price6 = isChocoPeanut ? 399 : basePrice * 6;
+  // Use DB prices if available, otherwise fallback
+  const basePrice = (p.price && p.price > 0) ? p.price : 79;
+  const price6 = (p.price6 && p.price6 > 0) ? p.price6 : basePrice * 6;
 
   return {
     id: p.id,
@@ -87,7 +87,7 @@ function mapPrismaToClientProduct(p: PrismaProduct): Product {
     price6: price6,
     packInfo: 'Pack of 6/12/24',
     description: p.description,
-    category: p.category ? p.category.toLowerCase().replace(' ', '-') as any : 'protein-bars',
+    category: p.category ? p.category.toLowerCase().replace(' ', '-') as 'protein-bars' | 'nuts-seeds' | 'combos' : 'protein-bars',
     badges: mockedBadges,
     image: mainImage,
     imageAlt: `${p.name} product image`,
@@ -103,19 +103,29 @@ function mapPrismaToClientProduct(p: PrismaProduct): Product {
 }
 
 export async function getProducts(): Promise<Product[]> {
-  const products = await prisma.product.findMany({
-    where: { isActive: true },
-    orderBy: { createdAt: 'desc' }
-  });
-  
-  return products.map(mapPrismaToClientProduct);
+  try {
+    const products = await prisma.product.findMany({
+      where: { isActive: true },
+      orderBy: { createdAt: 'desc' }
+    });
+    
+    return products.map(mapPrismaToClientProduct);
+  } catch (error) {
+    console.warn('[getProducts] Failed to fetch products, returning empty array (expected at build time if no DB)');
+    return [];
+  }
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
-  const product = await prisma.product.findUnique({
-    where: { slug }
-  });
-  
-  if (!product) return null;
-  return mapPrismaToClientProduct(product);
+  try {
+    const product = await prisma.product.findUnique({
+      where: { slug }
+    });
+    
+    if (!product) return null;
+    return mapPrismaToClientProduct(product);
+  } catch (error) {
+    console.warn(`[getProductBySlug] Failed to fetch product ${slug} (expected at build time if no DB)`);
+    return null;
+  }
 }

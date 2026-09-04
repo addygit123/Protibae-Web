@@ -3,17 +3,15 @@
 import { Truck, Zap } from 'lucide-react';
 import { useHydration } from '@/hooks/useHydration';
 import { useCartStore } from '@/lib/store/cart';
+import { calculateShippingCost } from '@/lib/shipping/calculator';
 
-const FREE_SHIPPING_THRESHOLD = 499;
-
-export function FreeShippingProgress() {
+export function FreeShippingProgress({ price6 = 399 }: { price6?: number }) {
   const isMounted = useHydration();
   const { getCartTotal, items } = useCartStore();
   
   if (!isMounted || items.length === 0) return null;
 
   const total = getCartTotal();
-  const { calculateShippingCost } = require('@/lib/shipping/calculator');
   const shippingResult = calculateShippingCost({ subtotal: total, items: items.map(i => ({ packSize: i.packSize, quantity: i.quantity })) });
   
   const isFree = shippingResult.isFree;
@@ -39,7 +37,7 @@ export function FreeShippingProgress() {
               <>
                 <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#e1bec3] mb-1">EXCLUSTIVE OFFER</p>
                 <h3 className="font-display-hero text-4xl uppercase italic text-[#ffb1c1]">FREE DELIVERY WITH PACK OF 6!</h3>
-                <p className="text-xs text-[#e1bec3] mt-2">Add a Pack of 6 for only ₹399 to get free shipping.</p>
+                <p className="text-xs text-[#e1bec3] mt-2">Add a Pack of 6 for only ₹{price6} to get free shipping.</p>
               </>
             )}
           </div>

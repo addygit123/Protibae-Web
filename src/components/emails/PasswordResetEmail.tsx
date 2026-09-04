@@ -25,7 +25,7 @@ export function PasswordResetEmail({ name, resetLink }: PasswordResetEmailProps)
       </Section>
 
       <Text className="text-[#8B8D98] text-[14px] mb-2">
-        If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged.
+        If you didn&apos;t request a password reset, you can safely ignore this email. Your password will remain unchanged.
       </Text>
     </BaseTemplate>
   );

@@ -4,6 +4,7 @@ import { OrderSummary } from '@/components/cart/OrderSummary';
 import { FreeShippingProgress } from '@/components/cart/FreeShippingProgress';
 import { SectionReveal } from '@/components/sections/SectionReveal';
 import { isStoreLive } from '@/lib/store-config';
+import { getProductBySlug } from '@/config/products';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -13,7 +14,10 @@ export const metadata: Metadata = {
 };
 
 
-export default function CartPage() {
+export default async function CartPage() {
+  const chocoPeanut = await getProductBySlug('choco-peanut');
+  const heroPrice6 = chocoPeanut?.price6 ?? 399;
+
   return (
     <div className="min-h-screen bg-[#121317]">
       <main className="pt-32 pb-[120px] px-6 max-w-[1280px] mx-auto">
@@ -56,7 +60,7 @@ export default function CartPage() {
         </SectionReveal>
 
         <div className="mt-8 animate-slide-up">
-          <FreeShippingProgress />
+          <FreeShippingProgress price6={heroPrice6} />
         </div>
 
       </main>

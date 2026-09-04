@@ -9,6 +9,7 @@ import type { Metadata } from 'next';
 import { isStoreLive, isMaintenanceMode } from '@/lib/store-config';
 import { ComingSoonPage } from '@/components/store-mode/ComingSoonPage';
 import { MaintenancePage } from '@/components/store-mode/MaintenancePage';
+import { getProductBySlug } from '@/config/products';
 
 export const metadata: Metadata = {
   title: 'Secure Checkout',
@@ -27,6 +28,10 @@ export default async function CheckoutPage() {
   if (!session) {
     redirect('/login?callbackUrl=/checkout');
   }
+
+  const chocoPeanut = await getProductBySlug('choco-peanut');
+  const heroPrice6 = chocoPeanut?.price6 ?? 399;
+
   return (
     <div className="min-h-screen bg-[#121317] flex flex-col">
       <main className="flex-grow max-w-[1280px] w-full mx-auto px-6 py-12">
@@ -53,7 +58,9 @@ export default async function CheckoutPage() {
           {/* Right Column: Order Summary */}
           <div className="lg:col-span-4">
             <SectionReveal delay={0.2}>
-              <CheckoutSummary />
+              <div className="sticky top-24">
+                <CheckoutSummary price6={heroPrice6} />
+              </div>
             </SectionReveal>
           </div>
         </div>

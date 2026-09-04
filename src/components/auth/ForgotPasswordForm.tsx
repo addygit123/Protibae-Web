@@ -26,9 +26,9 @@ export function ForgotPasswordForm() {
       
       setStatus('success');
       setMessage(data.message);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setStatus('error');
-      setMessage(err.message);
+      setMessage(err instanceof Error ? err.message : 'An error occurred');
     }
   };
 

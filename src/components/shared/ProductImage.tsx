@@ -34,8 +34,11 @@ export function ProductImage({
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    setImgSrc(src || FALLBACK_IMAGE);
-    setIsError(false);
+    const timer = setTimeout(() => {
+      setImgSrc(src || FALLBACK_IMAGE);
+      setIsError(false);
+    }, 0);
+    return () => clearTimeout(timer);
   }, [src]);
 
   // Generate blur placeholder URL if it's a Cloudinary URL

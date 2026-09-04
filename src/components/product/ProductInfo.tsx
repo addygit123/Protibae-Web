@@ -206,6 +206,7 @@ export function ProductInfo({ product, isStoreLive = false }: ProductInfoProps) 
                 addItem(product.id, selectedPack, quantity, {
                   name: product.name,
                   price: product.price,
+                  price6: product.price6,
                   image: product.image,
                   imageAlt: product.imageAlt,
                   badges: product.badges,

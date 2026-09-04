@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { ArrowRight, Zap, Leaf } from 'lucide-react';
 import { HeroAnimations } from './HeroAnimations';
 
+import { getProductBySlug } from '@/config/products';
+
 /**
  * HeroSection — Server Component (static content, images, layout)
  * Animations delegated to HeroAnimations client boundary.
@@ -11,7 +13,9 @@ import { HeroAnimations } from './HeroAnimations';
  * - Left: overline, display headline, body, CTA, stat badges
  * - Right: product image with floating animation + radial glow
  */
-export function HeroSection() {
+export async function HeroSection() {
+  const chocoPeanut = await getProductBySlug('choco-peanut');
+  const heroPrice6 = chocoPeanut?.price6 ?? 399;
   return (
     <section
       className="relative min-h-screen flex items-center overflow-hidden py-24 px-gutter"
@@ -35,7 +39,7 @@ export function HeroSection() {
           <HeroAnimations>
             {/* Promo offer badge */}
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#c41e5c]/15 border border-[#c41e5c]/40 text-[#ffb1c1] text-xs font-bold uppercase tracking-wider rounded-full mb-6 max-w-max shadow-[0_0_15px_rgba(196,30,92,0.15)] animate-pulse">
-              🎁 FREE DELIVERY WITH PACK OF 6 FOR ₹399
+              🎁 FREE DELIVERY WITH PACK OF 6 FOR ₹{heroPrice6}
             </div>
 
             {/* Overline */}
@@ -58,7 +62,7 @@ export function HeroSection() {
               PROTIBAE wasn&apos;t just another protein bar idea. It was born out
               of a simple frustration—snacks were either tasty but unhealthy, or
               healthy but tasted like compromise. We knew you deserved better. Get our
-              signature Choco Peanut pack of 6 for just ₹399 with free nationwide delivery.
+              signature Choco Peanut pack of 6 for just ₹{heroPrice6} with free nationwide delivery.
             </p>
 
             {/* CTA */}
