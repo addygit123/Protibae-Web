@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { ShieldAlert } from 'lucide-react';
+import { ShieldAlert, Eye, EyeOff } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 
@@ -19,6 +20,7 @@ export default function AdminLoginForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -80,15 +82,28 @@ export default function AdminLoginForm() {
         </div>
 
         <div className="space-y-2">
-          <label className="font-label-bold text-label-bold uppercase tracking-widest text-[#e1bec3] ml-1">Password</label>
+          <div className="flex items-center justify-between ml-1">
+            <label className="font-label-bold text-label-bold uppercase tracking-widest text-[#e1bec3]">Password</label>
+            <Link href="/forgot-password" className="text-xs text-[#c41e5c] hover:text-[#ffb4ab] transition-colors">
+              Forgot Password?
+            </Link>
+          </div>
           <div className="relative">
             <input
               {...register('password')}
-              className="w-full bg-[#0d0e12] border border-[#594045] rounded-none px-4 py-4 text-white placeholder:text-[#594045] focus:outline-none focus:border-[#c41e5c] focus:shadow-[0_0_15px_rgba(196,30,92,0.2)] transition-all"
+              className="w-full bg-[#0d0e12] border border-[#594045] rounded-none px-4 py-4 pr-12 text-white placeholder:text-[#594045] focus:outline-none focus:border-[#c41e5c] focus:shadow-[0_0_15px_rgba(196,30,92,0.2)] transition-all"
               placeholder="••••••••"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               disabled={isLoading}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#594045] hover:text-[#e1bec3] transition-colors focus:outline-none"
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </button>
             {errors.password && <p className="text-[#ffb4ab] text-xs mt-1">{errors.password.message}</p>}
           </div>
         </div>
